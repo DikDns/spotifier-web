@@ -30,15 +30,15 @@ const ssoLoginHandler = async (req: NextRequest) => {
     };
 
     const url = env.NEXT_PUBLIC_SPOT_URL + "/mhs";
-    const response = await fetch(url, {
+    const spotResponse = await fetch(url, {
       headers: headers,
       method: "GET",
     });
 
-    const body = await response.text();
+    const spotBody = await spotResponse.text();
 
     // Parse the HTML body
-    const $ = cheerio.load(body);
+    const $ = cheerio.load(spotBody);
 
     // Extract and split the name and NIM
     const profileText = $(".user-profile .profile-text").text().trim();
@@ -77,7 +77,15 @@ const ssoLoginHandler = async (req: NextRequest) => {
         userId: newUser.id,
       });
 
-      return NextResponse.redirect(env.NEXT_PUBLIC_BASE_URL);
+      const response = NextResponse.redirect(env.NEXT_PUBLIC_BASE_URL);
+      response.cookies.set("userId", newUser.id, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        maxAge: 30 * 24 * 60 * 60, // 30 days
+        path: "/",
+      });
+      return response;
     }
 
     const userSession = (
@@ -104,7 +112,15 @@ const ssoLoginHandler = async (req: NextRequest) => {
         .where(eq(userSessions.id, userSession.id));
     }
 
-    return NextResponse.redirect(env.NEXT_PUBLIC_BASE_URL);
+    const response = NextResponse.redirect(env.NEXT_PUBLIC_BASE_URL);
+    response.cookies.set("userId", user.id, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 30 * 24 * 60 * 60, // 30 days
+      path: "/",
+    });
+    return response;
   } catch (error) {
     console.error("Error:", error);
     return NextResponse.json(

@@ -1,3 +1,5 @@
+import { db } from "~/server/db";
+
 export async function getSession() {
   return {
     user: {
