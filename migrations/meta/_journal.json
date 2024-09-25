@@ -8,6 +8,34 @@
       "when": 1727225590230,
       "tag": "0000_shocking_arachne",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1727226763947,
+      "tag": "0001_gifted_daredevil",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1727231784716,
+      "tag": "0002_heavy_living_mummy",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1727231816531,
+      "tag": "0003_pink_wong",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1727231900107,
+      "tag": "0004_good_puck",
+      "breakpoints": true
     }
   ]
 }
