@@ -10,7 +10,9 @@ import { index, int, sqliteTableCreator, text } from "drizzle-orm/sqlite-core";
  *
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
-export const createTable = sqliteTableCreator((name) => `spotifier-web_${name}`);
+export const createTable = sqliteTableCreator(
+  (name) => `spotifier-web_${name}`,
+);
 
 export const posts = createTable(
   "post",
@@ -21,10 +23,10 @@ export const posts = createTable(
       .default(sql`(unixepoch())`)
       .notNull(),
     updatedAt: int("updated_at", { mode: "timestamp" }).$onUpdate(
-      () => new Date()
+      () => new Date(),
     ),
   },
   (example) => ({
     nameIndex: index("name_idx").on(example.name),
-  })
+  }),
 );
