@@ -1,6 +1,5 @@
-import { type NextRequest, NextResponse } from "next/server";
-
 import * as cheerio from "cheerio";
+import { type NextRequest, NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 
 import { env } from "@/env";
@@ -8,6 +7,7 @@ import { users, userSessions } from "@/server/db/schema";
 import { db } from "@/server/db";
 
 import { createId } from "@paralleldrive/cuid2";
+import { encryptData } from "@/lib/encryption";
 
 const ssoLoginHandler = async (req: NextRequest) => {
   try {
@@ -16,7 +16,7 @@ const ssoLoginHandler = async (req: NextRequest) => {
       return NextResponse.redirect(req.url);
     }
 
-    const { name, nim } = await fetchUserInfo(
+    const { name, nim } = await fetchUserInfoFromSPOT(
       laravelSession,
       xsrfToken,
       casAuth,
@@ -45,33 +45,6 @@ function getSessionParams(req: NextRequest) {
     xsrfToken: params.get("XSRF-TOKEN"),
     casAuth: params.get("CASAuth"),
   };
-}
-
-async function fetchUserInfo(
-  laravelSession: string,
-  xsrfToken: string,
-  casAuth: string,
-) {
-  const headers = {
-    Cookie: `laravel_session=${laravelSession};XSRF-TOKEN=${xsrfToken};CASAuth=${casAuth}`,
-    Host: "spot.upi.edu",
-    Connection: "keep-alive",
-    Accept: "*/*",
-    "User-Agent":
-      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
-  };
-
-  const url = env.NEXT_PUBLIC_SPOT_URL + "/mhs";
-  const spotResponse = await fetch(url, { headers, method: "GET" });
-  const spotBody = await spotResponse.text();
-
-  const $ = cheerio.load(spotBody);
-  const profileText = $(".user-profile .profile-text").text().trim();
-  const profileParts = profileText.split(/\s+/);
-  const nim = profileParts.pop();
-  const name = profileParts.join(" ");
-
-  return { name, nim };
 }
 
 async function getOrCreateUser(nim: string, name: string) {
@@ -118,7 +91,20 @@ function createSuccessResponse(
   xsrfToken: string,
   casAuth: string,
 ) {
-  const response = NextResponse.redirect(env.NEXT_PUBLIC_BASE_URL);
+  const encryptedData = encryptData({
+    userId,
+    laravelSession,
+    xsrfToken,
+    casAuth,
+  });
+
+  console.log("encryptedData: \n", encryptedData);
+
+  const url = new URL(env.NEXT_PUBLIC_BASE_URL + "/dashboard");
+  url.searchParams.set("data", encryptedData);
+
+  const response = NextResponse.redirect(url);
+
   const cookieOptions = {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
@@ -133,6 +119,33 @@ function createSuccessResponse(
   response.cookies.set("CASAuth", casAuth, cookieOptions);
 
   return response;
+}
+
+export async function fetchUserInfoFromSPOT(
+  laravelSession: string,
+  xsrfToken: string,
+  casAuth: string,
+) {
+  const headers = {
+    Cookie: `laravel_session=${laravelSession};XSRF-TOKEN=${xsrfToken};CASAuth=${casAuth}`,
+    Host: "spot.upi.edu",
+    Connection: "keep-alive",
+    Accept: "*/*",
+    "User-Agent":
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+  };
+
+  const url = env.NEXT_PUBLIC_SPOT_URL + "/mhs";
+  const spotResponse = await fetch(url, { headers, method: "GET" });
+  const spotBody = await spotResponse.text();
+
+  const $ = cheerio.load(spotBody);
+  const profileText = $(".user-profile .profile-text").text().trim();
+  const profileParts = profileText.split(/\s+/);
+  const nim = profileParts.pop();
+  const name = profileParts.join(" ");
+
+  return { name, nim };
 }
 
 export { ssoLoginHandler as GET };
