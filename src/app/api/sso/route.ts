@@ -3,9 +3,9 @@ import { type NextRequest, NextResponse } from "next/server";
 import * as cheerio from "cheerio";
 import { eq } from "drizzle-orm";
 
-import { env } from "~/env";
-import { users, userSessions } from "~/server/db/schema";
-import { db } from "~/server/db";
+import { env } from "@/env";
+import { users, userSessions } from "@/server/db/schema";
+import { db } from "@/server/db";
 
 import { createId } from "@paralleldrive/cuid2";
 
