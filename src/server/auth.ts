@@ -11,8 +11,6 @@ export async function getServerSession(data?: string) {
     const cookie = cookies();
     const params = data ? decryptData(data) : {};
 
-    console.log("params: \n", params);
-
     const laravelSession =
       cookie.get("laravel_session")?.value ?? params?.laravelSession;
     const userId = cookie.get("userId")?.value ?? params?.userId;

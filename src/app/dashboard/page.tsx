@@ -1,6 +1,9 @@
-import { HydrateClient } from "@/trpc/server";
-import { getServerSession } from "@/server/auth";
 import { redirect } from "next/navigation";
+
+import { getServerSession } from "@/server/auth";
+import { HydrateClient } from "@/trpc/server";
+import { Sidebar } from "@/components/dashboard/sidebar";
+import { Header } from "@/components/dashboard/header";
 
 export default async function DashboardPage({
   searchParams,
@@ -15,13 +18,18 @@ export default async function DashboardPage({
 
   return (
     <HydrateClient>
-      <main className="flex min-h-screen flex-col items-center justify-center">
-        <h1 className="text-2xl font-bold">Dashboard</h1>
+      <div className="flex">
+        <Sidebar />
+        <main className="min-h-screen w-full">
+          <Header />
 
-        <h3 className="text-xl font-bold">Welcome, {session.user.name}</h3>
-        <p>{session.user.nim}</p>
-        <p>You are logged in with SPOT. You can now use the app.</p>
-      </main>
+          <section>
+            {/* <h3 className="text-xl font-bold">Welcome, {session.user.name}</h3>
+            <p>{session.user.nim}</p>
+            <p>You are logged in with SPOT. You can now use the app.</p> */}
+          </section>
+        </main>
+      </div>
     </HydrateClient>
   );
 }
