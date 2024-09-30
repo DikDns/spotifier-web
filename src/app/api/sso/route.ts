@@ -121,7 +121,7 @@ function createSuccessResponse(
   return response;
 }
 
-export async function fetchUserInfoFromSPOT(
+async function fetchUserInfoFromSPOT(
   laravelSession: string,
   xsrfToken: string,
   casAuth: string,
