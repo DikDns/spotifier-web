@@ -21,7 +21,7 @@ export function Main({ session }: { session: Session }) {
 
       <section className="flex-1">
         <Card className="items-start justify-start p-4">
-          <ActiveTasks session={session} />
+          <ActiveTasks />
         </Card>
       </section>
     </div>

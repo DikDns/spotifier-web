@@ -1,12 +1,13 @@
 "use client";
 
-import type { Session } from "@/server/auth";
-import { useEffect } from "react";
+import { getCourses } from "@/lib/scraping";
+import { Button } from "@/components/ui/button";
 
-export function ActiveTasks({ session }: { session: Session }) {
-  useEffect(() => {
-    console.log("session", session);
-  }, [session]);
+export function ActiveTasks() {
+  const fetchData = async () => {
+    const courses = await getCourses();
+    console.log(courses);
+  };
 
   return (
     <div className="space-y-2">
@@ -14,6 +15,8 @@ export function ActiveTasks({ session }: { session: Session }) {
         <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">
           Active Tasks
         </h2>
+
+        <Button onClick={() => void fetchData()}>Refetch</Button>
       </div>
     </div>
   );
