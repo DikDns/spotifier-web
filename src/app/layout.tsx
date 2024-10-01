@@ -2,6 +2,8 @@ import "@/styles/globals.css";
 
 import { GeistSans } from "geist/font/sans";
 import { ThemeProvider } from "@/components/providers";
+import { Toaster } from "@/components/ui/sonner";
+
 import { type Metadata } from "next";
 
 import { TRPCReactProvider } from "@/trpc/react";
@@ -21,6 +23,8 @@ export default function RootLayout({
         <TRPCReactProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             {children}
+
+            <Toaster />
           </ThemeProvider>
         </TRPCReactProvider>
       </body>

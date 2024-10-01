@@ -21,26 +21,33 @@ import { Button } from "@/components/ui/button";
 import { SidebarLink } from "@/components/dashboard/sidebar-link";
 
 import { cn } from "@/lib/utils";
+import { usePathname, useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const sidebarLinks = [
   {
     href: "/dashboard",
     icon: <FaHouse aria-label="Home" className="h-6 w-6" />,
     label: "Home",
+    shortcut: "Ctrl + Alt + 1",
   },
   {
-    href: "/dashboard/task",
+    href: "/dashboard/tasks",
     icon: <FaListCheck aria-label="Tasks" className="h-6 w-6" />,
     label: "Tasks",
+    shortcut: "Ctrl + Alt + 2",
   },
   {
     href: "/dashboard/courses",
     icon: <FaBook aria-label="Courses" className="h-6 w-6" />,
     label: "Courses",
+    shortcut: "Ctrl + Alt + 3",
   },
 ];
 
 export function Sidebar() {
+  const pathname = usePathname();
+  const router = useRouter();
   const [isCollapsed, setIsCollapsed] = useState(true);
 
   const toggleSidebar = () => {
@@ -52,6 +59,36 @@ export function Sidebar() {
       if (event.ctrlKey && event.altKey && event.key === "s") {
         event.preventDefault();
         toggleSidebar();
+      }
+
+      // shortcut to go to home page
+      if (event.ctrlKey && event.altKey && event.key === "1") {
+        event.preventDefault();
+        if (pathname === "/dashboard") return;
+        router.push("/dashboard");
+        toast.success("Navigated to Home", {
+          duration: 1000,
+        });
+      }
+
+      // shortcut to go to tasks page
+      if (event.ctrlKey && event.altKey && event.key === "2") {
+        event.preventDefault();
+        if (pathname === "/dashboard/tasks") return;
+        router.push("/dashboard/tasks");
+        toast.success("Navigated to Tasks", {
+          duration: 1000,
+        });
+      }
+
+      // shortcut to go to courses page
+      if (event.ctrlKey && event.altKey && event.key === "3") {
+        event.preventDefault();
+        if (pathname === "/dashboard/courses") return;
+        router.push("/dashboard/courses");
+        toast.success("Navigated to Courses", {
+          duration: 1000,
+        });
       }
     };
 
@@ -120,6 +157,7 @@ export function Sidebar() {
               href={link.href}
               icon={link.icon}
               label={link.label}
+              shortcut={link.shortcut}
               isCollapsed={isCollapsed}
             />
           ))}

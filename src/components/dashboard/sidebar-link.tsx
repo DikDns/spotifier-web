@@ -10,12 +10,14 @@ import {
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "../ui/button";
 import { motion } from "framer-motion";
+import { FaKeyboard } from "react-icons/fa6";
 
 interface SidebarLinkProps {
   href: string;
   icon: JSX.Element;
   label: string;
   isCollapsed: boolean;
+  shortcut: string;
 }
 
 export function SidebarLink({
@@ -23,6 +25,7 @@ export function SidebarLink({
   icon,
   label,
   isCollapsed,
+  shortcut,
 }: SidebarLinkProps) {
   const pathname = usePathname();
 
@@ -73,7 +76,11 @@ export function SidebarLink({
         </Link>
       </TooltipTrigger>
       <TooltipContent side="right" variant="inverseAccent" sideOffset={16}>
-        <p>{label}</p>
+        <p className="flex items-center gap-x-2">
+          <span>{label}</span>
+          <FaKeyboard aria-label="Keyboard Shortcut" />
+          <span>{shortcut}</span>
+        </p>
       </TooltipContent>
     </Tooltip>
   );
