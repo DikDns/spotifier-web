@@ -1,34 +1,56 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 import {
-  HomeIcon,
-  FileTextIcon,
-  PinRightIcon,
-  PinLeftIcon,
-} from "@radix-ui/react-icons";
+  FaHouse,
+  FaChevronLeft,
+  FaChevronRight,
+  FaListCheck,
+  FaBook,
+} from "react-icons/fa6";
+
 import { motion } from "framer-motion";
 import {
+  TooltipProvider,
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
+import { SidebarLink } from "@/components/dashboard/sidebar-link";
+
 import { cn } from "@/lib/utils";
+
+const sidebarLinks = [
+  {
+    href: "/dashboard",
+    icon: <FaHouse className="h-6 w-6" />,
+    label: "Home",
+  },
+  {
+    href: "/dashboard/task",
+    icon: <FaListCheck className="h-6 w-6" />,
+    label: "Tasks",
+  },
+  {
+    href: "/dashboard/courses",
+    icon: <FaBook className="h-6 w-6" />,
+    label: "Courses",
+  },
+];
+
 export function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(true);
 
   const toggleSidebar = () => {
-    setIsCollapsed(!isCollapsed);
+    setIsCollapsed((prev) => !prev);
   };
 
   return (
     <aside className="p-4">
       <TooltipProvider delayDuration={0}>
         <motion.div
-          className={`flex h-full flex-col gap-4 rounded-md bg-secondary-foreground p-2 text-secondary`}
+          className="flex h-full flex-col gap-4 rounded-md bg-secondary-foreground p-2 text-secondary"
           initial={{ width: 64 }}
           animate={{ width: isCollapsed ? 64 : 208 }}
           transition={{ duration: 0.3 }}
@@ -43,74 +65,45 @@ export function Sidebar() {
                 )}
                 variant="ghost"
               >
-                {!isCollapsed ? (
-                  <PinLeftIcon className="h-6 w-6" />
+                {isCollapsed ? (
+                  <FaChevronRight className="h-6 w-6" />
                 ) : (
-                  <PinRightIcon className="h-6 w-6" />
+                  <FaChevronLeft className="h-6 w-6" />
                 )}
-                {!isCollapsed && <span className="ml-2">Collapse</span>}
+                {!isCollapsed && (
+                  <motion.span
+                    transition={{ delay: 0.2, type: "spring" }}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    className="text-md ml-2"
+                  >
+                    {"Collapse"}
+                  </motion.span>
+                )}
               </Button>
             </TooltipTrigger>
             {isCollapsed && (
-              <TooltipContent side="right">
+              <TooltipContent
+                variant="inverseAccent"
+                side="right"
+                sideOffset={16}
+              >
                 <p>{isCollapsed ? "Expand" : "Collapse"}</p>
               </TooltipContent>
             )}
           </Tooltip>
 
-          {isCollapsed ? ( // Show tooltips only when collapsed
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Link
-                  href="/dashboard"
-                  className={cn(
-                    "flex items-center justify-center p-2",
-                    isCollapsed ? "justify-center" : "justify-start",
-                  )}
-                >
-                  <HomeIcon className="h-6 w-6" />
-                </Link>
-              </TooltipTrigger>
-              <TooltipContent side="right">
-                <p>Home</p>
-              </TooltipContent>
-            </Tooltip>
-          ) : (
-            <Link
-              href="/dashboard"
-              className="flex items-center justify-start p-2"
-            >
-              <HomeIcon className="h-6 w-6" />
-              <span className="ml-2">Home</span>
-            </Link>
-          )}
+          <span className="border-b border-accent/25"></span>
 
-          {isCollapsed ? ( // Show tooltips only when collapsed
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Link
-                  href="/dashboard/task"
-                  className={cn(
-                    "flex items-center justify-center p-2",
-                    isCollapsed ? "justify-center" : "justify-start",
-                  )}
-                >
-                  <FileTextIcon className="h-6 w-6 text-muted-foreground" />
-                </Link>
-              </TooltipTrigger>
-              <TooltipContent side="right">
-                <p>Documents</p>
-              </TooltipContent>
-            </Tooltip>
-          ) : (
-            <Link
-              href="/dashboard/task"
-              className="flex items-center justify-start p-2"
-            >
-              <FileTextIcon className="h-6 w-6 text-muted-foreground" />
-              <span className="ml-2">Documents</span>
-            </Link>
-          )}
+          {sidebarLinks.map((link) => (
+            <SidebarLink
+              key={link.href}
+              href={link.href}
+              icon={link.icon}
+              label={link.label}
+              isCollapsed={isCollapsed}
+            />
+          ))}
         </motion.div>
       </TooltipProvider>
     </aside>
