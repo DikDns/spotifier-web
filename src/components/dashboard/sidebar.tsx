@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FaHouse,
   FaChevronLeft,
   FaChevronRight,
   FaListCheck,
   FaBook,
+  FaKeyboard,
 } from "react-icons/fa6";
 
 import { motion } from "framer-motion";
@@ -24,17 +25,17 @@ import { cn } from "@/lib/utils";
 const sidebarLinks = [
   {
     href: "/dashboard",
-    icon: <FaHouse className="h-6 w-6" />,
+    icon: <FaHouse aria-label="Home" className="h-6 w-6" />,
     label: "Home",
   },
   {
     href: "/dashboard/task",
-    icon: <FaListCheck className="h-6 w-6" />,
+    icon: <FaListCheck aria-label="Tasks" className="h-6 w-6" />,
     label: "Tasks",
   },
   {
     href: "/dashboard/courses",
-    icon: <FaBook className="h-6 w-6" />,
+    icon: <FaBook aria-label="Courses" className="h-6 w-6" />,
     label: "Courses",
   },
 ];
@@ -45,6 +46,20 @@ export function Sidebar() {
   const toggleSidebar = () => {
     setIsCollapsed((prev) => !prev);
   };
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.ctrlKey && event.altKey && event.key === "s") {
+        event.preventDefault();
+        toggleSidebar();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   return (
     <aside className="p-4">
@@ -66,9 +81,9 @@ export function Sidebar() {
                 variant="ghost"
               >
                 {isCollapsed ? (
-                  <FaChevronRight className="h-6 w-6" />
+                  <FaChevronRight aria-label="Expand" className="h-6 w-6" />
                 ) : (
-                  <FaChevronLeft className="h-6 w-6" />
+                  <FaChevronLeft aria-label="Collapse" className="h-6 w-6" />
                 )}
                 {!isCollapsed && (
                   <motion.span
@@ -88,7 +103,11 @@ export function Sidebar() {
                 side="right"
                 sideOffset={16}
               >
-                <p>{isCollapsed ? "Expand" : "Collapse"}</p>
+                <p className="flex items-center gap-x-2">
+                  <span>{"Expand"}</span>
+                  <FaKeyboard aria-label="Keyboard Shortcut" />
+                  <span>{"(Ctrl + Alt + S)"}</span>
+                </p>
               </TooltipContent>
             )}
           </Tooltip>
