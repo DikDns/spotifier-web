@@ -136,16 +136,45 @@ async function fetchUserInfoFromSPOT(
   };
 
   const url = env.NEXT_PUBLIC_SPOT_URL + "/mhs";
-  const spotResponse = await fetch(url, { headers, method: "GET" });
-  const spotBody = await spotResponse.text();
 
-  const $ = cheerio.load(spotBody);
-  const profileText = $(".user-profile .profile-text").text().trim();
-  const profileParts = profileText.split(/\s+/);
-  const nim = profileParts.pop();
-  const name = profileParts.join(" ");
+  // Add timeout logic
+  const timeoutPromise = new Promise((_, reject) =>
+    setTimeout(() => reject(new Error("SPOT takes too long to respond")), 6000),
+  );
 
-  return { name, nim };
+  try {
+    const spotResponse = await Promise.race([
+      fetch(url, { headers, method: "GET" }),
+      timeoutPromise,
+    ]);
+
+    if (!(spotResponse instanceof Response)) {
+      throw new Error("SPOT response is not a valid Response object");
+    }
+
+    const spotBody = await spotResponse.text();
+
+    if (typeof spotBody !== "string") {
+      throw new Error("SPOT response body is not a valid string");
+    }
+
+    const $ = cheerio.load(spotBody);
+    const profileText = $(".user-profile .profile-text").text().trim();
+    const profileParts = profileText.split(/\s+/);
+    const nim = profileParts.pop();
+    const name = profileParts.join(" ");
+
+    return { name, nim };
+  } catch (error) {
+    if (
+      error instanceof Error &&
+      error.message === "SPOT takes too long to respond"
+    ) {
+      throw error;
+    }
+    // Re-throw other errors
+    throw new Error("Failed to fetch user info from SPOT");
+  }
 }
 
 export { ssoLoginHandler as GET };
