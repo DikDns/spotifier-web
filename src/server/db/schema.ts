@@ -14,38 +14,35 @@ export const createTable = sqliteTableCreator(
   (name) => `spotifier-web_${name}`,
 );
 
-export const posts = createTable(
-  "post",
+export const users = createTable(
+  "user",
   {
-    id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
+    id: text("id", { length: 256 }).primaryKey(),
     name: text("name", { length: 256 }),
+    nim: text("nim", { length: 256 }),
     createdAt: int("created_at", { mode: "timestamp" })
       .default(sql`(unixepoch())`)
       .notNull(),
-    updatedAt: int("updated_at", { mode: "timestamp" }).$onUpdate(
-      () => new Date(),
-    ),
   },
-  (example) => ({
-    nameIndex: index("name_idx").on(example.name),
+  (user) => ({
+    nameIndex: index("name_idx").on(user.name),
+    nimIndex: index("nim_idx").on(user.nim),
   }),
 );
 
-export const users = createTable("user", {
-  id: text("id", { length: 256 }).primaryKey(),
-  name: text("name", { length: 256 }),
-  nim: text("nim", { length: 256 }),
-  createdAt: int("created_at", { mode: "timestamp" })
-    .default(sql`(unixepoch())`)
-    .notNull(),
-});
-
-export const userSessions = createTable("user_session", {
-  id: text("id", { length: 256 }).primaryKey(),
-  laravelSession: text("laravel_session", { length: 512 }),
-  xsrfToken: text("xsrf_token", { length: 512 }),
-  userId: text("user_id", { length: 256 }).notNull(),
-  createdAt: int("created_at", { mode: "timestamp" })
-    .default(sql`(unixepoch())`)
-    .notNull(),
-});
+export const userSessions = createTable(
+  "user_session",
+  {
+    id: text("id", { length: 256 }).primaryKey(),
+    laravelSession: text("laravel_session", { length: 512 }),
+    xsrfToken: text("xsrf_token", { length: 512 }),
+    casAuth: text("cas_auth", { length: 512 }),
+    userId: text("user_id", { length: 256 }).notNull(),
+    createdAt: int("created_at", { mode: "timestamp" })
+      .default(sql`(unixepoch())`)
+      .notNull(),
+  },
+  (userSession) => ({
+    userIdIndex: index("user_id_idx").on(userSession.userId),
+  }),
+);

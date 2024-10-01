@@ -1,14 +1,8 @@
-CREATE TABLE `spotifier-web_post` (
-	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-	`name` text(256),
-	`created_at` integer DEFAULT (unixepoch()) NOT NULL,
-	`updated_at` integer
-);
---> statement-breakpoint
 CREATE TABLE `spotifier-web_user_session` (
 	`id` text(256) PRIMARY KEY NOT NULL,
 	`laravel_session` text(512),
 	`xsrf_token` text(512),
+	`cas_auth` text(512),
 	`user_id` text(256) NOT NULL,
 	`created_at` integer DEFAULT (unixepoch()) NOT NULL
 );
@@ -20,4 +14,6 @@ CREATE TABLE `spotifier-web_user` (
 	`created_at` integer DEFAULT (unixepoch()) NOT NULL
 );
 --> statement-breakpoint
-CREATE INDEX `name_idx` ON `spotifier-web_post` (`name`);
+CREATE INDEX `user_id_idx` ON `spotifier-web_user_session` (`user_id`);--> statement-breakpoint
+CREATE INDEX `name_idx` ON `spotifier-web_user` (`name`);--> statement-breakpoint
+CREATE INDEX `nim_idx` ON `spotifier-web_user` (`nim`);

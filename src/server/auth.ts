@@ -6,6 +6,20 @@ import { userSessions, users } from "@/server/db/schema";
 import { env } from "@/env";
 import { decryptData } from "@/lib/encryption";
 
+export type Session = {
+  user: {
+    id: string;
+    name: string;
+    nim: string;
+  };
+  session: {
+    id: string;
+    laravelSession: string;
+    xsrfToken: string;
+    casAuth: string;
+  };
+};
+
 export async function getServerSession(data?: string) {
   try {
     const sessionData = await getSessionData(data);
@@ -24,11 +38,11 @@ export async function getServerSession(data?: string) {
     const session = await getUserSession(user.id);
     if (!session) return null;
 
-    await updateSessionIfNeeded(session, laravelSession, xsrfToken);
+    await updateSessionIfNeeded(session, laravelSession, xsrfToken, casAuth);
 
     return {
       user: { id: user.id, name: user.name, nim: user.nim },
-      session: { id: session.id, laravelSession, xsrfToken },
+      session: { id: session.id, laravelSession, xsrfToken, casAuth },
     };
   } catch (error) {
     console.error("Error getting server session: ", error);
@@ -112,14 +126,16 @@ async function updateSessionIfNeeded(
   session: typeof userSessions.$inferSelect,
   laravelSession: string,
   xsrfToken: string,
+  casAuth: string,
 ) {
   if (
     session.laravelSession !== laravelSession ||
-    session.xsrfToken !== xsrfToken
+    session.xsrfToken !== xsrfToken ||
+    session.casAuth !== casAuth
   ) {
     await db
       .update(userSessions)
-      .set({ laravelSession, xsrfToken })
+      .set({ laravelSession, xsrfToken, casAuth })
       .where(eq(userSessions.id, session.id));
   }
 }

@@ -26,7 +26,7 @@ const ssoLoginHandler = async (req: NextRequest) => {
     }
 
     const user = await getOrCreateUser(nim, name);
-    await updateUserSession(user.id, laravelSession, xsrfToken);
+    await updateUserSession(user.id, laravelSession, xsrfToken, casAuth);
 
     return createSuccessResponse(user.id, laravelSession, xsrfToken, casAuth);
   } catch (error) {
@@ -65,6 +65,7 @@ async function updateUserSession(
   userId: string,
   laravelSession: string,
   xsrfToken: string,
+  casAuth: string,
 ) {
   const existingSession = (
     await db.select().from(userSessions).where(eq(userSessions.userId, userId))
@@ -73,13 +74,14 @@ async function updateUserSession(
   if (existingSession) {
     await db
       .update(userSessions)
-      .set({ laravelSession, xsrfToken })
+      .set({ laravelSession, xsrfToken, casAuth })
       .where(eq(userSessions.id, existingSession.id));
   } else {
     await db.insert(userSessions).values({
       id: createId(),
       laravelSession,
       xsrfToken,
+      casAuth,
       userId,
     });
   }
@@ -97,8 +99,6 @@ function createSuccessResponse(
     xsrfToken,
     casAuth,
   });
-
-  console.log("encryptedData: \n", encryptedData);
 
   const url = new URL(env.NEXT_PUBLIC_BASE_URL + "/dashboard");
   url.searchParams.set("data", encryptedData);
