@@ -4,8 +4,6 @@ import { useTheme } from "next-themes";
 
 import { MoonIcon, SunIcon, DotsHorizontalIcon } from "@radix-ui/react-icons";
 
-import { MagicCard } from "@/components/ui/magic-card";
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,13 +11,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-
-import { cn } from "@/lib/utils";
+import { Card } from "@/components/dashboard/card";
 import { useRouter } from "next/navigation";
 
 export function Header() {
   return (
-    <section className="flex gap-4 p-4">
+    <section className="flex gap-4 px-4">
       <Card className="basis-3/12">
         <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
           Dashboard
@@ -39,31 +36,6 @@ export function Header() {
         <MoreOptions />
       </Card>
     </section>
-  );
-}
-
-function Card({
-  children,
-  className,
-  childrenClassName,
-}: {
-  children: React.ReactNode;
-  className?: string;
-  childrenClassName?: string;
-}) {
-  const { resolvedTheme } = useTheme();
-
-  return (
-    <MagicCard
-      className={cn(
-        "min-h-10 flex-col items-center justify-center whitespace-nowrap rounded-md shadow-2xl",
-        className,
-      )}
-      childrenClassName={childrenClassName}
-      gradientColor={resolvedTheme === "dark" ? "#262626" : "#D9D9D955"}
-    >
-      {children}
-    </MagicCard>
   );
 }
 

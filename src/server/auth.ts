@@ -9,8 +9,8 @@ import { decryptData } from "@/lib/encryption";
 export type Session = {
   user: {
     id: string;
-    name: string;
-    nim: string;
+    name: string | null;
+    nim: string | null;
   };
   session: {
     id: string;

@@ -99,70 +99,80 @@ export function Sidebar() {
   }, []);
 
   return (
-    <aside className="p-4">
-      <TooltipProvider delayDuration={0}>
-        <motion.div
-          className="flex h-full flex-col gap-4 rounded-md bg-secondary-foreground p-2 text-secondary"
-          initial={{ width: 64 }}
-          animate={{ width: isCollapsed ? 64 : 208 }}
-          transition={{ duration: 0.3 }}
-        >
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                onClick={toggleSidebar}
-                className={cn(
-                  "flex transform cursor-pointer items-center rounded-md p-2 transition-all hover:bg-accent/10 hover:text-accent",
-                  isCollapsed ? "justify-center" : "justify-start",
-                )}
-                variant="ghost"
-              >
-                {isCollapsed ? (
-                  <FaChevronRight aria-label="Expand" className="h-6 w-6" />
-                ) : (
-                  <FaChevronLeft aria-label="Collapse" className="h-6 w-6" />
-                )}
-                {!isCollapsed && (
-                  <motion.span
-                    transition={{ delay: 0.2, type: "spring" }}
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    className="text-md ml-2"
-                  >
-                    {"Collapse"}
-                  </motion.span>
-                )}
-              </Button>
-            </TooltipTrigger>
-            {isCollapsed && (
-              <TooltipContent
-                variant="inverseAccent"
-                side="right"
-                sideOffset={16}
-              >
-                <p className="flex items-center gap-x-2">
-                  <span>{"Expand"}</span>
-                  <FaKeyboard aria-label="Keyboard Shortcut" />
-                  <span>{"(Ctrl + Alt + S)"}</span>
-                </p>
-              </TooltipContent>
-            )}
-          </Tooltip>
+    <>
+      <motion.div
+        className="h-full"
+        initial={{ width: 64 }}
+        animate={{
+          width: isCollapsed ? 64 : 260,
+        }}
+        transition={{ duration: 0.3 }}
+      />
+      <aside className="fixed bottom-6 left-6 top-6 z-10 w-64">
+        <TooltipProvider delayDuration={0}>
+          <motion.div
+            className="flex h-full flex-col gap-4 rounded-md bg-secondary-foreground p-2 text-secondary"
+            initial={{ width: 64 }}
+            animate={{ width: isCollapsed ? 64 : 208 }}
+            transition={{ duration: 0.3 }}
+          >
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  onClick={toggleSidebar}
+                  className={cn(
+                    "flex transform cursor-pointer items-center rounded-md p-2 transition-all hover:bg-accent/10 hover:text-accent",
+                    isCollapsed ? "justify-center" : "justify-start",
+                  )}
+                  variant="ghost"
+                >
+                  {isCollapsed ? (
+                    <FaChevronRight aria-label="Expand" className="h-6 w-6" />
+                  ) : (
+                    <FaChevronLeft aria-label="Collapse" className="h-6 w-6" />
+                  )}
+                  {!isCollapsed && (
+                    <motion.span
+                      transition={{ delay: 0.2, type: "spring" }}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      className="text-md ml-2"
+                    >
+                      {"Collapse"}
+                    </motion.span>
+                  )}
+                </Button>
+              </TooltipTrigger>
+              {isCollapsed && (
+                <TooltipContent
+                  variant="inverseAccent"
+                  side="right"
+                  sideOffset={16}
+                >
+                  <p className="flex items-center gap-x-2">
+                    <span>{"Expand"}</span>
+                    <FaKeyboard aria-label="Keyboard Shortcut" />
+                    <span>{"(Ctrl + Alt + S)"}</span>
+                  </p>
+                </TooltipContent>
+              )}
+            </Tooltip>
 
-          <span className="border-b border-accent/25"></span>
+            <span className="border-b border-accent/25"></span>
 
-          {sidebarLinks.map((link) => (
-            <SidebarLink
-              key={link.href}
-              href={link.href}
-              icon={link.icon}
-              label={link.label}
-              shortcut={link.shortcut}
-              isCollapsed={isCollapsed}
-            />
-          ))}
-        </motion.div>
-      </TooltipProvider>
-    </aside>
+            {sidebarLinks.map((link) => (
+              <SidebarLink
+                key={link.href}
+                href={link.href}
+                icon={link.icon}
+                label={link.label}
+                shortcut={link.shortcut}
+                isCollapsed={isCollapsed}
+              />
+            ))}
+          </motion.div>
+        </TooltipProvider>
+      </aside>
+    </>
   );
 }
