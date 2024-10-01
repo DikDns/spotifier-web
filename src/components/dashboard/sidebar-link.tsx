@@ -5,6 +5,7 @@ import Link from "next/link";
 import {
   Tooltip,
   TooltipContent,
+  TooltipPortal,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
@@ -75,13 +76,16 @@ export function SidebarLink({
           {!isCollapsed && <span className="text-md ml-2">{label}</span>}
         </Link>
       </TooltipTrigger>
-      <TooltipContent side="right" variant="inverseAccent" sideOffset={16}>
-        <p className="flex items-center gap-x-2">
-          <span>{label}</span>
-          <FaKeyboard aria-label="Keyboard Shortcut" />
-          <span>{shortcut}</span>
-        </p>
-      </TooltipContent>
+
+      <TooltipPortal>
+        <TooltipContent side="right" variant="inverseAccent" sideOffset={16}>
+          <p className="flex items-center gap-x-2">
+            <span>{label}</span>
+            <FaKeyboard aria-label="Keyboard Shortcut" />
+            <span>{shortcut}</span>
+          </p>
+        </TooltipContent>
+      </TooltipPortal>
     </Tooltip>
   );
 }

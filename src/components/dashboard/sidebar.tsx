@@ -16,6 +16,7 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
+  TooltipPortal,
 } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
 import { SidebarLink } from "@/components/dashboard/sidebar-link";
@@ -96,7 +97,9 @@ export function Sidebar() {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
 
   return (
     <>
@@ -108,7 +111,7 @@ export function Sidebar() {
         }}
         transition={{ duration: 0.3 }}
       />
-      <aside className="fixed bottom-6 left-6 top-6 z-10 w-64">
+      <aside className="fixed bottom-6 left-6 top-6 w-64">
         <TooltipProvider delayDuration={0}>
           <motion.div
             className="flex h-full flex-col gap-4 rounded-md bg-secondary-foreground p-2 text-secondary"
@@ -144,17 +147,19 @@ export function Sidebar() {
                 </Button>
               </TooltipTrigger>
               {isCollapsed && (
-                <TooltipContent
-                  variant="inverseAccent"
-                  side="right"
-                  sideOffset={16}
-                >
-                  <p className="flex items-center gap-x-2">
-                    <span>{"Expand"}</span>
-                    <FaKeyboard aria-label="Keyboard Shortcut" />
-                    <span>{"(Ctrl + Alt + S)"}</span>
-                  </p>
-                </TooltipContent>
+                <TooltipPortal>
+                  <TooltipContent
+                    variant="inverseAccent"
+                    side="right"
+                    sideOffset={16}
+                  >
+                    <p className="flex items-center gap-x-2">
+                      <span>{"Expand"}</span>
+                      <FaKeyboard aria-label="Keyboard Shortcut" />
+                      <span>{"(Ctrl + Alt + S)"}</span>
+                    </p>
+                  </TooltipContent>
+                </TooltipPortal>
               )}
             </Tooltip>
 
