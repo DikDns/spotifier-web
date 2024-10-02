@@ -8,7 +8,7 @@ const BASE_URL = env.NEXT_PUBLIC_BASE_URL + "/api/proxy";
 
 export async function getCourses() {
   try {
-    const response = await fetchTimeout(BASE_URL + "/mhs");
+    const response = await fetch(BASE_URL + "/mhs");
 
     if (!response.ok) {
       throw new Error("SPOT might have some issues, please try again later");
@@ -71,7 +71,7 @@ export async function getCourses() {
 
 export async function getDetailCourse(href: string) {
   try {
-    const response = await fetchTimeout(BASE_URL + href);
+    const response = await fetch(BASE_URL + href);
 
     if (!response.ok) {
       throw new Error("SPOT might have some issues, please try again later");
@@ -95,7 +95,10 @@ export async function getDetailCourse(href: string) {
       return {
         class: courseClass,
         isSetByLecturer: false,
-        rps: null,
+        rps: {
+          id: null,
+          href: null,
+        },
         description: "Course not yet set by lecturer",
         topics: [],
       };
@@ -167,10 +170,129 @@ export async function getDetailCourse(href: string) {
   }
 }
 
+export async function getDetailTopic(href: string, course?: string) {
+  try {
+    const response = await fetch(BASE_URL + href);
+
+    if (!response.ok) {
+      throw new Error("SPOT might have some issues, please try again later");
+    }
+
+    if (response.status === 302) {
+      throw new Error("SPOT session expired, please login again");
+    }
+
+    const rawHtml = await response.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(rawHtml, "text/html");
+
+    const tabContent = doc.querySelector(".tab-content");
+
+    const dashboard = tabContent?.querySelector("#dashboard div");
+    const topicDescription = dashboard?.textContent?.trim();
+
+    const subject = tabContent?.querySelector("#materi");
+    const subjectRows = subject?.querySelectorAll(".row .col-lg-12");
+
+    console.log("\n[]======================[]");
+    console.log("Course: ", course);
+    console.log("\n[]======================[]\n");
+
+    const mappedSugjectRows: {
+      id: string;
+      youtubeId: string | undefined;
+      rawHtml: string;
+    }[] = [];
+    if (subjectRows) {
+      let index = 0;
+      for (const subjectRow of subjectRows) {
+        const children = subjectRow.children;
+        const subjectRowObject: {
+          id: string;
+          youtubeId: string | undefined;
+          rawHtml: string;
+        } = {
+          id: index.toString(),
+          youtubeId: undefined,
+          rawHtml: "",
+        };
+        index++;
+
+        for (const child of children) {
+          const grandChildren = child.children;
+          if (child.tagName === "P" && grandChildren[0]?.tagName === "BUTTON") {
+            console.log("\n[]======================[]");
+            console.log("CHILD THAT SHOULD REMOVED: ", child);
+            console.log("\n[]======================[]\n");
+            continue;
+          }
+
+          if (child.classList.contains("modal")) {
+            const iframe = child.querySelector("iframe");
+            const iframeSrc = iframe?.src;
+            console.log("\n[]======================[]");
+            console.log("iframe: ", child);
+            console.log("\n[]======================[]\n");
+            subjectRowObject.youtubeId = iframeSrc?.split("embed/").pop();
+            continue;
+          }
+
+          console.log("\n[]======================[]");
+          console.log("Child: ", child);
+          console.log("\n[]======================[]\n");
+
+          subjectRowObject.rawHtml += child.outerHTML;
+        }
+
+        mappedSugjectRows.push(subjectRowObject);
+      }
+    }
+
+    console.log("\n[]======================[]");
+    console.log("mappedSugjectRows: ", mappedSugjectRows);
+    console.log("\n[]======================[]\n");
+
+    return {
+      description: topicDescription,
+      subjects: mappedSugjectRows,
+    };
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 export const useCourses = () => {
   const query = useQuery({
     queryKey: ["courses"],
-    queryFn: getCourses,
+    queryFn: async () => {
+      const courses = await getCourses();
+      const detailCoursePromises = Promise.all(
+        courses.map(async (course) => {
+          const detailCourse = await getDetailCourse(course.href);
+          const detailTopicsPromises = detailCourse?.topics?.map(
+            async (topic) => {
+              if (!topic.isAccessable) return topic;
+              if (!topic.href) return topic;
+
+              const detailTopic = await getDetailTopic(topic.href, course.name);
+
+              return {
+                ...topic,
+                ...detailTopic,
+              };
+            },
+          );
+          const detailTopics = await Promise.all(detailTopicsPromises ?? []);
+
+          return {
+            ...course,
+            ...detailCourse,
+            topics: detailTopics,
+          };
+        }),
+      );
+      return detailCoursePromises;
+    },
   });
 
   return query;

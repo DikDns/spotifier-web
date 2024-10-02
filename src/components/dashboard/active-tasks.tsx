@@ -1,13 +1,15 @@
 "use client";
 
-import { getCourses } from "@/lib/scraping";
+import { useCourses } from "@/lib/spot/scraping";
 import { Button } from "@/components/ui/button";
+import { useEffect } from "react";
 
 export function ActiveTasks() {
-  const fetchData = async () => {
-    const courses = await getCourses();
-    console.log(courses);
-  };
+  const { data, refetch } = useCourses();
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
 
   return (
     <div className="space-y-2">
@@ -16,7 +18,7 @@ export function ActiveTasks() {
           Active Tasks
         </h2>
 
-        <Button onClick={() => void fetchData()}>Refetch</Button>
+        <Button onClick={() => refetch()}>Refetch</Button>
       </div>
     </div>
   );
