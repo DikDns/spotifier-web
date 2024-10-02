@@ -1,7 +1,6 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { fetchTimeout } from "@/lib/fetch-timeout";
 import { env } from "@/env";
 
 const BASE_URL = env.NEXT_PUBLIC_BASE_URL + "/api/proxy";
@@ -69,19 +68,26 @@ export async function getCourses() {
   }
 }
 
-export async function getDetailCourse(href: string) {
+export async function getDetailCourse(id: string) {
   try {
-    const response = await fetch(BASE_URL + href);
+    const coursesPromise = getCourses();
+    const detailCoursePromise = fetch(BASE_URL + "/mhs/dashboard/" + id);
 
-    if (!response.ok) {
+    const [courses, detailCourseResponse] = await Promise.all([
+      coursesPromise,
+      detailCoursePromise,
+    ]);
+
+    if (!detailCourseResponse.ok) {
       throw new Error("SPOT might have some issues, please try again later");
     }
 
-    if (response.status === 302) {
+    if (detailCourseResponse.status === 302) {
       throw new Error("SPOT session expired, please login again");
     }
 
-    const rawHtml = await response.text();
+    const currentCourse = courses.find((course) => course.id === id);
+    const rawHtml = await detailCourseResponse.text();
     const parser = new DOMParser();
     const doc = parser.parseFromString(rawHtml, "text/html");
 
@@ -93,6 +99,7 @@ export async function getDetailCourse(href: string) {
 
     if (courseWarningElement) {
       return {
+        ...currentCourse,
         class: courseClass,
         isSetByLecturer: false,
         rps: {
@@ -116,7 +123,8 @@ export async function getDetailCourse(href: string) {
 
     const courseTopics = doc.querySelectorAll(".container-fluid .block4");
 
-    const topics = Array.from(courseTopics).map((topic) => {
+    let currentTopicId = 0;
+    const topics = Array.from(courseTopics).map((topic, index) => {
       const panelBodyChildren = topic.querySelectorAll(".panel-body div div");
 
       const topicAnchorElement = panelBodyChildren[1]?.querySelector("a");
@@ -134,7 +142,7 @@ export async function getDetailCourse(href: string) {
 
       if (topicAnchorElement?.classList.contains("btn-danger")) {
         return {
-          id: null,
+          id: (currentTopicId + index).toString(),
           accessTime: topicAccessTime,
           isAccessable: false,
           href: null,
@@ -146,6 +154,7 @@ export async function getDetailCourse(href: string) {
         : null;
 
       const topicId = topicHref ? topicHref.split("/").pop() : null;
+      currentTopicId = Number(topicId);
 
       return {
         id: topicId,
@@ -156,6 +165,7 @@ export async function getDetailCourse(href: string) {
     });
 
     return {
+      ...currentCourse,
       class: courseClass,
       isSetByLecturer: true,
       rps: {
@@ -170,9 +180,30 @@ export async function getDetailCourse(href: string) {
   }
 }
 
-export async function getDetailTopic(href: string, course?: string) {
+type Task = {
+  id: string;
+  token: string;
+  title: string;
+  description: string;
+  file: string | null;
+  startDate: Date | null;
+  dueDate: Date | null;
+  status: "pending" | "submitted" | "graded" | "notSubmitted";
+  answer: Answer | null;
+};
+
+type Answer = {
+  description: string;
+  fileHref: string;
+  isGraded: boolean;
+  lecturerNotes: string;
+  dateSubmitted: Date;
+};
+
+export async function getDetailTopic(courseId: string, topicId: string) {
   try {
-    const response = await fetch(BASE_URL + href);
+    const path = `/mhs/topik/${courseId}/${topicId}`;
+    const response = await fetch(BASE_URL + path);
 
     if (!response.ok) {
       throw new Error("SPOT might have some issues, please try again later");
@@ -186,6 +217,19 @@ export async function getDetailTopic(href: string, course?: string) {
     const parser = new DOMParser();
     const doc = parser.parseFromString(rawHtml, "text/html");
 
+    const topicAccessTimeStringRaw = doc
+      .querySelector(".panel-heading p")
+      ?.textContent?.replace("Waktu Akses: ", "")
+      ?.trim();
+
+    // Convert the date format from DD:MM:YYYY hh:mm:ss to YYYY-MM-DDTHH:mm:ss
+    const [day, month, yearTime] = topicAccessTimeStringRaw?.split("-") ?? [];
+    const [year, time] = yearTime?.split(" ") ?? [];
+    const topicAccessTimeString = `${year}-${month}-${day}T${time}`;
+    const topicAccessTime = topicAccessTimeString
+      ? new Date(topicAccessTimeString)
+      : null;
+
     const tabContent = doc.querySelector(".tab-content");
 
     const dashboard = tabContent?.querySelector("#dashboard div");
@@ -193,10 +237,6 @@ export async function getDetailTopic(href: string, course?: string) {
 
     const subject = tabContent?.querySelector("#materi");
     const subjectRows = subject?.querySelectorAll(".row .col-lg-12");
-
-    console.log("\n[]======================[]");
-    console.log("Course: ", course);
-    console.log("\n[]======================[]\n");
 
     const mappedSugjectRows: {
       id: string;
@@ -221,25 +261,15 @@ export async function getDetailTopic(href: string, course?: string) {
         for (const child of children) {
           const grandChildren = child.children;
           if (child.tagName === "P" && grandChildren[0]?.tagName === "BUTTON") {
-            console.log("\n[]======================[]");
-            console.log("CHILD THAT SHOULD REMOVED: ", child);
-            console.log("\n[]======================[]\n");
             continue;
           }
 
           if (child.classList.contains("modal")) {
             const iframe = child.querySelector("iframe");
             const iframeSrc = iframe?.src;
-            console.log("\n[]======================[]");
-            console.log("iframe: ", child);
-            console.log("\n[]======================[]\n");
             subjectRowObject.youtubeId = iframeSrc?.split("embed/").pop();
             continue;
           }
-
-          console.log("\n[]======================[]");
-          console.log("Child: ", child);
-          console.log("\n[]======================[]\n");
 
           subjectRowObject.rawHtml += child.outerHTML;
         }
@@ -248,59 +278,166 @@ export async function getDetailTopic(href: string, course?: string) {
       }
     }
 
-    console.log("\n[]======================[]");
-    console.log("mappedSugjectRows: ", mappedSugjectRows);
-    console.log("\n[]======================[]\n");
+    const tasks: Task[] = [];
+
+    const taskElement = tabContent?.querySelector("#tugas");
+
+    const taskInstructionTables =
+      taskElement?.querySelectorAll(".table-striped");
+    const taskAnswerTables = taskElement?.querySelectorAll(".panel-info");
+    const taskFormModal = taskElement?.querySelector(".modal");
+
+    if (taskInstructionTables) {
+      for (const taskInstructionTable of taskInstructionTables) {
+        const trCollection =
+          taskInstructionTable.querySelector("tbody")?.children;
+
+        if (!trCollection) {
+          continue;
+        }
+
+        const taskObj: Task = {
+          id: "",
+          token: "",
+          title: "",
+          status: "pending",
+          description: "",
+          file: null,
+          startDate: null,
+          dueDate: null,
+          answer: null,
+        };
+
+        for (const tr of trCollection) {
+          const tdCollection = tr.children;
+
+          const td1 = tdCollection[0];
+          const td2 = tdCollection[1];
+          if (!td1 || !td2) {
+            continue;
+          }
+
+          if (td1.textContent === "Judul") {
+            taskObj.title = td2?.textContent?.replace(": ", "") ?? "";
+          }
+
+          if (td1.textContent === "Deskripsi") {
+            taskObj.description = td2?.textContent?.replace(": ", "") ?? "";
+          }
+
+          if (td1.textContent === "File") {
+            taskObj.file = td2?.querySelector("a")?.href ?? null;
+          }
+
+          if (td1.textContent === "Waktu Pengumpulan") {
+            const bList = td2?.querySelectorAll("b");
+            const startDateString = bList.item(0).textContent?.trim();
+            const dueDateString = bList.item(1).textContent?.trim();
+
+            taskObj.startDate = startDateString
+              ? parseDate(startDateString)
+              : null;
+            taskObj.dueDate = dueDateString ? parseDate(dueDateString) : null;
+          }
+        }
+
+        tasks.push(taskObj);
+      }
+    }
 
     return {
+      id: topicId,
+      accessTime: topicAccessTime,
+      isAccessable: true,
+      href: path,
       description: topicDescription,
-      subjects: mappedSugjectRows,
+      contents: mappedSugjectRows,
     };
   } catch (error) {
     console.error(error);
   }
 }
 
-export const useCourses = () => {
-  const query = useQuery({
-    queryKey: ["courses"],
-    queryFn: async () => {
-      const courses = await getCourses();
-      const detailCoursePromises = Promise.all(
-        courses.map(async (course) => {
-          const detailCourse = await getDetailCourse(course.href);
-          const detailTopicsPromises = detailCourse?.topics?.map(
-            async (topic) => {
-              if (!topic.isAccessable) return topic;
-              if (!topic.href) return topic;
-
-              const detailTopic = await getDetailTopic(topic.href, course.name);
-
-              return {
-                ...topic,
-                ...detailTopic,
-              };
-            },
-          );
-          const detailTopics = await Promise.all(detailTopicsPromises ?? []);
-
-          return {
-            ...course,
-            ...detailCourse,
-            topics: detailTopics,
-          };
-        }),
-      );
-      return detailCoursePromises;
-    },
-  });
-
-  return query;
+type DeleteTaskData = {
+  courseId: string;
+  topicId: string;
+  taskId: string;
 };
 
+export async function deleteTask({
+  courseId,
+  topicId,
+  taskId,
+}: DeleteTaskData) {
+  try {
+    const path = `/mhs/tugas_del/${courseId}/${topicId}/${taskId}`;
+    const response = await fetch(BASE_URL + path);
+
+    if (!response.ok) {
+      throw new Error("SPOT might have some issues, please try again later");
+    }
+
+    if (response.status === 302) {
+      throw new Error("SPOT session expired, please login again");
+    }
+
+    return {
+      id: taskId,
+    };
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+type PostTaskData = {
+  courseId: string;
+  topicId: string;
+  task: {
+    id: string;
+    token: string;
+    description: string;
+    file: File;
+  };
+};
+
+export async function postTask(data: PostTaskData) {
+  try {
+    const path = "/mhs/tugas_store";
+
+    const formData = new FormData();
+    formData.append("_token", data.task.token);
+    formData.append("id_pn", data.courseId);
+    formData.append("id_pt", data.topicId);
+    formData.append("id_tg", data.task.id);
+    formData.append("isi", data.task.description);
+    formData.append("filename", data.task.file);
+
+    const response = await fetch(BASE_URL + path, {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error("SPOT might have some issues, please try again later");
+    }
+
+    if (response.status === 302) {
+      throw new Error("SPOT session expired, please login again");
+    }
+
+    return {
+      id: data.task.id,
+      token: data.task.token,
+      description: data.task.description,
+      file: data.task.file,
+    };
+  } catch (error) {
+    console.error(error);
+  }
+}
 export async function getTasks() {
   try {
-    const response = await fetchTimeout(BASE_URL);
+    const response = await fetch(BASE_URL);
 
     if (!response.ok) {
       throw new Error("SPOT might have some issues, please try again later");
@@ -327,4 +464,58 @@ export async function getTasks() {
       message: error instanceof Error ? error.message : "Unknown error",
     };
   }
+}
+
+export const useCourses = () => {
+  const query = useQuery({
+    queryKey: ["courses"],
+    queryFn: getCourses,
+  });
+
+  return query;
+};
+
+// async () => {
+//   const courses = await getCourses();
+//   const detailCoursePromises = Promise.all(
+//     courses.map(async (course) => {
+//       const detailCourse = await getDetailCourse(course.href);
+//       const detailTopicsPromises = detailCourse?.topics?.map(
+//         async (topic) => {
+//           if (!topic.isAccessable) return topic;
+//           if (!topic.href) return topic;
+
+//           const detailTopic = await getDetailTopic(topic.href);
+
+//           return {
+//             ...topic,
+//             ...detailTopic,
+//           };
+//         },
+//       );
+//       const detailTopics = await Promise.all(detailTopicsPromises ?? []);
+
+//       return {
+//         ...course,
+//         ...detailCourse,
+//         topics: detailTopics,
+//       };
+//     }),
+//   );
+//   return detailCoursePromises;
+// },
+
+// /courses/{id}/topics/{id}
+
+function parseDate(dateString: string) {
+  const [day, month, yearTime] = dateString?.split("-") ?? [];
+  const [year, time] = yearTime?.split(" ") ?? [];
+  if (!time) {
+    const date = `${year}-${month}-${day}T00:00:00`;
+    return new Date(date);
+  }
+
+  const formattedTime = time?.length === 5 ? `${time}:00` : time;
+  const date = `${year}-${month}-${day}T${formattedTime}`;
+  return new Date(date);
 }

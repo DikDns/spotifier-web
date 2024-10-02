@@ -7,10 +7,6 @@ import { useEffect } from "react";
 export function ActiveTasks() {
   const { data, refetch } = useCourses();
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
   return (
     <div className="space-y-2">
       <div className="pb-2">
