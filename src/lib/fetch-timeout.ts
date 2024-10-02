@@ -1,7 +1,7 @@
 // Create a promise that rejects after 5 seconds
 export function fetchTimeout(
   url: string,
-  options: RequestInit,
+  options?: RequestInit,
 ): Promise<Response> {
   return Promise.race<Response>([
     fetch(url, options),
