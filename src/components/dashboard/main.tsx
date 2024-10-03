@@ -2,7 +2,7 @@
 
 import type { Session } from "@/server/auth";
 import { Profile } from "@/components/dashboard/profile";
-import { ActiveTasks } from "@/components/dashboard/active-tasks";
+import { PendingTasks } from "@/components/dashboard/pending-tasks";
 import { Card } from "@/components/dashboard/card";
 
 export function Main({ session }: { session: Session }) {
@@ -21,7 +21,7 @@ export function Main({ session }: { session: Session }) {
 
       <section className="flex-1">
         <Card className="items-start justify-start p-4">
-          <ActiveTasks />
+          <PendingTasks />
         </Card>
       </section>
     </div>
