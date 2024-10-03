@@ -10,7 +10,7 @@ export function Main({ session }: { session: Session }) {
 
   return (
     <div className="flex gap-4 p-4">
-      <section className="flex-1">
+      <section className="basis-1/2">
         <Card
           className="items-start justify-start p-4"
           childrenClassName="w-full"
@@ -22,7 +22,7 @@ export function Main({ session }: { session: Session }) {
         </Card>
       </section>
 
-      <section className="flex-1">
+      <section className="basis-1/2">
         <Card
           className="items-start justify-start p-4"
           childrenClassName="w-full"

@@ -2,33 +2,37 @@
 
 import uniqolor from "uniqolor";
 import moment from "moment";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useTasks } from "@/lib/spot/api";
+
 import { AnimatedList, AnimatedListItem } from "@/components/ui/animated-list";
+import { useLocalStorage } from "usehooks-ts";
 
 export function PendingTasks() {
   const router = useRouter();
   const { data: tasks, isLoading } = useTasks();
+  const [localTasks, setLocalTasks] = useLocalStorage<typeof tasks>(
+    "pendingTasks",
+    [],
+  );
   const [pendingTasks, setPendingTasks] = useState<typeof tasks>([]);
 
   useEffect(() => {
-    const pendingTasks = window.localStorage.getItem("pendingTasks");
-    if (pendingTasks) {
-      const parsedPendingTasks = JSON.parse(pendingTasks) as typeof tasks;
-      setPendingTasks(parsedPendingTasks);
+    if (localTasks) {
+      setPendingTasks(localTasks);
     }
-  }, []);
+  }, [localTasks]);
 
   useEffect(() => {
     if (tasks) {
-      const pendingTasks = tasks.filter((task) => task.status === "pending");
-      setPendingTasks(pendingTasks);
-
-      window.localStorage.setItem("pendingTasks", JSON.stringify(pendingTasks));
+      const filteredPendingTasks = tasks.filter(
+        (task) => task.status === "pending",
+      );
+      setLocalTasks(filteredPendingTasks);
     }
-  }, [tasks]);
+  }, [tasks, setLocalTasks]);
 
   return (
     <div className="space-y-2">
@@ -102,13 +106,13 @@ const Item = ({ name, description, icon, color, time, onClick }: Item) => {
         >
           <span className="text-lg">{icon}</span>
         </div>
-        <div className="flex max-w-[512px] flex-col overflow-hidden">
-          <figcaption className="flex flex-row items-center whitespace-pre text-lg font-medium dark:text-white">
-            <span className="text-sm sm:text-lg">{name}</span>
-            <span className="mx-1">·</span>
-            <span className="text-xs text-gray-500">{time}</span>
+        <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
+          <figcaption className="flex max-w-[400px] flex-row items-center text-lg font-medium dark:text-white">
+            <span className="truncate text-sm sm:text-lg">{name}</span>
+            <span className="mx-1 flex-shrink-0">·</span>
+            <span className="flex-shrink-0 text-xs text-gray-500">{time}</span>
           </figcaption>
-          <p className="text-sm font-normal dark:text-white/60">
+          <p className="max-w-[400px] truncate text-sm font-normal dark:text-white/60">
             {description}
           </p>
         </div>
