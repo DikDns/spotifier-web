@@ -3,11 +3,13 @@
 import uniqolor from "uniqolor";
 import moment from "moment";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useTasks } from "@/lib/spot/api";
 import { AnimatedList, AnimatedListItem } from "@/components/ui/animated-list";
 
 export function PendingTasks() {
+  const router = useRouter();
   const { data: tasks, isLoading } = useTasks();
   const [pendingTasks, setPendingTasks] = useState<typeof tasks>([]);
 
@@ -48,6 +50,11 @@ export function PendingTasks() {
             return (
               <AnimatedListItem key={task?.id}>
                 <Item
+                  onClick={() => {
+                    router.push(
+                      `https://spot.upi.edu/mhs/tugas/${task.courseId}/${task.topicId}`,
+                    );
+                  }}
                   color={color.color}
                   name={task?.course?.name ?? ""}
                   description={task?.title}
@@ -69,11 +76,13 @@ interface Item {
   icon: string;
   color: string;
   time: string;
+  onClick: () => void;
 }
 
-const Item = ({ name, description, icon, color, time }: Item) => {
+const Item = ({ name, description, icon, color, time, onClick }: Item) => {
   return (
     <figure
+      onClick={onClick}
       className={cn(
         "relative mx-auto min-h-fit w-full cursor-pointer overflow-hidden rounded-2xl p-4",
         // animation styles
@@ -93,7 +102,7 @@ const Item = ({ name, description, icon, color, time }: Item) => {
         >
           <span className="text-lg">{icon}</span>
         </div>
-        <div className="flex flex-col overflow-hidden">
+        <div className="flex max-w-[512px] flex-col overflow-hidden">
           <figcaption className="flex flex-row items-center whitespace-pre text-lg font-medium dark:text-white">
             <span className="text-sm sm:text-lg">{name}</span>
             <span className="mx-1">·</span>
