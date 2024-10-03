@@ -129,13 +129,16 @@ export async function getDetailTask({
   }
 }
 
-export async function getTasks() {
+export async function getTasks(setLoadingText: (text: string) => void) {
   try {
+    setLoadingText("Getting courses...");
     const courses = await getCourses();
+    setLoadingText("Recieving detail courses...");
     const detailCourses = await Promise.all(
       courses.map((course) => getDetailCourse(course.id)),
     );
 
+    setLoadingText("Recieving detail topics...");
     const detailTopicPromises = [];
     for (const detailCourse of detailCourses) {
       if (!detailCourse) continue;
@@ -149,6 +152,7 @@ export async function getTasks() {
     const detailTopics = await Promise.all(detailTopicPromises);
     const tasks: Task[] = [];
 
+    setLoadingText("Recieving tasks...");
     for (const detailTopic of detailTopics) {
       if (!detailTopic) continue;
       tasks.push(...detailTopic.tasks);

@@ -12,7 +12,7 @@ interface GradualSpacingProps {
   className?: string;
 }
 
-export default function GradualSpacing({
+export function GradualSpacing({
   text,
   duration = 0.5,
   delayMultiple = 0.04,
