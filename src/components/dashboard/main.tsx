@@ -11,7 +11,10 @@ export function Main({ session }: { session: Session }) {
   return (
     <div className="flex gap-4 p-4">
       <section className="flex-1">
-        <Card className="items-start justify-start p-4">
+        <Card
+          className="items-start justify-start p-4"
+          childrenClassName="w-full"
+        >
           <Profile
             name={user.name ?? "Undefined Person"}
             nim={user.nim ?? "Invalid NIM"}
@@ -20,7 +23,10 @@ export function Main({ session }: { session: Session }) {
       </section>
 
       <section className="flex-1">
-        <Card className="items-start justify-start p-4">
+        <Card
+          className="items-start justify-start p-4"
+          childrenClassName="w-full"
+        >
           <PendingTasks />
         </Card>
       </section>

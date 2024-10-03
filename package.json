@@ -32,6 +32,7 @@
     "framer-motion": "^11.9.0",
     "geist": "^1.3.0",
     "lucide-react": "^0.446.0",
+    "moment": "^2.30.1",
     "next": "^14.2.4",
     "next-themes": "^0.3.0",
     "react": "^18.3.1",
@@ -42,6 +43,7 @@
     "superjson": "^2.2.1",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
+    "uniqolor": "^1.1.1",
     "zod": "^3.23.3"
   },
   "devDependencies": {
