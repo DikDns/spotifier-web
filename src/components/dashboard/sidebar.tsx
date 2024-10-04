@@ -34,12 +34,14 @@ const sidebarLinks = [
   },
   {
     href: "/dashboard/tasks",
+    disabled: true,
     icon: <FaListCheck aria-label="Tasks" className="h-6 w-6" />,
     label: "Tasks",
     shortcut: "Ctrl + Alt + 2",
   },
   {
     href: "/dashboard/courses",
+    disabled: true,
     icon: <FaBook aria-label="Courses" className="h-6 w-6" />,
     label: "Courses",
     shortcut: "Ctrl + Alt + 3",
@@ -173,6 +175,7 @@ export function Sidebar() {
                 label={link.label}
                 shortcut={link.shortcut}
                 isCollapsed={isCollapsed}
+                disabled={link.disabled}
               />
             ))}
           </motion.div>

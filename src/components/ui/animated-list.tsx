@@ -16,7 +16,15 @@ export const AnimatedList = React.memo(
 
     useEffect(() => {
       const interval = setInterval(() => {
-        setIndex((prevIndex) => (prevIndex + 1) % childrenArray.length);
+        setIndex((prevIndex) => {
+          // Check if we should loop or stop
+          if (prevIndex + 1 < childrenArray.length) {
+            return prevIndex + 1;
+          } else {
+            clearInterval(interval); // Stop the interval when all items are shown
+            return prevIndex; // Keep the last index
+          }
+        });
       }, delay);
 
       return () => clearInterval(interval);

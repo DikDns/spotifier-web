@@ -4,7 +4,8 @@ import { getServerSession } from "@/server/auth";
 import { HydrateClient } from "@/trpc/server";
 import { Sidebar } from "@/components/dashboard/sidebar";
 import { Header } from "@/components/dashboard/header";
-import { Main } from "@/components/dashboard/main";
+import { ProfileTask } from "@/components/dashboard/profile-task";
+import { Courses } from "@/components/dashboard/courses";
 
 export default async function DashboardPage({
   searchParams,
@@ -24,7 +25,9 @@ export default async function DashboardPage({
         <main className="min-h-screen basis-full">
           <Header />
 
-          <Main session={session} />
+          <ProfileTask session={session} />
+
+          <Courses />
         </main>
       </div>
     </HydrateClient>

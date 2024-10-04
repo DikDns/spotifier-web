@@ -19,6 +19,7 @@ interface SidebarLinkProps {
   label: string;
   isCollapsed: boolean;
   shortcut: string;
+  disabled?: boolean;
 }
 
 export function SidebarLink({
@@ -27,11 +28,16 @@ export function SidebarLink({
   label,
   isCollapsed,
   shortcut,
+  disabled,
 }: SidebarLinkProps) {
   const pathname = usePathname();
 
   function isActive() {
     return pathname === href;
+  }
+
+  if (disabled) {
+    return null;
   }
 
   if (!isCollapsed) {

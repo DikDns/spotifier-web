@@ -11,30 +11,30 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/dashboard/card";
+import { MagicCard } from "@/components/common/magic-card";
 import { useRouter } from "next/navigation";
 
 export function Header() {
   return (
     <section className="flex gap-4 px-4">
-      <Card className="basis-3/12">
+      <MagicCard className="basis-3/12">
         <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
           Dashboard
         </h4>
-      </Card>
-      <Card className="basis-7/12">
+      </MagicCard>
+      <MagicCard className="basis-7/12">
         <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
           @SPOTifier
         </h4>
-      </Card>
+      </MagicCard>
 
-      <Card className="basis-1/12 p-0" childrenClassName="w-full">
+      <MagicCard className="basis-1/12 p-0" childrenClassName="w-full">
         <ThemeToggle />
-      </Card>
+      </MagicCard>
 
-      <Card className="basis-1/12 p-0" childrenClassName="w-full">
+      <MagicCard className="basis-1/12 p-0" childrenClassName="w-full">
         <MoreOptions />
-      </Card>
+      </MagicCard>
     </section>
   );
 }

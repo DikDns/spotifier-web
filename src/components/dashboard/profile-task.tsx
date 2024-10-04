@@ -3,15 +3,15 @@
 import type { Session } from "@/server/auth";
 import { Profile } from "@/components/dashboard/profile";
 import { PendingTasks } from "@/components/dashboard/pending-tasks";
-import { Card } from "@/components/dashboard/card";
+import { MagicCard } from "@/components/common/magic-card";
 
-export function Main({ session }: { session: Session }) {
+export function ProfileTask({ session }: { session: Session }) {
   const user = session.user;
 
   return (
     <div className="flex gap-4 p-4">
-      <section className="basis-1/2">
-        <Card
+      <section className="w-1/2">
+        <MagicCard
           className="items-start justify-start p-4"
           childrenClassName="w-full"
         >
@@ -19,16 +19,16 @@ export function Main({ session }: { session: Session }) {
             name={user.name ?? "Undefined Person"}
             nim={user.nim ?? "Invalid NIM"}
           />
-        </Card>
+        </MagicCard>
       </section>
 
-      <section className="basis-1/2">
-        <Card
+      <section className="w-1/2">
+        <MagicCard
           className="items-start justify-start p-4"
           childrenClassName="w-full"
         >
           <PendingTasks />
-        </Card>
+        </MagicCard>
       </section>
     </div>
   );

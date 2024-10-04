@@ -2,9 +2,9 @@
 
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
-import { MagicCard } from "@/components/ui/magic-card";
+import { MagicCard as MagicCardUI } from "@/components/ui/magic-card";
 
-export function Card({
+export function MagicCard({
   children,
   className,
   childrenClassName,
@@ -16,7 +16,7 @@ export function Card({
   const { resolvedTheme } = useTheme();
 
   return (
-    <MagicCard
+    <MagicCardUI
       className={cn(
         "min-h-10 flex-col items-center justify-center whitespace-nowrap rounded-md shadow-2xl",
         className,
@@ -25,6 +25,6 @@ export function Card({
       gradientColor={resolvedTheme === "dark" ? "#262626" : "#D9D9D955"}
     >
       {children}
-    </MagicCard>
+    </MagicCardUI>
   );
 }
