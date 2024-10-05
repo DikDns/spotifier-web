@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useCourses } from "@/lib/spot/api";
 
 import { ScrapingLoadingCard } from "@/components/common/scraping-loading-card";
-import { TaskItem } from "@/components/common/task-item";
+import { CourseItem } from "@/components/common/course-item";
 import { AnimatedList } from "@/components/ui/animated-list";
 import { MagicCard } from "@/components/common/magic-card";
 
@@ -34,7 +34,7 @@ export function Courses() {
           });
 
           return (
-            <TaskItem
+            <CourseItem
               key={course.id}
               onClick={() => {
                 router.push(`https://spot.upi.edu/mhs/dashboard/${course.id}`);

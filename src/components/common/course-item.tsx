@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 
-interface TaskItem {
+interface CourseItem {
   name: string;
   description: string;
   icon: string;
@@ -11,14 +11,14 @@ interface TaskItem {
   onClick: () => void;
 }
 
-export const TaskItem = ({
+export const CourseItem = ({
   name,
   description,
   icon,
   color,
   time,
   onClick,
-}: TaskItem) => {
+}: CourseItem) => {
   return (
     <figure
       onClick={onClick}
@@ -42,12 +42,12 @@ export const TaskItem = ({
           <span className="text-lg">{icon}</span>
         </div>
         <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
-          <figcaption className="flex max-w-[400px] flex-row items-center text-lg font-medium dark:text-white">
+          <figcaption className="flex max-w-[768px] flex-row items-center text-lg font-medium dark:text-white">
             <span className="truncate text-sm sm:text-lg">{name}</span>
             <span className="mx-1 flex-shrink-0">·</span>
             <span className="flex-shrink-0 text-xs text-gray-500">{time}</span>
           </figcaption>
-          <p className="max-w-[400px] truncate text-sm font-normal dark:text-white/60">
+          <p className="max-w-[768px] truncate text-sm font-normal dark:text-white/60">
             {description}
           </p>
         </div>
