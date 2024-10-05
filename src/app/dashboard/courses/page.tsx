@@ -4,15 +4,9 @@ import { getServerSession } from "@/server/auth";
 import { HydrateClient } from "@/trpc/server";
 import { Sidebar } from "@/components/common/sidebar";
 import { Courses } from "@/components/common/courses";
-import { Header } from "@/components/dashboard/header";
-import { ProfileTask } from "@/components/dashboard/profile-task";
 
-export default async function DashboardPage({
-  searchParams,
-}: {
-  searchParams: { data?: string };
-}) {
-  const session = await getServerSession(searchParams.data);
+export default async function CoursesPage() {
+  const session = await getServerSession();
 
   if (!session) {
     return redirect("/start");
@@ -23,10 +17,6 @@ export default async function DashboardPage({
       <div className="flex gap-x-3 p-6">
         <Sidebar />
         <main className="min-h-screen basis-full">
-          <Header />
-
-          <ProfileTask session={session} />
-
           <Courses />
         </main>
       </div>

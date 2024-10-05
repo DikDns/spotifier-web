@@ -19,7 +19,7 @@ import {
   TooltipPortal,
 } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
-import { SidebarLink } from "@/components/dashboard/sidebar-link";
+import { SidebarLink } from "@/components/common/sidebar-link";
 
 import { cn } from "@/lib/utils";
 import { usePathname, useRouter } from "next/navigation";
@@ -41,7 +41,6 @@ const sidebarLinks = [
   },
   {
     href: "/dashboard/courses",
-    disabled: true,
     icon: <FaBook aria-label="Courses" className="h-6 w-6" />,
     label: "Courses",
     shortcut: "Ctrl + Alt + 3",
