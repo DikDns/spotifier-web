@@ -100,13 +100,17 @@ export async function checkCookies(
 async function getSessionData(data?: string) {
   const cookie = cookies();
   const params = data ? decryptData(data) : {};
+  const laravelSession =
+    cookie.get("laravel_session")?.value ?? params?.laravelSession;
+  const userId = cookie.get("userId")?.value ?? params?.userId;
+  const xsrfToken = cookie.get("XSRF-TOKEN")?.value ?? params?.xsrfToken;
+  const casAuth = cookie.get("CASAuth")?.value ?? params?.casAuth;
 
   const sessionData = {
-    laravelSession:
-      cookie.get("laravel_session")?.value ?? params?.laravelSession,
-    userId: cookie.get("userId")?.value ?? params?.userId,
-    xsrfToken: cookie.get("XSRF-TOKEN")?.value ?? params?.xsrfToken,
-    casAuth: cookie.get("CASAuth")?.value ?? params?.casAuth,
+    laravelSession,
+    userId,
+    xsrfToken,
+    casAuth,
   };
 
   return sessionData;
