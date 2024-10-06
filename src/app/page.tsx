@@ -1,7 +1,8 @@
 import Link from "next/link";
+
 import { Button } from "@/components/ui/button";
-import { HydrateClient } from "@/trpc/server";
 import { getServerSession } from "@/server/auth";
+import { HydrateClient } from "@/trpc/server";
 
 export default async function HomePage() {
   const session = await getServerSession();

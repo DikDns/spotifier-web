@@ -1,8 +1,9 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import { cn } from "@/lib/utils";
+
 import { MagicCard as MagicCardUI } from "@/components/ui/magic-card";
+import { cn } from "@/lib/utils";
 
 export function MagicCard({
   children,

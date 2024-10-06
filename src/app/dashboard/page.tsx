@@ -1,11 +1,11 @@
 import { redirect } from "next/navigation";
 
-import { getServerSession } from "@/server/auth";
-import { HydrateClient } from "@/trpc/server";
-import { Sidebar } from "@/components/common/sidebar";
 import { Courses } from "@/components/common/courses";
+import { Sidebar } from "@/components/common/sidebar";
 import { Header } from "@/components/dashboard/header";
 import { ProfileTask } from "@/components/dashboard/profile-task";
+import { getServerSession } from "@/server/auth";
+import { HydrateClient } from "@/trpc/server";
 
 export default async function DashboardPage({
   searchParams,

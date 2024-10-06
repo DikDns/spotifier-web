@@ -1,14 +1,13 @@
 "use client";
 
-import uniqolor from "uniqolor";
 import { useRouter } from "next/navigation";
+import uniqolor from "uniqolor";
 
-import { useCourses } from "@/lib/spot/api";
-
-import { ScrapingLoadingCard } from "@/components/common/scraping-loading-card";
 import { CourseItem } from "@/components/common/course-item";
-import { AnimatedList } from "@/components/ui/animated-list";
 import { MagicCard } from "@/components/common/magic-card";
+import { ScrapingLoadingCard } from "@/components/common/scraping-loading-card";
+import { AnimatedList } from "@/components/ui/animated-list";
+import { useCourses } from "@/lib/spot/api";
 
 export function Courses() {
   const router = useRouter();

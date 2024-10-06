@@ -1,18 +1,17 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 
-import { MoonIcon, SunIcon, DotsHorizontalIcon } from "@radix-ui/react-icons";
-
+import { MagicCard } from "@/components/common/magic-card";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { MagicCard } from "@/components/common/magic-card";
-import { useRouter } from "next/navigation";
+import { DotsHorizontalIcon, MoonIcon, SunIcon } from "@radix-ui/react-icons";
 
 export function Header() {
   return (

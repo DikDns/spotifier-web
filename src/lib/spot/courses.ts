@@ -1,7 +1,7 @@
 "use client";
 
-import { domParser } from "@/lib/spot/dom-parser";
 import { env } from "@/env";
+import { domParser } from "@/lib/spot/dom-parser";
 
 const BASE_URL = env.NEXT_PUBLIC_BASE_URL + "/api/proxy";
 

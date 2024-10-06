@@ -1,10 +1,10 @@
-import { eq } from "drizzle-orm";
 import { cookies } from "next/headers";
+import { eq } from "drizzle-orm";
 
-import { db } from "@/server/db";
-import { userSessions, users } from "@/server/db/schema";
 import { env } from "@/env";
 import { decryptData } from "@/lib/encryption";
+import { db } from "@/server/db";
+import { users, userSessions } from "@/server/db/schema";
 
 export type Session = {
   user: {

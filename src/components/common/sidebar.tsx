@@ -1,29 +1,28 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  FaHouse,
-  FaChevronLeft,
-  FaChevronRight,
-  FaListCheck,
-  FaBook,
-  FaKeyboard,
-} from "react-icons/fa6";
-
+import { usePathname, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import {
-  TooltipProvider,
+  FaBook,
+  FaChevronLeft,
+  FaChevronRight,
+  FaHouse,
+  FaKeyboard,
+  FaListCheck,
+} from "react-icons/fa6";
+import { toast } from "sonner";
+
+import { SidebarLink } from "@/components/common/sidebar-link";
+import { Button } from "@/components/ui/button";
+import {
   Tooltip,
   TooltipContent,
-  TooltipTrigger,
   TooltipPortal,
+  TooltipProvider,
+  TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Button } from "@/components/ui/button";
-import { SidebarLink } from "@/components/common/sidebar-link";
-
 import { cn } from "@/lib/utils";
-import { usePathname, useRouter } from "next/navigation";
-import { toast } from "sonner";
 
 const sidebarLinks = [
   {

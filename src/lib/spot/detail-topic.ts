@@ -1,8 +1,8 @@
 "use client";
 
+import { env } from "@/env";
 import { dateParser } from "@/lib/spot/date-parser";
 import { domParser } from "@/lib/spot/dom-parser";
-import { env } from "@/env";
 import { type Answer, type Task } from "@/lib/spot/tasks";
 
 const BASE_URL = env.NEXT_PUBLIC_BASE_URL + "/api/proxy";

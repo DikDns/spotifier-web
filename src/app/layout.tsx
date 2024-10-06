@@ -1,12 +1,11 @@
-import "@/styles/globals.css";
-
+import { type Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
+
 import { ThemeProvider } from "@/components/providers";
 import { Toaster } from "@/components/ui/sonner";
-
-import { type Metadata } from "next";
-
 import { TRPCReactProvider } from "@/trpc/react";
+
+import "@/styles/globals.css";
 
 export const metadata: Metadata = {
   title: "SPOTifier",

@@ -1,9 +1,9 @@
 "use client";
 
-import type { Session } from "@/server/auth";
-import { Profile } from "@/components/dashboard/profile";
-import { PendingTasks } from "@/components/dashboard/pending-tasks";
 import { MagicCard } from "@/components/common/magic-card";
+import { PendingTasks } from "@/components/dashboard/pending-tasks";
+import { Profile } from "@/components/dashboard/profile";
+import type { Session } from "@/server/auth";
 
 export function ProfileTask({ session }: { session: Session }) {
   const user = session.user;

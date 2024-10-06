@@ -1,7 +1,11 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
+import { FaKeyboard } from "react-icons/fa6";
+
+import { buttonVariants } from "@/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
@@ -9,9 +13,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-import { buttonVariants } from "../ui/button";
-import { motion } from "framer-motion";
-import { FaKeyboard } from "react-icons/fa6";
 
 interface SidebarLinkProps {
   href: string;

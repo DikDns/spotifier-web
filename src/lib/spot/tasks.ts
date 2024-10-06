@@ -1,7 +1,6 @@
 "use client";
 
 import { env } from "@/env";
-
 import { getCourses } from "@/lib/spot/courses";
 import { getDetailCourse } from "@/lib/spot/detail-course";
 import { getDetailTopic } from "@/lib/spot/detail-topic";

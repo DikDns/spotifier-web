@@ -2,8 +2,8 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
-import { HydrateClient } from "@/trpc/server";
 import { getServerSession } from "@/server/auth";
+import { HydrateClient } from "@/trpc/server";
 
 export default async function StartPage() {
   const session = await getServerSession();

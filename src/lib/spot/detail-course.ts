@@ -1,9 +1,9 @@
 "use client";
 
 import { env } from "@/env";
-import { getCourses, type Course } from "@/lib/spot/courses";
-import { domParser } from "@/lib/spot/dom-parser";
+import { type Course, getCourses } from "@/lib/spot/courses";
 import { dateParser } from "@/lib/spot/date-parser";
+import { domParser } from "@/lib/spot/dom-parser";
 
 const BASE_URL = env.NEXT_PUBLIC_BASE_URL + "/api/proxy";
 

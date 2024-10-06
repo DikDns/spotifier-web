@@ -1,9 +1,8 @@
 import { redirect } from "next/navigation";
 
-import { getServerSession } from "@/server/auth";
-import { HydrateClient } from "@/trpc/server";
-import { Sidebar } from "@/components/common/sidebar";
 import { Courses } from "@/components/common/courses";
+import { Sidebar } from "@/components/common/sidebar";
+import { getServerSession } from "@/server/auth";
 
 export default async function CoursesPage() {
   const session = await getServerSession();
@@ -13,13 +12,11 @@ export default async function CoursesPage() {
   }
 
   return (
-    <HydrateClient>
-      <div className="flex gap-x-3 p-6">
-        <Sidebar />
-        <main className="min-h-screen basis-full">
-          <Courses />
-        </main>
-      </div>
-    </HydrateClient>
+    <div className="flex gap-x-3 p-6">
+      <Sidebar />
+      <main className="min-h-screen basis-full">
+        <Courses />
+      </main>
+    </div>
   );
 }
