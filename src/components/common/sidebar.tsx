@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import {
@@ -12,6 +12,7 @@ import {
   FaListCheck,
 } from "react-icons/fa6";
 import { toast } from "sonner";
+import { useLocalStorage } from "usehooks-ts";
 
 import { SidebarLink } from "@/components/common/sidebar-link";
 import { Button } from "@/components/ui/button";
@@ -49,7 +50,10 @@ const sidebarLinks = [
 export function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
-  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [isCollapsed, setIsCollapsed] = useLocalStorage(
+    "sidebar-collapsed",
+    true,
+  );
 
   const toggleSidebar = () => {
     setIsCollapsed((prev) => !prev);
