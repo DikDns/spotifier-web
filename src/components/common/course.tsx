@@ -12,7 +12,6 @@ import { useDetailCourse, useDetailTopic } from "@/lib/spot/api";
 import { textContentParser } from "@/lib/utils";
 
 export function Course({ courseId }: { courseId: string }) {
-  const router = useRouter();
   const { data: course, isLoading } = useDetailCourse(courseId);
 
   const renderLoading = () =>
@@ -51,11 +50,21 @@ export function Course({ courseId }: { courseId: string }) {
         childrenClassName="w-full"
       >
         <div className="space-y-2">
-          <div className="flex gap-x-2 pb-2">
-            <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">
-              Course
+          <div className="flex items-center gap-x-2 pb-2">
+            <h2 className="scroll-m-20 text-wrap text-3xl font-semibold tracking-tight first:mt-0">
+              {course?.name}
             </h2>
+
+            <p className="text-wrap text-sm text-accent-foreground/75">
+              {course?.code}
+            </p>
           </div>
+          <p className="text-wrap text-sm text-accent-foreground/75">
+            {course?.lecturer}
+          </p>
+          <p className="text-wrap text-sm text-accent-foreground/75">
+            {course?.description}
+          </p>
         </div>
       </MagicCard>
 
