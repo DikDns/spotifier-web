@@ -6,6 +6,12 @@ import { useQuery } from "@tanstack/react-query";
 export const useTasks = (setLoadingText: (text: string) => void) => {
   return useQuery({
     queryKey: ["tasks"],
-    queryFn: () => getTasks(setLoadingText),
+    queryFn: async () => {
+      return getTasks(setLoadingText);
+    },
+    enabled: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    staleTime: Infinity,
   });
 };

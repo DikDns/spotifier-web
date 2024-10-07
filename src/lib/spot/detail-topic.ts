@@ -29,11 +29,8 @@ export async function getDetailTopic(courseId: string, topicId: string) {
       ?.trim();
 
     // Convert the date format from DD:MM:YYYY hh:mm:ss to YYYY-MM-DDTHH:mm:ss
-    const [day, month, yearTime] = topicAccessTimeStringRaw?.split("-") ?? [];
-    const [year, time] = yearTime?.split(" ") ?? [];
-    const topicAccessTimeString = `${year}-${month}-${day}T${time}`;
-    const topicAccessTime = topicAccessTimeString
-      ? new Date(topicAccessTimeString)
+    const topicAccessTime = topicAccessTimeStringRaw
+      ? dateParser(topicAccessTimeStringRaw)
       : null;
 
     const tabContent = doc.querySelector(".tab-content");
@@ -278,7 +275,7 @@ export async function getDetailTopic(courseId: string, topicId: string) {
     return {
       id: topicId,
       accessTime: topicAccessTime,
-      isAccessable: true,
+      isAccessable: topicAccessTime ? topicAccessTime <= new Date() : true,
       href: path,
       description: topicDescription,
       contents: mappedSugjectRows,

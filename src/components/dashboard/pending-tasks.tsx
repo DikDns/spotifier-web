@@ -3,18 +3,26 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import moment from "moment";
+import { FaArrowRotateRight } from "react-icons/fa6";
 import uniqolor from "uniqolor";
 import { useLocalStorage } from "usehooks-ts";
 
 import { ScrapingLoadingCard } from "@/components/common/scraping-loading-card";
 import { TaskItem } from "@/components/common/task-item";
 import { AnimatedList, AnimatedListItem } from "@/components/ui/animated-list";
+import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { useTasks } from "@/lib/spot/api";
 
 export function PendingTasks() {
   const router = useRouter();
   const [loadingText, setLoadingText] = useState("Loading...");
-  const { data: tasks, isLoading } = useTasks(setLoadingText);
+  const { data: tasks, isLoading, refetch } = useTasks(setLoadingText);
   const [localTasks, setLocalTasks] = useLocalStorage<typeof tasks>(
     "pendingTasks",
     [],
@@ -91,6 +99,23 @@ export function PendingTasks() {
         <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">
           Pending Tasks
         </h2>
+
+        <TooltipProvider delayDuration={0}>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                disabled={isLoading}
+                variant="ghost"
+                onClick={() => refetch()}
+              >
+                <FaArrowRotateRight className="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="right" variant="inverseAccent">
+              <p>Refetch Pending tasks</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </div>
 
       {renderLoading()}

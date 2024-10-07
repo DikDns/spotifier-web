@@ -36,7 +36,7 @@ export function Courses() {
             <CourseItem
               key={course.id}
               onClick={() => {
-                router.push(`https://spot.upi.edu/mhs/dashboard/${course.id}`);
+                router.push(`/dashboard/courses/${course.id}`);
               }}
               color={color.color}
               name={course.name}
