@@ -18,6 +18,8 @@ export type Session = {
     xsrfToken: string;
     casAuth: string;
   };
+  status: "success" | "error";
+  message: string;
 };
 
 export async function getServerSession(data?: string) {
@@ -29,7 +31,21 @@ export async function getServerSession(data?: string) {
     if (!laravelSession || !xsrfToken || !casAuth || !userId) return null;
 
     if (!(await checkCookies(laravelSession, xsrfToken, casAuth))) {
-      return null;
+      return {
+        status: "error",
+        message: "Cookies from SPOT is invalid",
+        user: {
+          id: "",
+          name: null,
+          nim: null,
+        },
+        session: {
+          id: "",
+          laravelSession: "",
+          xsrfToken: "",
+          casAuth: "",
+        },
+      } as Session;
     }
 
     const user = await getUserById(userId);
@@ -41,9 +57,11 @@ export async function getServerSession(data?: string) {
     await updateSessionIfNeeded(session, laravelSession, xsrfToken, casAuth);
 
     return {
+      status: "success",
+      message: "Cookies are valid",
       user: { id: user.id, name: user.name, nim: user.nim },
       session: { id: session.id, laravelSession, xsrfToken, casAuth },
-    };
+    } as Session;
   } catch (error) {
     console.error("Error getting server session: ", error);
     return null;

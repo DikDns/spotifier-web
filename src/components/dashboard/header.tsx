@@ -13,12 +13,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { DotsHorizontalIcon, MoonIcon, SunIcon } from "@radix-ui/react-icons";
 
-export function Header() {
+export function Header({ title }: { title: string }) {
   return (
     <section className="flex gap-4 px-4">
       <MagicCard className="basis-3/12">
         <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
-          Dashboard
+          {title}
         </h4>
       </MagicCard>
       <MagicCard className="basis-7/12">

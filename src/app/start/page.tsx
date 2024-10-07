@@ -8,9 +8,7 @@ import { HydrateClient } from "@/trpc/server";
 export default async function StartPage() {
   const session = await getServerSession();
 
-  console.log("Start\n", session);
-
-  if (session) {
+  if (session?.status === "success") {
     return redirect("/dashboard");
   }
 

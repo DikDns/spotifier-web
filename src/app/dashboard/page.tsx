@@ -14,8 +14,12 @@ export default async function DashboardPage({
 }) {
   const session = await getServerSession(searchParams.data);
 
-  if (!session) {
+  if (!session?.session) {
     return redirect("/start");
+  }
+
+  if (session.status === "error") {
+    return redirect("/start?errorMsg=" + session.message);
   }
 
   return (
@@ -23,7 +27,7 @@ export default async function DashboardPage({
       <div className="flex gap-x-3 p-6">
         <Sidebar />
         <main className="min-h-screen basis-full">
-          <Header />
+          <Header title="Dashboard" />
 
           <ProfileTask session={session} />
 
