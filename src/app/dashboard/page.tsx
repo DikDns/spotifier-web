@@ -7,11 +7,12 @@ import { ProfileTask } from "@/components/dashboard/profile-task";
 import { getServerSession } from "@/server/auth";
 import { HydrateClient } from "@/trpc/server";
 
-export default async function DashboardPage({
-  searchParams,
-}: {
-  searchParams: { data?: string };
-}) {
+export default async function DashboardPage(
+  props: {
+    searchParams: Promise<{ data?: string }>;
+  }
+) {
+  const searchParams = await props.searchParams;
   const session = await getServerSession(searchParams.data);
 
   if (!session?.session) {

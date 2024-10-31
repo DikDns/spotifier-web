@@ -3,6 +3,7 @@ import { eq } from "drizzle-orm";
 
 import { env } from "@/env";
 import { decryptData } from "@/lib/encryption";
+import { fetchTimeout } from "@/lib/fetch-timeout";
 import { db } from "@/server/db";
 import { users, userSessions } from "@/server/db/schema";
 
@@ -85,16 +86,8 @@ export async function checkCookies(
     const url = env.NEXT_PUBLIC_SPOT_URL + "/mhs";
 
     // Create a promise that rejects after 5 seconds
-    const fetchWithTimeout = (url: string, options: RequestInit) => {
-      return Promise.race([
-        fetch(url, options),
-        new Promise((_, reject) =>
-          setTimeout(() => reject(new Error("Timeout")), 5000),
-        ),
-      ]);
-    };
 
-    const spotResponse = await fetchWithTimeout(url, {
+    const spotResponse = await fetchTimeout(url, {
       headers,
       method: "GET",
       redirect: "manual",
@@ -116,7 +109,7 @@ export async function checkCookies(
 }
 
 async function getSessionData(data?: string) {
-  const cookie = cookies();
+  const cookie = await cookies();
   const params = data ? decryptData(data) : {};
   const laravelSession =
     cookie.get("laravel_session")?.value ?? params?.laravelSession;

@@ -1,13 +1,12 @@
-import * as cheerio from "cheerio";
 import { type NextRequest, NextResponse } from "next/server";
+import * as cheerio from "cheerio";
 import { eq } from "drizzle-orm";
 
 import { env } from "@/env";
-import { users, userSessions } from "@/server/db/schema";
-import { db } from "@/server/db";
-
-import { createId } from "@paralleldrive/cuid2";
 import { encryptData } from "@/lib/encryption";
+import { db } from "@/server/db";
+import { users, userSessions } from "@/server/db/schema";
+import { createId } from "@paralleldrive/cuid2";
 
 const ssoLoginHandler = async (req: NextRequest) => {
   try {

@@ -1,5 +1,4 @@
-"use client";
-
+"use client";;
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
@@ -13,6 +12,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
+
+import type { JSX } from "react";
 
 interface SidebarLinkProps {
   href: string;
