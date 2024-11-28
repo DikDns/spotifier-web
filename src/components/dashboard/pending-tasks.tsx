@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import moment from "moment";
 import { FaArrowRotateRight } from "react-icons/fa6";
 import uniqolor from "uniqolor";
-import { useLocalStorage } from "usehooks-ts";
 
 import { ScrapingLoadingCard } from "@/components/common/scraping-loading-card";
 import { TaskItem } from "@/components/common/task-item";
@@ -17,6 +16,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useLocalStorage } from "@/lib/hooks/use-local-storage";
 import { useTasks } from "@/lib/spot/api";
 
 export function PendingTasks() {

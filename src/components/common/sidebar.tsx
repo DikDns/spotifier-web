@@ -12,7 +12,6 @@ import {
   FaListCheck,
 } from "react-icons/fa6";
 import { toast } from "sonner";
-import { useLocalStorage } from "usehooks-ts";
 
 import { SidebarLink } from "@/components/common/sidebar-link";
 import { Button } from "@/components/ui/button";
@@ -23,6 +22,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useLocalStorage } from "@/lib/hooks/use-local-storage";
 import { cn } from "@/lib/utils";
 
 const sidebarLinks = [
