@@ -9,7 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 export const useTopics = (courseId: string, topicIds: string[]) => {
   const [detailTopics, setDetailTopics] = useLocalStorage<DetailTopic[]>(
     `detail-topic-${courseId}`,
-    [],
+    undefined,
   );
   const query = useQuery({
     queryKey: ["detail-topic", courseId, topicIds],
