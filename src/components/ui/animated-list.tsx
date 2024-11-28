@@ -1,7 +1,7 @@
 "use client";
 
 import React, { type ReactElement, useEffect, useMemo, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 
 export interface AnimatedListProps {
   className?: string;
@@ -60,6 +60,7 @@ export function AnimatedListItem({ children }: { children: React.ReactNode }) {
   };
 
   return (
+    // @ts-expect-error MotionProps is not compatible with HTMLAttributesWithoutMotionProps
     <motion.div {...animations} layout className="mx-auto w-full">
       {children}
     </motion.div>

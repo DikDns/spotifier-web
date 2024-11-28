@@ -1,7 +1,9 @@
-"use client";;
+"use client";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
+import type { JSX } from "react";
 import { FaKeyboard } from "react-icons/fa6";
 
 import { buttonVariants } from "@/components/ui/button";
@@ -12,8 +14,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-
-import type { JSX } from "react";
 
 interface SidebarLinkProps {
   href: string;
@@ -59,6 +59,7 @@ export function SidebarLink({
             transition={{ delay: 0.2, type: "spring" }}
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
+            // @ts-expect-error MotionProps is not compatible with HTMLAttributesWithoutMotionProps
             className="text-md ml-2"
           >
             {label}

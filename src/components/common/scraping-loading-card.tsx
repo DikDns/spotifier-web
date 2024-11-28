@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { FaSpinner } from "react-icons/fa6";
 
 import { BorderBeam } from "@/components/ui/border-beam";

@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import {
   FaBook,
   FaChevronLeft,
@@ -108,6 +108,7 @@ export function Sidebar() {
   return (
     <>
       <motion.div
+        // @ts-expect-error MotionProps is not compatible with HTMLAttributesWithoutMotionProps
         className="h-full"
         initial={{ width: 64 }}
         animate={{
@@ -118,6 +119,7 @@ export function Sidebar() {
       <aside className="fixed bottom-6 left-6 top-6 w-64">
         <TooltipProvider delayDuration={0}>
           <motion.div
+            // @ts-expect-error MotionProps is not compatible with HTMLAttributesWithoutMotionProps
             className="flex h-full flex-col gap-4 rounded-md bg-secondary-foreground p-2 text-secondary"
             initial={{ width: 64 }}
             animate={{ width: isCollapsed ? 64 : 208 }}
@@ -143,6 +145,7 @@ export function Sidebar() {
                       transition={{ delay: 0.2, type: "spring" }}
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
+                      // @ts-expect-error MotionProps is not compatible with HTMLAttributesWithoutMotionProps
                       className="text-md ml-2"
                     >
                       {"Collapse"}
@@ -176,7 +179,7 @@ export function Sidebar() {
                 icon={link.icon}
                 label={link.label}
                 shortcut={link.shortcut}
-                isCollapsed={isCollapsed}
+                isCollapsed={isCollapsed ?? true}
                 disabled={link.disabled}
               />
             ))}

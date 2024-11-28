@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion, type Variants } from "framer-motion";
+import { AnimatePresence, motion, type Variants } from "motion/react";
 
 import { cn } from "@/lib/utils";
 
@@ -33,6 +33,7 @@ export function GradualSpacing({
             exit="hidden"
             variants={framerProps}
             transition={{ duration, delay: i * delayMultiple }}
+            // @ts-expect-error MotionProps is not compatible with HTMLAttributesWithoutMotionProps
             className={cn("drop-shadow-sm", className)}
           >
             {char === " " ? <span>&nbsp;</span> : char}
