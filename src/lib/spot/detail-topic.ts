@@ -285,3 +285,5 @@ export async function getDetailTopic(courseId: string, topicId: string) {
     console.error(error);
   }
 }
+
+export type DetailTopic = Awaited<ReturnType<typeof getDetailTopic>>;

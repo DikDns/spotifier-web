@@ -28,6 +28,8 @@ export async function getDetailCourse(id: string) {
   }
 }
 
+export type DetailCourse = Awaited<ReturnType<typeof getDetailCourse>>;
+
 async function fetchDetailCourse(id: string) {
   const path = "/mhs/dashboard/" + id;
   const response = await fetch(BASE_URL + path);
