@@ -3,10 +3,10 @@
 import { MagicCard } from "@/components/common/magic-card";
 import { PendingTasks } from "@/components/dashboard/pending-tasks";
 import { Profile } from "@/components/dashboard/profile";
-import type { Session } from "@/server/auth";
+import { useUserQuery } from "@/lib/hooks/use-user-query";
 
-export function ProfileTask({ session }: { session: Session }) {
-  const user = session.user;
+export function ProfileTask() {
+  const { data: user } = useUserQuery();
 
   return (
     <div className="flex gap-4 p-4">
@@ -16,8 +16,8 @@ export function ProfileTask({ session }: { session: Session }) {
           childrenClassName="w-full"
         >
           <Profile
-            name={user.name ?? "Undefined Person"}
-            nim={user.nim ?? "Invalid NIM"}
+            name={user?.name ?? "Undefined Person"}
+            nim={user?.nim ?? "Invalid NIM"}
           />
         </MagicCard>
       </section>

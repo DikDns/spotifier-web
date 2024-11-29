@@ -3,10 +3,17 @@ import * as cheerio from "cheerio";
 import { eq } from "drizzle-orm";
 
 import { env } from "@/env";
-import { encryptData } from "@/lib/encryption";
 import { db } from "@/server/db";
-import { users, userSessions } from "@/server/db/schema";
+import { users } from "@/server/db/schema";
 import { createId } from "@paralleldrive/cuid2";
+
+const cookieOptions = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "strict" as const,
+  maxAge: 2 * 60 * 60, // 2 hours
+  path: "/",
+};
 
 const ssoLoginHandler = async (req: NextRequest) => {
   try {
@@ -20,12 +27,12 @@ const ssoLoginHandler = async (req: NextRequest) => {
       xsrfToken,
       casAuth,
     );
+
     if (!name || !nim) {
       return NextResponse.redirect(req.url);
     }
 
     const user = await getOrCreateUser(nim, name);
-    await updateUserSession(user.id, laravelSession, xsrfToken, casAuth);
 
     return createSuccessResponse(user.id, laravelSession, xsrfToken, casAuth);
   } catch (error) {
@@ -60,55 +67,22 @@ async function getOrCreateUser(nim: string, name: string) {
   return newUser;
 }
 
-async function updateUserSession(
+async function createSuccessResponse(
   userId: string,
   laravelSession: string,
   xsrfToken: string,
   casAuth: string,
 ) {
-  const existingSession = (
-    await db.select().from(userSessions).where(eq(userSessions.userId, userId))
-  ).at(0);
-
-  if (existingSession) {
-    await db
-      .update(userSessions)
-      .set({ laravelSession, xsrfToken, casAuth })
-      .where(eq(userSessions.id, existingSession.id));
-  } else {
-    await db.insert(userSessions).values({
-      id: createId(),
-      laravelSession,
-      xsrfToken,
-      casAuth,
-      userId,
-    });
-  }
-}
-
-function createSuccessResponse(
-  userId: string,
-  laravelSession: string,
-  xsrfToken: string,
-  casAuth: string,
-) {
-  const encryptedData = encryptData({
-    userId,
-    laravelSession,
-    xsrfToken,
-    casAuth,
-  });
-
   const url = new URL(env.NEXT_PUBLIC_BASE_URL + "/dashboard");
-  url.searchParams.set("data", encryptedData);
-
-  const response = NextResponse.redirect(url);
+  const response = NextResponse.redirect(url, {
+    status: 303,
+  });
 
   const cookieOptions = {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "strict" as const,
-    maxAge: 30 * 24 * 60 * 60, // 30 days
+    sameSite: "lax" as const,
+    maxAge: 2 * 60 * 60,
     path: "/",
   };
 
