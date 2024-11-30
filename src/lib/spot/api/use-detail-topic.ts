@@ -15,6 +15,7 @@ export const useDetailTopic = (courseId: string, topicId: string) => {
     queryKey: ["detail-topic", courseId, topicId],
     queryFn: () => getDetailTopic(courseId, topicId),
     initialData: detailTopic,
+    refetchOnMount: true,
   });
 
   useEffect(() => {

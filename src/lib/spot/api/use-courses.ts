@@ -13,6 +13,7 @@ export const useCourses = () => {
     queryKey: ["courses"],
     queryFn: getCourses,
     initialData: courses,
+    refetchOnMount: true,
   });
 
   useEffect(() => {

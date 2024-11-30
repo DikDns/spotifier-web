@@ -5,7 +5,6 @@ import { useEffect } from "react";
 import { env } from "@/env";
 import { useLocalStorage } from "@/lib/hooks/use-local-storage";
 import { domParser } from "@/lib/spot/dom-parser";
-import { useQuery } from "@tanstack/react-query";
 
 type User = {
   name: string;
@@ -14,23 +13,18 @@ type User = {
 
 const BASE_URL = env.NEXT_PUBLIC_BASE_URL + "/api/proxy";
 
-export const useUserQuery = () => {
+export const useUser = () => {
   const [user, setUser] = useLocalStorage<User | null>("user", null);
-  const query = useQuery({
-    queryKey: ["user"],
-    queryFn: fetchUserInfoFromSPOT,
-    initialData: user,
-  });
 
   useEffect(() => {
-    if (query.data) {
-      setUser(query.data);
-    }
+    void fetchUserInfoFromSPOT().then((user) => {
+      setUser(user);
+    });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [query.data]);
+  }, []);
 
-  return query;
+  return user;
 };
 
 async function fetchUserInfoFromSPOT() {

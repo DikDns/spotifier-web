@@ -71,7 +71,10 @@ export async function getDetailTopic(courseId: string, topicId: string) {
           if (child.classList.contains("modal")) {
             const iframe = child.querySelector("iframe");
             const iframeSrc = iframe?.src;
-            subjectRowObject.youtubeId = iframeSrc?.split("embed/").pop();
+            subjectRowObject.youtubeId = iframeSrc
+              ?.split("embed/")
+              .pop()
+              ?.split("?")[0];
             continue;
           }
 

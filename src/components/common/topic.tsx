@@ -1,12 +1,15 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { MagicCard } from "@/components/common/magic-card";
 import { AnimatedList } from "@/components/ui/animated-list";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ReactParser } from "@/lib/react-parser";
 import { useDetailCourse, useDetailTopic } from "@/lib/spot/api";
 import { type Task } from "@/lib/spot/tasks";
+import { YouTubeEmbed } from "@next/third-parties/google";
 
 export function Topic({
   courseId,
@@ -15,6 +18,7 @@ export function Topic({
   courseId: string;
   topicId: string;
 }) {
+  const [mounted, setMounted] = useState(false);
   const topicNumber = useSearchParams().get("t");
   const { data: course, isLoading: isCourseLoading } =
     useDetailCourse(courseId);
@@ -23,7 +27,11 @@ export function Topic({
     topicId,
   );
 
-  if (isCourseLoading || isTopicLoading)
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (isCourseLoading || isTopicLoading || !mounted)
     return <Skeleton className="h-4 w-32" />;
 
   return (
@@ -50,7 +58,7 @@ export function Topic({
         className="items-start justify-start p-4"
         childrenClassName="w-full"
       >
-        <div className="space-y-2">
+        <div className="w-full space-y-2">
           <div className="flex gap-x-2 pb-2">
             <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">
               Resources
@@ -99,7 +107,7 @@ function DetailTasks({ tasks }: { tasks: Task[] }) {
   return (
     <div className="w-full">
       {tasks?.length && (
-        <AnimatedList>
+        <AnimatedList storageKey={`tasks`}>
           {tasks?.map((task) => <DetailTask key={task?.id} {...task} />)}
         </AnimatedList>
       )}
@@ -132,11 +140,18 @@ function DetailResources({
     rawHtml: string;
   }[];
 }) {
-  return (
-    <div>
-      {resources.map((resource) => {
-        return <div key={resource.id}>{resource.rawHtml}</div>;
-      })}
-    </div>
-  );
+  return resources.map((resource) => {
+    return (
+      <div
+        key={resource.id}
+        className="prose dark:prose-invert w-full max-w-full text-wrap pb-6"
+      >
+        {ReactParser(resource.rawHtml)}
+
+        {resource.youtubeId && (
+          <YouTubeEmbed videoid={resource.youtubeId} width={512} height={288} />
+        )}
+      </div>
+    );
+  });
 }

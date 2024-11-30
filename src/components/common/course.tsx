@@ -147,7 +147,9 @@ function DetailTopic({
     <CourseItem
       key={topic?.id}
       onClick={() => {
-        router.push(`/dashboard/courses/${courseId}/topics/${topic?.id}`);
+        router.push(
+          `/dashboard/courses/${courseId}/topics/${topic?.id}?t=${index + 1}`,
+        );
       }}
       color={color.color}
       name={`Topic ${index + 1}`}

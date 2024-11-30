@@ -15,6 +15,7 @@ export const useDetailCourse = (courseId: string) => {
     queryKey: ["detail-course", courseId],
     queryFn: () => getDetailCourse(courseId),
     initialData: detailCourse,
+    refetchOnMount: true,
   });
 
   useEffect(() => {

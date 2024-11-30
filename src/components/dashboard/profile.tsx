@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import { FaIdCard } from "react-icons/fa6";
 
 import { Skeleton } from "@/components/ui/skeleton";
-import { useUserQuery } from "@/lib/hooks/use-user-query";
+import { useUser } from "@/lib/hooks/use-user-query";
 
 export function Profile() {
-  const { data: user, isLoading } = useUserQuery();
+  const user = useUser();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -15,7 +15,7 @@ export function Profile() {
   }, []);
 
   // Return loading skeleton during server-side render and initial mount
-  if (!mounted || isLoading) {
+  if (!mounted) {
     return (
       <div className="space-y-2">
         <div className="pb-2">
