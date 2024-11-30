@@ -14,6 +14,7 @@ export const useCourses = () => {
     queryFn: getCourses,
     initialData: courses,
     refetchOnMount: true,
+    staleTime: 1000 * 60 * 5,
   });
 
   useEffect(() => {

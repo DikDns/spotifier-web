@@ -16,6 +16,7 @@ export const useDetailTopic = (courseId: string, topicId: string) => {
     queryFn: () => getDetailTopic(courseId, topicId),
     initialData: detailTopic,
     refetchOnMount: true,
+    staleTime: 1000 * 60 * 5,
   });
 
   useEffect(() => {

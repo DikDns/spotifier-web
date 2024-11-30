@@ -22,6 +22,7 @@ export const useTopics = (courseId: string, topicIds: string[]) => {
     },
     initialData: detailTopics,
     refetchOnMount: true,
+    staleTime: 1000 * 60 * 5,
   });
 
   useEffect(() => {

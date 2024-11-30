@@ -16,6 +16,7 @@ export const useDetailCourse = (courseId: string) => {
     queryFn: () => getDetailCourse(courseId),
     initialData: detailCourse,
     refetchOnMount: true,
+    staleTime: 1000 * 60 * 5,
   });
 
   useEffect(() => {
