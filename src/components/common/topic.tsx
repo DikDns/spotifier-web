@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { MagicCard } from "@/components/common/magic-card";
 import { AnimatedList } from "@/components/ui/animated-list";
@@ -15,6 +15,7 @@ export function Topic({
   courseId: string;
   topicId: string;
 }) {
+  const topicNumber = useSearchParams().get("t");
   const { data: course, isLoading: isCourseLoading } =
     useDetailCourse(courseId);
   const { data: topic, isLoading: isTopicLoading } = useDetailTopic(
@@ -34,8 +35,8 @@ export function Topic({
         <div className="space-y-2">
           <div className="flex items-center justify-between pb-2">
             <div className="flex items-center gap-x-2">
-              <h2 className="scroll-m-20 text-wrap text-3xl font-semibold tracking-tight first:mt-0">
-                {course?.name}
+              <h2 className="scroll-m-20 text-wrap text-3xl font-semibold capitalize tracking-tight first:mt-0">
+                {course?.name} - Topic {topicNumber}
               </h2>
             </div>
           </div>
@@ -52,11 +53,29 @@ export function Topic({
         <div className="space-y-2">
           <div className="flex gap-x-2 pb-2">
             <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">
+              Resources
+            </h2>
+          </div>
+          {topic?.contents?.length === 0 ? (
+            <EmptyMessage message="No resources found" />
+          ) : (
+            <DetailResources resources={topic?.contents ?? []} />
+          )}
+        </div>
+      </MagicCard>
+
+      <MagicCard
+        className="items-start justify-start p-4"
+        childrenClassName="w-full"
+      >
+        <div className="space-y-2">
+          <div className="flex gap-x-2 pb-2">
+            <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">
               Tasks
             </h2>
           </div>
           {topic?.tasks?.length === 0 ? (
-            <EmptyTasks />
+            <EmptyMessage message="No tasks found" />
           ) : (
             <DetailTasks tasks={topic?.tasks ?? []} />
           )}
@@ -66,11 +85,11 @@ export function Topic({
   );
 }
 
-function EmptyTasks() {
+function EmptyMessage({ message }: { message: string }) {
   return (
     <div className="flex min-h-32 items-center justify-center">
       <p className="font-medium text-accent-foreground/75 md:text-lg">
-        No tasks found
+        {message}
       </p>
     </div>
   );
@@ -93,11 +112,31 @@ function DetailTask(task: Task) {
 
   return (
     <div className="space-y-3">
-      <h4 className="scroll-m-20 text-xl font-semibold tracking-tight first:mt-0">
+      <h4 className="scroll-m-20 text-wrap text-xl font-semibold tracking-tight first:mt-0">
         {task?.title}
       </h4>
 
-      <div></div>
+      <div className="text-wrap text-accent-foreground/75">
+        {task.description}
+      </div>
+    </div>
+  );
+}
+
+function DetailResources({
+  resources,
+}: {
+  resources: {
+    id: string;
+    youtubeId: string | undefined;
+    rawHtml: string;
+  }[];
+}) {
+  return (
+    <div>
+      {resources.map((resource) => {
+        return <div key={resource.id}>{resource.rawHtml}</div>;
+      })}
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import { Sidebar } from "@/components/common/sidebar";
+import { Topic } from "@/components/common/topic";
 import { Header } from "@/components/dashboard/header";
 import { HydrateClient } from "@/trpc/server";
 
@@ -14,6 +15,8 @@ export default async function TopicPage(props: {
         <Sidebar />
         <main className="min-h-screen basis-full">
           <Header title="Topic" />
+
+          <Topic courseId={courseId} topicId={topicId} />
         </main>
       </div>
     </HydrateClient>
