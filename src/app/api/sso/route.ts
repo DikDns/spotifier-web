@@ -10,8 +10,8 @@ import { createId } from "@paralleldrive/cuid2";
 const cookieOptions = {
   httpOnly: true,
   secure: process.env.NODE_ENV === "production",
-  sameSite: "strict" as const,
-  maxAge: 2 * 60 * 60, // 2 hours
+  sameSite: "lax" as const,
+  maxAge: 2 * 60 * 60,
   path: "/",
 };
 
@@ -77,14 +77,6 @@ async function createSuccessResponse(
   const response = NextResponse.redirect(url, {
     status: 303,
   });
-
-  const cookieOptions = {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax" as const,
-    maxAge: 2 * 60 * 60,
-    path: "/",
-  };
 
   response.cookies.set("userId", userId, cookieOptions);
   response.cookies.set("laravel_session", laravelSession, cookieOptions);

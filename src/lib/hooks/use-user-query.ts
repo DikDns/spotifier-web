@@ -28,7 +28,7 @@ export const useUserQuery = () => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [query.data, query.isError]);
+  }, [query.data]);
 
   return query;
 };
