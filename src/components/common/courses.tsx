@@ -26,7 +26,7 @@ export function Courses() {
 
   const renderTasks = () => (
     <div className="w-full">
-      <AnimatedList>
+      <AnimatedList storageKey="courses">
         {courses?.map((course) => {
           const color = uniqolor(course.name, {
             format: "hex",

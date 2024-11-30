@@ -66,7 +66,7 @@ export function PendingTasks() {
 
   const renderTasks = () => (
     <div className="w-full">
-      <AnimatedList>
+      <AnimatedList storageKey="pendingTasks">
         {pendingTasks?.map((task) => {
           const color = uniqolor(task.course?.name ?? "", {
             format: "hex",

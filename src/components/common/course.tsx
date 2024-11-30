@@ -112,7 +112,7 @@ function DetailTopics({
       )}
 
       {topics?.length && (
-        <AnimatedList>
+        <AnimatedList storageKey={`topics-${courseId}`}>
           {topics?.map((topic, index) => (
             <DetailTopic
               key={topic?.id}

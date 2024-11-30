@@ -3,16 +3,26 @@
 import React, { type ReactElement, useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
+import { useLocalStorage } from "@/lib/hooks/use-local-storage";
+
 export interface AnimatedListProps {
   className?: string;
   children: React.ReactNode;
   delay?: number;
+  storageKey?: string;
 }
 
 export const AnimatedList = React.memo(
-  ({ className, children, delay = 500 }: AnimatedListProps) => {
+  ({ className, children, delay = 500, storageKey }: AnimatedListProps) => {
     const [index, setIndex] = useState(0);
+    const [hasSeenBefore, setHasSeenBefore] = useLocalStorage<boolean>(
+      `animated-list-${storageKey ?? "default"}`,
+      false,
+    );
     const childrenArray = React.Children.toArray(children);
+
+    // Use a faster delay if the user has seen the animation before
+    const effectiveDelay = hasSeenBefore ? Math.min(delay / 2, 200) : delay;
 
     useEffect(() => {
       const interval = setInterval(() => {
@@ -22,13 +32,15 @@ export const AnimatedList = React.memo(
             return prevIndex + 1;
           } else {
             clearInterval(interval); // Stop the interval when all items are shown
+            // Mark as seen after the first complete viewing
+            setHasSeenBefore(true);
             return prevIndex; // Keep the last index
           }
         });
-      }, delay);
+      }, effectiveDelay);
 
       return () => clearInterval(interval);
-    }, [childrenArray.length, delay]);
+    }, [childrenArray.length, effectiveDelay, setHasSeenBefore]);
 
     const itemsToShow = useMemo(
       () => childrenArray.slice(0, index + 1).reverse(),
