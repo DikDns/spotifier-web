@@ -3,11 +3,11 @@
 import { useEffect } from "react";
 
 import { useLocalStorage } from "@/lib/hooks/use-local-storage";
-import { type DetailTopic, getDetailTopic } from "@/lib/spot/detail-topic";
+import { getDetailTopic, type Topic } from "@/lib/spot/detail-topic";
 import { useQuery } from "@tanstack/react-query";
 
 export const useTopics = (courseId: string, topicIds: string[]) => {
-  const [detailTopics, setDetailTopics] = useLocalStorage<DetailTopic[]>(
+  const [detailTopics, setDetailTopics] = useLocalStorage<Topic[]>(
     `detail-topic-${courseId}`,
     undefined,
   );
@@ -20,8 +20,7 @@ export const useTopics = (courseId: string, topicIds: string[]) => {
       const data = await Promise.all(promises);
       return data;
     },
-    initialData: detailTopics,
-    refetchOnMount: true,
+    placeholderData: detailTopics,
     staleTime: 1000 * 60 * 5,
   });
 

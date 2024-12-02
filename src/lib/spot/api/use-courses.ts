@@ -12,9 +12,8 @@ export const useCourses = () => {
   const query = useQuery({
     queryKey: ["courses"],
     queryFn: getCourses,
-    initialData: courses,
-    refetchOnMount: true,
     staleTime: 1000 * 60 * 5,
+    placeholderData: courses,
   });
 
   useEffect(() => {

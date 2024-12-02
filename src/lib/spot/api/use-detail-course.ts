@@ -14,8 +14,7 @@ export const useDetailCourse = (courseId: string) => {
   const query = useQuery({
     queryKey: ["detail-course", courseId],
     queryFn: () => getDetailCourse(courseId),
-    initialData: detailCourse,
-    refetchOnMount: true,
+    placeholderData: detailCourse,
     staleTime: 1000 * 60 * 5,
   });
 

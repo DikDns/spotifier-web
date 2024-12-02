@@ -289,4 +289,4 @@ export async function getDetailTopic(courseId: string, topicId: string) {
   }
 }
 
-export type DetailTopic = Awaited<ReturnType<typeof getDetailTopic>>;
+export type Topic = Awaited<ReturnType<typeof getDetailTopic>>;
