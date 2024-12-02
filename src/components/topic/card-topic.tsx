@@ -1,29 +1,31 @@
 "use client";
 
+import Link from "next/link";
+
 import { cn } from "@/lib/utils";
 
-interface CourseItem {
+interface CardTopic {
   name: string;
   description: string;
   icon: string;
   color: string;
   time: string;
-  onClick: () => void;
+  href: string;
 }
 
-export const CourseItem = ({
+export const CardTopic = ({
   name,
   description,
   icon,
   color,
   time,
-  onClick,
-}: CourseItem) => {
+  href,
+}: CardTopic) => {
   return (
-    <figure
-      onClick={onClick}
+    <Link
+      href={href}
       className={cn(
-        "relative mx-auto min-h-fit w-full cursor-pointer overflow-hidden rounded-2xl p-4",
+        "relative mx-auto block min-h-fit w-full cursor-pointer overflow-hidden rounded-2xl p-4",
         // animation styles
         "transition-all duration-200 ease-in-out hover:scale-[101%]",
         // light styles
@@ -52,6 +54,6 @@ export const CourseItem = ({
           </p>
         </div>
       </div>
-    </figure>
+    </Link>
   );
 };

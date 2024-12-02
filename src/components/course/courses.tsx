@@ -1,16 +1,14 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import uniqolor from "uniqolor";
 
-import { CourseItem } from "@/components/common/course-item";
 import { MagicCard } from "@/components/common/magic-card";
 import { ScrapingLoadingCard } from "@/components/common/scraping-loading-card";
+import { CardCourse } from "@/components/course/card-course";
 import { AnimatedList } from "@/components/ui/animated-list";
 import { useCourses } from "@/lib/spot/api";
 
 export function Courses() {
-  const router = useRouter();
   const { data: courses, isLoading } = useCourses();
 
   const renderLoading = () =>
@@ -33,11 +31,9 @@ export function Courses() {
           });
 
           return (
-            <CourseItem
+            <CardCourse
               key={course.id}
-              onClick={() => {
-                router.push(`/dashboard/courses/${course.id}`);
-              }}
+              href={`/dashboard/courses/${course.id}`}
               color={color.color}
               name={course.name}
               description={course.lecturer}

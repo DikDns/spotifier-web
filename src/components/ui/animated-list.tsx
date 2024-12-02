@@ -22,7 +22,7 @@ export const AnimatedList = React.memo(
     const childrenArray = React.Children.toArray(children);
 
     // Use a faster delay if the user has seen the animation before
-    const effectiveDelay = hasSeenBefore ? Math.min(delay / 2, 200) : delay;
+    const effectiveDelay = hasSeenBefore ? Math.min(delay / 2, 256) : delay;
 
     useEffect(() => {
       const interval = setInterval(() => {

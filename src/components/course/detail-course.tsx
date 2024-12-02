@@ -1,24 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import moment from "moment";
-import uniqolor from "uniqolor";
 
-import { CourseItem } from "@/components/common/course-item";
 import { MagicCard } from "@/components/common/magic-card";
 import { ScrapingLoadingCard } from "@/components/common/scraping-loading-card";
 import { AnimatedList } from "@/components/ui/animated-list";
 import { buttonVariants } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useDetailCourse, useDetailTopic } from "@/lib/spot/api";
+import { useDetailCourse } from "@/lib/spot/api";
 import { useTopics } from "@/lib/spot/api/use-topics";
-import { textContentParser } from "@/lib/utils";
 
-export function Course({ courseId }: { courseId: string }) {
+import { DetailTopic } from "../topic/detail-topic";
+
+export function DetailCourse({ courseId }: { courseId: string }) {
   const { data: course, isLoading } = useDetailCourse(courseId);
-
-  if (isLoading) return <Skeleton className="h-4 w-32" />;
 
   return (
     <div className="flex flex-col gap-4 p-4">
@@ -115,49 +109,14 @@ function DetailTopics({
         <AnimatedList storageKey={`topics-${courseId}`}>
           {topics?.map((topic, index) => (
             <DetailTopic
-              key={topic?.id}
-              topicId={topic?.id ?? ""}
               courseId={courseId}
+              key={topic?.id}
               index={index}
+              topic={topic}
             />
           ))}
         </AnimatedList>
       )}
     </div>
-  );
-}
-
-function DetailTopic({
-  topicId,
-  courseId,
-  index,
-}: {
-  topicId: string;
-  courseId: string;
-  index: number;
-}) {
-  const color = uniqolor(courseId, {
-    format: "hex",
-  });
-
-  const router = useRouter();
-  const { data: topic } = useDetailTopic(courseId, topicId);
-
-  return (
-    <CourseItem
-      key={topic?.id}
-      onClick={() => {
-        router.push(
-          `/dashboard/courses/${courseId}/topics/${topic?.id}?t=${index + 1}`,
-        );
-      }}
-      color={color.color}
-      name={`Topic ${index + 1}`}
-      description={textContentParser(
-        topic?.contents?.[0]?.rawHtml ?? "No description",
-      )}
-      icon={`${index + 1}`}
-      time={`${moment(topic?.accessTime).format("MMM DD YYYY")}`}
-    />
   );
 }
