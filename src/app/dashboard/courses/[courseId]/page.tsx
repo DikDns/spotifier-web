@@ -1,5 +1,5 @@
-import { Course } from "@/components/common/course";
 import { Sidebar } from "@/components/common/sidebar";
+import { DetailCourse } from "@/components/course/detail-course";
 import { Header } from "@/components/dashboard/header";
 import { HydrateClient } from "@/trpc/server";
 
@@ -16,7 +16,7 @@ export default async function CoursePage(props: {
         <main className="min-h-screen basis-full">
           <Header title="Course" />
 
-          <Course courseId={courseId} />
+          <DetailCourse courseId={courseId} />
         </main>
       </div>
     </HydrateClient>

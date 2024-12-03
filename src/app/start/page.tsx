@@ -11,6 +11,7 @@ function CallbackUrlButton() {
   const callbackUrl = searchParams.get("callbackUrl");
 
   const spotLoginUrl = new URL("https://spot.upi.edu/mhs");
+
   if (callbackUrl) {
     spotLoginUrl.searchParams.set("callbackUrl", callbackUrl);
   }
