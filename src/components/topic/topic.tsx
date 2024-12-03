@@ -3,6 +3,7 @@
 import { useSearchParams } from "next/navigation";
 
 import { MagicCard } from "@/components/common/magic-card";
+import { OpenInSpot } from "@/components/common/open-in-spot";
 import { ScrapingLoadingCard } from "@/components/common/scraping-loading-card";
 import { DetailResources } from "@/components/topic/detail-resources";
 import { DetailTask } from "@/components/topic/detail-task";
@@ -65,10 +66,12 @@ export function Topic({
         childrenClassName="w-full"
       >
         <div className="w-full space-y-2">
-          <div className="flex gap-x-2 pb-2">
+          <div className="flex justify-between gap-x-2 pb-2">
             <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">
               Resources
             </h2>
+
+            <OpenInSpot href={`/mhs/materi/${courseId}/${topicId}`} />
           </div>
 
           {topic?.contents?.length === 0 ? (
@@ -84,10 +87,12 @@ export function Topic({
         childrenClassName="w-full"
       >
         <div className="space-y-2">
-          <div className="flex gap-x-2 pb-2">
+          <div className="flex justify-between gap-x-2 pb-2">
             <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">
               Tasks
             </h2>
+
+            <OpenInSpot href={`/mhs/tugas/${courseId}/${topicId}`} />
           </div>
 
           {topic?.tasks?.length === 0 ? (
