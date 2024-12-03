@@ -45,11 +45,11 @@ export const CardTopic = ({
         </div>
         <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
           <figcaption className="flex max-w-[768px] flex-row items-center text-lg font-medium dark:text-white">
-            <span className="truncate text-sm sm:text-lg">{name}</span>
+            <span className="text-sm sm:text-lg">{name}</span>
             <span className="mx-1 flex-shrink-0">·</span>
             <span className="flex-shrink-0 text-xs text-gray-500">{time}</span>
           </figcaption>
-          <p className="max-w-[768px] truncate text-sm font-normal dark:text-white/60">
+          <p className="line-clamp-1 max-w-[768px] text-wrap text-sm font-normal dark:text-white/60">
             {description}
           </p>
         </div>

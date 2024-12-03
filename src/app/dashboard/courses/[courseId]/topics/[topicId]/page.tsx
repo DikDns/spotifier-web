@@ -1,6 +1,6 @@
 import { Sidebar } from "@/components/common/sidebar";
-import { Topic } from "@/components/common/topic";
 import { Header } from "@/components/dashboard/header";
+import { Topic } from "@/components/topic/topic";
 
 export default async function TopicPage(props: {
   params: Promise<{ courseId: string; topicId: string }>;

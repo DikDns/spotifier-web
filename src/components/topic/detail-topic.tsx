@@ -3,10 +3,9 @@
 import moment from "moment";
 import uniqolor from "uniqolor";
 
+import { CardTopic } from "@/components/topic/card-topic";
 import { type Topic } from "@/lib/spot";
 import { textContentParser } from "@/lib/utils";
-
-import { CardTopic } from "./card-topic";
 
 export function DetailTopic({
   courseId,

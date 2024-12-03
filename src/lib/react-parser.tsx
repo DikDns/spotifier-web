@@ -12,7 +12,10 @@ export function ReactParser(rawHtml: string) {
           <a
             href={`${env.NEXT_PUBLIC_SPOT_URL}${domNode.attribs.href}`}
             target="_blank"
-            className={cn(buttonVariants())}
+            className={cn(
+              buttonVariants({ variant: "outline" }),
+              "text-zinc-50 decoration-transparent",
+            )}
           >
             File Link
           </a>

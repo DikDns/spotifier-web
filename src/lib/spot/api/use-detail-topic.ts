@@ -6,7 +6,11 @@ import { useLocalStorage } from "@/lib/hooks/use-local-storage";
 import { getDetailTopic, type Topic } from "@/lib/spot/detail-topic";
 import { useQuery } from "@tanstack/react-query";
 
-export const useDetailTopic = (courseId: string, topicId: string) => {
+export const useDetailTopic = (
+  courseId: string,
+  topicId: string,
+  enabled = true,
+) => {
   const [detailTopic, setDetailTopic] = useLocalStorage<Topic>(
     `detail-topic-${courseId}-${topicId}`,
     undefined,
@@ -16,6 +20,7 @@ export const useDetailTopic = (courseId: string, topicId: string) => {
     queryFn: () => getDetailTopic(courseId, topicId),
     placeholderData: detailTopic,
     staleTime: 1000 * 60 * 5,
+    enabled,
   });
 
   useEffect(() => {

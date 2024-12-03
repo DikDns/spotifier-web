@@ -1,15 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 import { MagicCard } from "@/components/common/magic-card";
+import { ScrapingLoadingCard } from "@/components/common/scraping-loading-card";
+import { DetailResources } from "@/components/topic/detail-resources";
+import { DetailTask } from "@/components/topic/detail-task";
 import { AnimatedList } from "@/components/ui/animated-list";
-import { Skeleton } from "@/components/ui/skeleton";
-import { ReactParser } from "@/lib/react-parser";
 import { useDetailCourse, useDetailTopic } from "@/lib/spot/api";
-import { type Task } from "@/lib/spot/tasks";
-import { YouTubeEmbed } from "@next/third-parties/google";
 
 export function Topic({
   courseId,
@@ -18,21 +16,27 @@ export function Topic({
   courseId: string;
   topicId: string;
 }) {
-  const [mounted, setMounted] = useState(false);
   const topicNumber = useSearchParams().get("t");
   const { data: course, isLoading: isCourseLoading } =
     useDetailCourse(courseId);
   const { data: topic, isLoading: isTopicLoading } = useDetailTopic(
     courseId,
     topicId,
+    !!course,
   );
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (isCourseLoading || isTopicLoading || !mounted)
-    return <Skeleton className="h-4 w-32" />;
+  const renderLoading = () => {
+    if (isCourseLoading || isTopicLoading)
+      return (
+        <div className="w-full py-2">
+          <ScrapingLoadingCard
+            text={
+              isCourseLoading ? "Scraping course..." : "Extracting topic..."
+            }
+          />
+        </div>
+      );
+  };
 
   return (
     <div className="flex flex-col gap-4 p-4">
@@ -51,6 +55,8 @@ export function Topic({
           <p className="text-wrap text-sm text-accent-foreground/75">
             {topic?.description}
           </p>
+
+          {renderLoading()}
         </div>
       </MagicCard>
 
@@ -64,8 +70,9 @@ export function Topic({
               Resources
             </h2>
           </div>
+
           {topic?.contents?.length === 0 ? (
-            <EmptyMessage message="No resources found" />
+            <EmptyMessage message="Resources not found, check again later! 😞" />
           ) : (
             <DetailResources resources={topic?.contents ?? []} />
           )}
@@ -82,10 +89,19 @@ export function Topic({
               Tasks
             </h2>
           </div>
+
           {topic?.tasks?.length === 0 ? (
-            <EmptyMessage message="No tasks found" />
+            <EmptyMessage message="No tasks for this topic, hooray! 😁" />
           ) : (
-            <DetailTasks tasks={topic?.tasks ?? []} />
+            <div className="w-full">
+              {topic?.tasks?.length && (
+                <AnimatedList storageKey={`tasks`} className="space-y-6">
+                  {topic?.tasks?.map((task, index) => (
+                    <DetailTask key={task?.id} task={task} index={index} />
+                  ))}
+                </AnimatedList>
+              )}
+            </div>
           )}
         </div>
       </MagicCard>
@@ -101,57 +117,4 @@ function EmptyMessage({ message }: { message: string }) {
       </p>
     </div>
   );
-}
-
-function DetailTasks({ tasks }: { tasks: Task[] }) {
-  return (
-    <div className="w-full">
-      {tasks?.length && (
-        <AnimatedList storageKey={`tasks`}>
-          {tasks?.map((task) => <DetailTask key={task?.id} {...task} />)}
-        </AnimatedList>
-      )}
-    </div>
-  );
-}
-
-function DetailTask(task: Task) {
-  const router = useRouter();
-
-  return (
-    <div className="space-y-3">
-      <h4 className="scroll-m-20 text-wrap text-xl font-semibold tracking-tight first:mt-0">
-        {task?.title}
-      </h4>
-
-      <div className="text-wrap text-accent-foreground/75">
-        {task.description}
-      </div>
-    </div>
-  );
-}
-
-function DetailResources({
-  resources,
-}: {
-  resources: {
-    id: string;
-    youtubeId: string | undefined;
-    rawHtml: string;
-  }[];
-}) {
-  return resources.map((resource) => {
-    return (
-      <div
-        key={resource.id}
-        className="prose dark:prose-invert w-full max-w-full text-wrap pb-6"
-      >
-        {ReactParser(resource.rawHtml)}
-
-        {resource.youtubeId && (
-          <YouTubeEmbed videoid={resource.youtubeId} width={512} height={288} />
-        )}
-      </div>
-    );
-  });
 }

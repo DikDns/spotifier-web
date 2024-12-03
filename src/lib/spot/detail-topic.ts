@@ -178,7 +178,7 @@ export async function getDetailTopic(courseId: string, topicId: string) {
           const isEmpty = Number(path?.split("/").length) <= 4;
           const fixedPath = isEmpty
             ? undefined
-            : path?.split("/tugas/mhs").join("tugas");
+            : path?.split("/tugas/mhs").join("/tugas");
 
           answerObj.fileHref = fixedPath ?? "";
 
