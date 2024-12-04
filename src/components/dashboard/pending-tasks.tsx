@@ -1,14 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import moment from "moment";
 import { FaArrowRotateRight } from "react-icons/fa6";
 import uniqolor from "uniqolor";
 
 import { ErrorCard } from "@/components/common/error-card";
 import { ScrapingLoadingCard } from "@/components/common/scraping-loading-card";
-import { TaskItem } from "@/components/common/task-item";
+import { CardTask } from "@/components/dashboard/card-task";
 import { AnimatedList, AnimatedListItem } from "@/components/ui/animated-list";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,7 +19,6 @@ import {
 import { useTasks } from "@/lib/spot/api";
 
 export function PendingTasks() {
-  const router = useRouter();
   const [loadingText, setLoadingText] = useState("Loading...");
   const {
     data: tasks,
@@ -48,7 +46,7 @@ export function PendingTasks() {
   const renderEmptyState = () => (
     <div className="flex min-h-32 items-center justify-center">
       <p className="font-medium text-accent-foreground/75 md:text-lg">
-        All tasks are completed, good job!
+        All tasks are completed, good job! 🎉
       </p>
     </div>
   );
@@ -63,12 +61,8 @@ export function PendingTasks() {
 
           return (
             <AnimatedListItem key={task?.id}>
-              <TaskItem
-                onClick={() => {
-                  router.push(
-                    `https://spot.upi.edu/mhs/tugas/${task.courseId}/${task.topicId}`,
-                  );
-                }}
+              <CardTask
+                href={`/dashboard/courses/${task.courseId}/topics/${task.topicId}`}
                 color={color.color}
                 name={task.course?.name ?? ""}
                 description={task?.title}
