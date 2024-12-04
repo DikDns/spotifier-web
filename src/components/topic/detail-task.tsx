@@ -80,7 +80,7 @@ export function DetailTask({ index, task }: DetailTaskProps) {
             getStatusColor(task.status),
           )}
         >
-          <h5 className="font-semibold text-zinc-50">Your Submission</h5>
+          <h5 className="font-semibold text-foreground">Your Submission</h5>
 
           <div className="text-sm text-accent-foreground/75">
             Submitted:{" "}
