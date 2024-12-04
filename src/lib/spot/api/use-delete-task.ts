@@ -9,7 +9,12 @@ export const useDeleteTask = () => {
   return useMutation({
     mutationFn: deleteTask,
     onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      void queryClient.invalidateQueries({
+        queryKey: ["detail-course"],
+      });
+      void queryClient.invalidateQueries({
+        queryKey: ["detail-topic"],
+      });
       toast.success("Task deleted");
     },
     onError: (error) => {

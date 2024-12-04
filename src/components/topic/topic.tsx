@@ -36,25 +36,29 @@ export function Topic({
 
   if (isCourseError) {
     return (
-      <ErrorCard
-        title="Failed to load course"
-        description={
-          courseError?.message ?? "There was an error loading the course"
-        }
-        retry={() => refetchCourse()}
-      />
+      <div className="flex flex-col gap-4 p-4">
+        <ErrorCard
+          title="Failed to load course"
+          description={
+            courseError?.message ?? "There was an error loading the course"
+          }
+          retry={() => refetchCourse()}
+        />
+      </div>
     );
   }
 
   if (isTopicError) {
     return (
-      <ErrorCard
-        title="Failed to load topic"
-        description={
-          topicError?.message ?? "There was an error loading the topic"
-        }
-        retry={() => refetchTopic()}
-      />
+      <div className="flex flex-col gap-4 p-4">
+        <ErrorCard
+          title="Failed to load topic"
+          description={
+            topicError?.message ?? "There was an error loading the topic"
+          }
+          retry={() => refetchTopic()}
+        />
+      </div>
     );
   }
 

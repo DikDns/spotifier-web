@@ -163,6 +163,7 @@ export async function getDetailTopic(courseId: string, topicId: string) {
         if (siblingElement?.classList.contains("panel-info")) {
           taskObj.status = "submitted";
           const answerObj: Answer = {
+            id: "",
             fileHref: "",
             content: "",
             isGraded: false,
@@ -180,7 +181,12 @@ export async function getDetailTopic(courseId: string, topicId: string) {
             ? undefined
             : path?.split("/tugas/mhs").join("/tugas");
 
+          // Get the answer id from the path
+          const anchorAnswer = panelBodyElement?.querySelectorAll("a")[1];
+          const answerHref = anchorAnswer?.href;
+          const answerId = answerHref?.split("/").pop();
           answerObj.fileHref = fixedPath ?? "";
+          answerObj.id = answerId!;
 
           const content = panelBodyElement?.childNodes;
           let rawHtml = ""; // Initialize rawHtml string

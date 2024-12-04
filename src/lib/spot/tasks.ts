@@ -22,6 +22,7 @@ export type Task = {
 };
 
 export type Answer = {
+  id: string;
   content: string;
   fileHref: string;
   isGraded: boolean;
@@ -50,10 +51,14 @@ export type PostTaskData = {
 export async function deleteTask({
   courseId,
   topicId,
-  taskId,
-}: GenericTaskData) {
+  answerId,
+}: {
+  courseId: string;
+  topicId: string;
+  answerId: string;
+}) {
   try {
-    const path = `/mhs/tugas_del/${courseId}/${topicId}/${taskId}`;
+    const path = `/mhs/tugas_del/${courseId}/${topicId}/${answerId}`;
     const response = await fetch(BASE_URL + path);
 
     if (!response.ok) {
@@ -65,7 +70,7 @@ export async function deleteTask({
     }
 
     return {
-      id: taskId,
+      id: answerId,
     };
   } catch (error) {
     console.error(error);

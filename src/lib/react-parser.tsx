@@ -14,7 +14,7 @@ export function ReactParser(rawHtml: string) {
             target="_blank"
             className={cn(
               buttonVariants({ variant: "outline" }),
-              "text-zinc-50 decoration-transparent",
+              "decoration-transparent",
             )}
           >
             File Link

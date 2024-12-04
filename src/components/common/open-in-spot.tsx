@@ -21,10 +21,7 @@ export function OpenInSpot({
     <Link
       href={`${env.NEXT_PUBLIC_SPOT_URL}${href}`}
       target={target}
-      className={cn(
-        buttonVariants({ variant: "outline" }),
-        "gap-x-1 text-zinc-50",
-      )}
+      className={cn(buttonVariants({ variant: "outline" }), "gap-x-2")}
     >
       {children ?? (
         <>

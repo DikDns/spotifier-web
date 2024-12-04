@@ -1,6 +1,8 @@
 import Link from "next/link";
 import moment from "moment";
 
+import { DeleteTaskButton } from "@/components/topic/delete-task-button";
+import { DialogSubmitTask } from "@/components/topic/dialog-submit-task";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { env } from "@/env";
@@ -49,12 +51,12 @@ export function DetailTask({ index, task }: DetailTaskProps) {
       <div className="flex flex-col gap-2 text-sm text-accent-foreground/75">
         {task.startDate && (
           <div>
-            Start Date: {moment(task.startDate).format("DD MMM YYYY HH:mm")}
+            Start Date: {moment(task.startDate).format("DD MMM YYYY, HH:mm")}
           </div>
         )}
         {task.dueDate && (
           <div>
-            Due Date: {moment(task.dueDate).format("DD MMM YYYY HH:mm")} (
+            Due Date: {moment(task.dueDate).format("DD MMM YYYY, HH:mm")} (
             {moment(task.dueDate).fromNow()})
           </div>
         )}
@@ -76,8 +78,7 @@ export function DetailTask({ index, task }: DetailTaskProps) {
       {task.answer && (
         <div
           className={cn(
-            "space-y-2 rounded-lg border p-4",
-            getStatusColor(task.status),
+            "space-y-2 rounded-lg border bg-muted-foreground/10 p-4",
           )}
         >
           <h5 className="font-semibold text-foreground">Your Submission</h5>
@@ -88,17 +89,16 @@ export function DetailTask({ index, task }: DetailTaskProps) {
           </div>
 
           {task.answer.fileHref && (
-            <div className="pt-2">
+            <div className="flex items-center gap-x-2 pt-2">
               <Link
                 href={SPOT_URL + task.answer.fileHref}
                 target="_blank"
-                className={cn(
-                  buttonVariants({ variant: "outline" }),
-                  "text-zinc-50",
-                )}
+                className={cn(buttonVariants({ variant: "outline" }))}
               >
                 View Submitted File
               </Link>
+
+              <DeleteTaskButton task={task} />
             </div>
           )}
 
@@ -116,6 +116,12 @@ export function DetailTask({ index, task }: DetailTaskProps) {
           )}
         </div>
       )}
+
+      <div className="flex items-center gap-x-2">
+        {(task.status === "pending" || task.status === "notSubmitted") && (
+          <DialogSubmitTask task={task} />
+        )}
+      </div>
     </div>
   );
 }

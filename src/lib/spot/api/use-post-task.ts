@@ -10,7 +10,15 @@ export const usePostTask = () => {
     mutationFn: postTask,
     onSuccess: () => {
       toast.success("Task submitted successfully");
-      void queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      void queryClient.invalidateQueries({
+        queryKey: ["detail-course"],
+      });
+      void queryClient.invalidateQueries({
+        queryKey: ["detail-topic"],
+      });
+      void queryClient.invalidateQueries({
+        queryKey: ["tasks"],
+      });
     },
     onError: (error) => {
       toast.error(error.message);
