@@ -53,7 +53,6 @@ export function MagicCard({
     >
       <div className={cn("relative z-10", childrenClassName)}>{children}</div>
       <motion.div
-        // @ts-expect-error MotionProps is not compatible with HTMLAttributesWithoutMotionProps
         className="pointer-events-none absolute -inset-px rounded-xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
         style={{
           background: useMotionTemplate`

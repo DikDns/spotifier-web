@@ -59,7 +59,6 @@ export function SidebarLink({
             transition={{ delay: 0.2, type: "spring" }}
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
-            // @ts-expect-error MotionProps is not compatible with HTMLAttributesWithoutMotionProps
             className="text-md ml-2"
           >
             {label}

@@ -106,13 +106,13 @@ function DetailTopics({
   courseId: string;
   topicIds: string[];
 }) {
-  const { data: topics, isLoading: isTopicsLoading } = useTopics(
+  const { data: topics, isFetching: isTopicsLoading } = useTopics(
     courseId,
     topicIds,
   );
 
   return (
-    <div className="w-full">
+    <div className="w-full space-y-4">
       {isTopicsLoading && (
         <ScrapingLoadingCard text={"Scraping SPOT's topics..."} />
       )}

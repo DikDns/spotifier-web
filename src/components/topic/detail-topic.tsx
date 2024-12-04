@@ -24,6 +24,7 @@ export function DetailTopic({
     <CardTopic
       key={topic?.id}
       href={`/dashboard/courses/${courseId}/topics/${topic?.id}?t=${index + 1}`}
+      disabled={!topic?.id}
       color={color.color}
       name={`Topic ${index + 1}`}
       description={textContentParser(

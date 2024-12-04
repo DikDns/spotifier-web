@@ -38,7 +38,6 @@ export default function BlurFade({
   blur = "6px",
 }: BlurFadeProps) {
   const ref = useRef(null);
-  // @ts-expect-error useInView is not compatible with RefObject
   const inViewResult = useInView(ref, { once: true, margin: inViewMargin });
   const isInView = !inView || inViewResult;
   const defaultVariants: Variants = {
@@ -59,7 +58,6 @@ export default function BlurFade({
           duration,
           ease: "easeOut",
         }}
-        // @ts-expect-error MotionProps is not compatible with HTMLAttributesWithoutMotionProps
         className={className}
       >
         {children}

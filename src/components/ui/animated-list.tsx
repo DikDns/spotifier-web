@@ -72,7 +72,6 @@ export function AnimatedListItem({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    // @ts-expect-error MotionProps is not compatible with HTMLAttributesWithoutMotionProps
     <motion.div {...animations} layout className="mx-auto w-full">
       {children}
     </motion.div>
