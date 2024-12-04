@@ -2,17 +2,29 @@
 
 import Link from "next/link";
 
+import { ErrorCard } from "@/components/common/error-card";
 import { MagicCard } from "@/components/common/magic-card";
 import { ScrapingLoadingCard } from "@/components/common/scraping-loading-card";
+import { DetailTopic } from "@/components/topic/detail-topic";
 import { AnimatedList } from "@/components/ui/animated-list";
 import { buttonVariants } from "@/components/ui/button";
 import { useDetailCourse } from "@/lib/spot/api";
 import { useTopics } from "@/lib/spot/api/use-topics";
 
-import { DetailTopic } from "../topic/detail-topic";
-
 export function DetailCourse({ courseId }: { courseId: string }) {
-  const { data: course, isLoading } = useDetailCourse(courseId);
+  const { data: course, isError, error, refetch } = useDetailCourse(courseId);
+
+  if (isError) {
+    return (
+      <ErrorCard
+        title="Failed to load course details"
+        description={
+          error?.message || "There was an error loading the course details"
+        }
+        retry={() => refetch()}
+      />
+    );
+  }
 
   return (
     <div className="flex flex-col gap-4 p-4">

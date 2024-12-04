@@ -168,3 +168,5 @@ export async function getTasks(setLoadingText: (text: string) => void) {
     console.error(error);
   }
 }
+
+export type GetTasksResponse = Awaited<ReturnType<typeof getTasks>>;

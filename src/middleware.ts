@@ -1,7 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
 
-import { checkCookies } from "@/server/auth";
-
 const publicPaths = ["/", "/start", "/api/sso"];
 
 export async function middleware(request: NextRequest) {
@@ -26,18 +24,6 @@ export async function middleware(request: NextRequest) {
     startUrl.searchParams.set("callbackUrl", request.url);
 
     return NextResponse.redirect(startUrl);
-  }
-
-  // Verify cookies are valid
-  const isValid = await checkCookies(laravelSession, xsrfToken, casAuth);
-  if (!isValid) {
-    // Clear invalid cookies when redirecting
-    const response = NextResponse.redirect(new URL("/start", request.url));
-    response.cookies.delete("laravel_session");
-    response.cookies.delete("XSRF-TOKEN");
-    response.cookies.delete("CASAuth");
-    response.cookies.delete("userId");
-    return response;
   }
 
   return NextResponse.next();

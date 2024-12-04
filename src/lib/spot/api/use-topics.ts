@@ -25,11 +25,11 @@ export const useTopics = (courseId: string, topicIds: string[]) => {
   });
 
   useEffect(() => {
-    if (query.data) {
+    if (query.data && query.isSuccess) {
       setDetailTopics(query.data);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [query.data]);
+  }, [query.data, query.isSuccess]);
 
   return query;
 };

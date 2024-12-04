@@ -2,6 +2,7 @@
 
 import uniqolor from "uniqolor";
 
+import { ErrorCard } from "@/components/common/error-card";
 import { MagicCard } from "@/components/common/magic-card";
 import { ScrapingLoadingCard } from "@/components/common/scraping-loading-card";
 import { CardCourse } from "@/components/course/card-course";
@@ -9,7 +10,7 @@ import { AnimatedList } from "@/components/ui/animated-list";
 import { useCourses } from "@/lib/spot/api";
 
 export function Courses() {
-  const { data: courses, isLoading } = useCourses();
+  const { data: courses, isLoading, isError, error, refetch } = useCourses();
 
   const renderLoading = () =>
     isLoading && <ScrapingLoadingCard text={"Scraping SPOT's courses..."} />;
@@ -60,6 +61,16 @@ export function Courses() {
           </div>
 
           {renderLoading()}
+
+          {isError && (
+            <ErrorCard
+              title="Failed to load courses"
+              description={
+                error?.message || "There was an error loading your courses"
+              }
+              retry={() => refetch()}
+            />
+          )}
 
           {courses?.length === 0 ? renderEmptyState() : renderTasks()}
         </div>

@@ -6,6 +6,7 @@ import moment from "moment";
 import { FaArrowRotateRight } from "react-icons/fa6";
 import uniqolor from "uniqolor";
 
+import { ErrorCard } from "@/components/common/error-card";
 import { ScrapingLoadingCard } from "@/components/common/scraping-loading-card";
 import { TaskItem } from "@/components/common/task-item";
 import { AnimatedList, AnimatedListItem } from "@/components/ui/animated-list";
@@ -16,45 +17,33 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useLocalStorage } from "@/lib/hooks/use-local-storage";
 import { useTasks } from "@/lib/spot/api";
 
 export function PendingTasks() {
   const router = useRouter();
   const [loadingText, setLoadingText] = useState("Loading...");
-  const { data: tasks, isLoading, refetch } = useTasks(setLoadingText);
-  const [localTasks, setLocalTasks] = useLocalStorage<typeof tasks>(
-    "pendingTasks",
-    [],
-  );
+  const {
+    data: tasks,
+    isFetching,
+    isError,
+    error,
+    refetch,
+  } = useTasks(setLoadingText);
   const [pendingTasks, setPendingTasks] = useState<typeof tasks>([]);
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    if (localTasks) {
-      setPendingTasks(localTasks);
-    }
-
-    setIsClient(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   useEffect(() => {
     if (tasks) {
       const filteredPendingTasks = tasks.filter(
         (task) => task.status === "pending",
       );
-      setLocalTasks(filteredPendingTasks);
       setPendingTasks(filteredPendingTasks);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tasks]);
 
-  if (!isClient) return null;
-
   const renderLoading = () =>
-    isLoading && <ScrapingLoadingCard text={loadingText} />;
+    isFetching && <ScrapingLoadingCard text={loadingText} />;
 
   const renderEmptyState = () => (
     <div className="flex min-h-32 items-center justify-center">
@@ -104,7 +93,7 @@ export function PendingTasks() {
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
-                disabled={isLoading}
+                disabled={isFetching}
                 variant="ghost"
                 onClick={() => refetch()}
               >
@@ -119,6 +108,16 @@ export function PendingTasks() {
       </div>
 
       {renderLoading()}
+
+      {isError && (
+        <ErrorCard
+          title="Failed to load tasks"
+          description={
+            error?.message || "There was an error loading your tasks"
+          }
+          retry={() => refetch()}
+        />
+      )}
 
       {pendingTasks?.length === 0 ? renderEmptyState() : renderTasks()}
     </div>

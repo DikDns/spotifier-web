@@ -2,6 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 
+import { ErrorCard } from "@/components/common/error-card";
 import { MagicCard } from "@/components/common/magic-card";
 import { OpenInSpot } from "@/components/common/open-in-spot";
 import { ScrapingLoadingCard } from "@/components/common/scraping-loading-card";
@@ -18,13 +19,44 @@ export function Topic({
   topicId: string;
 }) {
   const topicNumber = useSearchParams().get("t");
-  const { data: course, isLoading: isCourseLoading } =
-    useDetailCourse(courseId);
-  const { data: topic, isLoading: isTopicLoading } = useDetailTopic(
-    courseId,
-    topicId,
-    !!course,
-  );
+  const {
+    data: course,
+    isLoading: isCourseLoading,
+    isError: isCourseError,
+    error: courseError,
+    refetch: refetchCourse,
+  } = useDetailCourse(courseId);
+  const {
+    data: topic,
+    isLoading: isTopicLoading,
+    isError: isTopicError,
+    error: topicError,
+    refetch: refetchTopic,
+  } = useDetailTopic(courseId, topicId, !!course);
+
+  if (isCourseError) {
+    return (
+      <ErrorCard
+        title="Failed to load course"
+        description={
+          courseError?.message ?? "There was an error loading the course"
+        }
+        retry={() => refetchCourse()}
+      />
+    );
+  }
+
+  if (isTopicError) {
+    return (
+      <ErrorCard
+        title="Failed to load topic"
+        description={
+          topicError?.message ?? "There was an error loading the topic"
+        }
+        retry={() => refetchTopic()}
+      />
+    );
+  }
 
   const renderLoading = () => {
     if (isCourseLoading || isTopicLoading)
