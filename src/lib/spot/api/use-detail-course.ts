@@ -6,7 +6,7 @@ import { useLocalStorage } from "@/lib/hooks/use-local-storage";
 import { type DetailCourse, getDetailCourse } from "@/lib/spot/detail-course";
 import { useQuery } from "@tanstack/react-query";
 
-export const useDetailCourse = (courseId: string) => {
+export const useDetailCourse = (courseId: string, enabled = true) => {
   const [detailCourse, setDetailCourse] = useLocalStorage<DetailCourse>(
     `detail-course-${courseId}`,
     undefined,
@@ -16,6 +16,7 @@ export const useDetailCourse = (courseId: string) => {
     queryFn: () => getDetailCourse(courseId),
     placeholderData: detailCourse,
     staleTime: 1000 * 60 * 5,
+    enabled,
   });
 
   useEffect(() => {

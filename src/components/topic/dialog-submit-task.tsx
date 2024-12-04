@@ -89,7 +89,8 @@ export function DialogSubmitTask({ task }: DialogSubmitTaskProps) {
               name="file"
               type="file"
               required
-              accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.gif,.bmp,.tiff,.webp,.svg"
+              // accept all document types, images, and compressed files
+              accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif,.bmp,.tiff,.webp,.svg,.zip,.rar,.tar,.gz,.bz2,.7z"
             />
           </div>
 

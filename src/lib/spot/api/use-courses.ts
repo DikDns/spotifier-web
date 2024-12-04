@@ -7,7 +7,7 @@ import { type Course, getCourses } from "@/lib/spot/courses";
 import { useQuery } from "@tanstack/react-query";
 
 export const useCourses = () => {
-  const [courses, setCourses] = useLocalStorage<Course[]>("courses", undefined);
+  const [courses, setCourses] = useLocalStorage<Course[]>("courses", []);
 
   const query = useQuery({
     queryKey: ["courses"],

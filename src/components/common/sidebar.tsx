@@ -1,19 +1,24 @@
 "use client";
 
-import { useEffect } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
 import {
-  FaBook,
+  FaBookOpen,
   FaChevronLeft,
   FaChevronRight,
+  FaCircle,
+  FaGraduationCap,
   FaHouse,
   FaKeyboard,
   FaListCheck,
 } from "react-icons/fa6";
-import { toast } from "sonner";
 
 import { SidebarLink } from "@/components/common/sidebar-link";
+import {
+  SidebarLinkSelect,
+  type SidebarLinkSelectProps,
+} from "@/components/common/sidebar-link-select";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -23,36 +28,55 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useLocalStorage } from "@/lib/hooks/use-local-storage";
+import { useDetailCourse, useTopics } from "@/lib/spot/api";
 import { cn } from "@/lib/utils";
 
-const sidebarLinks = [
+type SidebarLink = {
+  href: string;
+  icon: React.ReactNode;
+  label: string;
+  disabled?: boolean;
+  isActive?: boolean;
+  type?: "default" | "course" | "topic" | undefined;
+};
+
+const defaultSidebarLinks: SidebarLink[] = [
   {
     href: "/dashboard",
-    icon: <FaHouse aria-label="Home" className="h-6 w-6" />,
+    icon: <FaHouse aria-label="Home" className="h-5 w-5" />,
     label: "Home",
-    shortcut: "Ctrl + Alt + 1",
   },
   {
     href: "/dashboard/tasks",
     disabled: true,
-    icon: <FaListCheck aria-label="Tasks" className="h-6 w-6" />,
+    icon: <FaListCheck aria-label="Tasks" className="h-5 w-5" />,
     label: "Tasks",
-    shortcut: "Ctrl + Alt + 2",
   },
   {
     href: "/dashboard/courses",
-    icon: <FaBook aria-label="Courses" className="h-6 w-6" />,
+    icon: <FaGraduationCap aria-label="Courses" className="h-5 w-5" />,
     label: "Courses",
-    shortcut: "Ctrl + Alt + 3",
   },
 ];
 
 export function Sidebar() {
   const pathname = usePathname();
-  const router = useRouter();
+  const currentCourseId = pathname.split("/courses/")[1]?.split("/")[0];
+  const currentTopicId = pathname.split("/topics/")[1]?.split("/")[0];
+  const { data: course } = useDetailCourse(currentCourseId!, !!currentCourseId);
+  const { data: topics } = useTopics(
+    currentCourseId!,
+    course?.topics
+      ?.filter((topic) => topic.isAccessable)
+      .map((topic) => topic.id ?? "") ?? [],
+    !!currentCourseId && !!course,
+  );
   const [isCollapsed, setIsCollapsed] = useLocalStorage(
     "sidebar-collapsed",
     true,
+  );
+  const [sidebarLinks, setSidebarLinks] = useState<SidebarLinkSelectProps[]>(
+    [],
   );
 
   const toggleSidebar = () => {
@@ -60,50 +84,33 @@ export function Sidebar() {
   };
 
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.ctrlKey && event.altKey && event.key === "s") {
-        event.preventDefault();
-        toggleSidebar();
-      }
+    if (topics) {
+      const topicLinks = topics
+        .map(
+          (topic, index) =>
+            ({
+              href: `/dashboard/courses/${currentCourseId}/topics/${topic?.id}?t=${index + 1}`,
+              icon: <FaCircle aria-label="Topic" className="h-2.5 w-2.5" />,
+              label: `Topic ${index + 1}`,
+              disabled: currentTopicId === topic?.id,
+              type: "topic",
+            }) as SidebarLinkSelectProps,
+        )
+        .reverse();
 
-      // shortcut to go to home page
-      if (event.ctrlKey && event.altKey && event.key === "1") {
-        event.preventDefault();
-        if (pathname === "/dashboard") return;
-        router.push("/dashboard");
-        toast.success("Navigated to Home", {
-          duration: 1000,
-        });
-      }
+      const currentCourseLink: SidebarLinkSelectProps = {
+        href: `/dashboard/courses/${currentCourseId}`,
+        icon: <FaBookOpen aria-label="Course" className="h-5 w-5" />,
+        label: course?.name ?? "",
+        linkChildren: topicLinks,
+        type: "course",
+      };
 
-      // shortcut to go to tasks page
-      if (event.ctrlKey && event.altKey && event.key === "2") {
-        event.preventDefault();
-        if (pathname === "/dashboard/tasks") return;
-        router.push("/dashboard/tasks");
-        toast.success("Navigated to Tasks", {
-          duration: 1000,
-        });
-      }
-
-      // shortcut to go to courses page
-      if (event.ctrlKey && event.altKey && event.key === "3") {
-        event.preventDefault();
-        if (pathname === "/dashboard/courses") return;
-        router.push("/dashboard/courses");
-        toast.success("Navigated to Courses", {
-          duration: 1000,
-        });
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
+      setSidebarLinks([currentCourseLink]);
+    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+  }, [topics]);
 
   return (
     <>
@@ -169,17 +176,30 @@ export function Sidebar() {
 
             <span className="border-b border-accent/25"></span>
 
-            {sidebarLinks.map((link) => (
+            {defaultSidebarLinks.map((link) => (
               <SidebarLink
                 key={link.href}
                 href={link.href}
                 icon={link.icon}
                 label={link.label}
-                shortcut={link.shortcut}
-                isCollapsed={isCollapsed ?? true}
                 disabled={link.disabled}
+                isCollapsed={!!isCollapsed}
               />
             ))}
+
+            {currentCourseId &&
+              sidebarLinks.map((link) => (
+                <SidebarLinkSelect
+                  key={link.href}
+                  href={link.href}
+                  icon={link.icon}
+                  label={link.label}
+                  disabled={link.disabled}
+                  linkChildren={link.linkChildren}
+                  isCollapsed={!!isCollapsed}
+                  type={link.type}
+                />
+              ))}
           </motion.div>
         </TooltipProvider>
       </aside>

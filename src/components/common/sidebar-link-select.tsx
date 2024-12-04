@@ -1,10 +1,15 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { motion } from "motion/react";
 
 import { buttonVariants } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTriggerUnstyled,
+} from "@/components/ui/select";
 import {
   Tooltip,
   TooltipContent,
@@ -13,73 +18,91 @@ import {
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
-interface SidebarLinkProps {
+export interface SidebarLinkSelectProps {
   href: string;
   icon: React.ReactNode;
   label: string;
-  isCollapsed: boolean;
+  isCollapsed?: boolean;
+  linkChildren?: SidebarLinkSelectProps[];
   disabled?: boolean;
+  type?: "default" | "course" | "topic";
 }
 
-export function SidebarLink({
-  href,
+export function SidebarLinkSelect({
   icon,
   label,
   isCollapsed,
   disabled,
-}: SidebarLinkProps) {
+  linkChildren,
+}: SidebarLinkSelectProps) {
+  const router = useRouter();
   const pathname = usePathname();
-
-  function isCurrentActive() {
-    return pathname === href;
-  }
+  const currentActiveLink = linkChildren?.find((child) => {
+    return child.href.split("?")[0] === pathname;
+  });
 
   if (disabled) {
     return null;
   }
 
-  const linkStyles = cn(
+  const buttonStyles = cn(
     buttonVariants({ variant: "ghost" }),
-    "flex transform cursor-pointer items-center rounded-md p-2 transition-all hover:bg-accent/10 hover:text-accent",
-    isCollapsed ? "justify-center" : "justify-start",
-    isCurrentActive() ? "bg-accent/10 text-accent" : "text-muted-foreground",
+    "flex transform bg-accent/10 text-accent cursor-pointer items-center rounded-md p-2 transition-all hover:bg-accent/10 hover:text-accent",
+    !isCollapsed && "justify-start pl-4",
   );
 
-  if (!isCollapsed) {
-    return (
-      <Link href={href} className={cn(linkStyles)}>
-        {icon}
-        {!isCollapsed && (
-          <motion.span
-            transition={{ delay: 0.2, type: "spring" }}
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="text-md ml-2 line-clamp-1 text-wrap"
-          >
-            {label}
-          </motion.span>
-        )}
-      </Link>
-    );
-  }
-
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <Link href={href} className={linkStyles}>
-          {icon}
-          {!isCollapsed && <span className="text-md ml-2">{label}</span>}
-        </Link>
-      </TooltipTrigger>
+    <Select
+      defaultValue={currentActiveLink?.href}
+      onValueChange={(value) => {
+        router.push(value);
+      }}
+    >
+      <Tooltip>
+        {isCollapsed ? (
+          <TooltipTrigger asChild>
+            <SelectTriggerUnstyled className={cn(buttonStyles)}>
+              {!isCollapsed && <span className="text-md ml-2">{label}</span>}
+            </SelectTriggerUnstyled>
+          </TooltipTrigger>
+        ) : (
+          <SelectTriggerUnstyled className={cn(buttonStyles)}>
+            {icon}
 
-      <TooltipPortal>
-        <TooltipContent side="right" variant="inverseAccent" sideOffset={16}>
-          <p className="flex items-center gap-x-2">
-            <span>{label}</span>
-          </p>
-        </TooltipContent>
-      </TooltipPortal>
-    </Tooltip>
+            {!isCollapsed && (
+              <motion.span
+                transition={{ delay: 0.2, type: "spring" }}
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="text-md mx-2 line-clamp-1 max-w-28 text-wrap text-left"
+              >
+                {label}
+              </motion.span>
+            )}
+          </SelectTriggerUnstyled>
+        )}
+
+        <SelectContent>
+          {linkChildren?.map((child) => (
+            <SelectItem
+              key={child.href}
+              className={cn("w-full cursor-pointer")}
+              value={child.href}
+            >
+              {child.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+
+        <TooltipPortal>
+          <TooltipContent side="right" variant="inverseAccent" sideOffset={16}>
+            <p className="flex items-center gap-x-2">
+              <span>{label}</span>
+            </p>
+          </TooltipContent>
+        </TooltipPortal>
+      </Tooltip>
+    </Select>
   );
 }
 
