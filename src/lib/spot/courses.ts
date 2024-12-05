@@ -48,8 +48,8 @@ export async function getCourses() {
 
     return courses;
   } catch (error) {
-    console.error(error);
-    return [];
+    console.error("SPOT session expired, please login again:\n", error);
+    throw new Error("SPOT session expired, please login again");
   }
 }
 

@@ -10,10 +10,10 @@ import { AnimatedList } from "@/components/ui/animated-list";
 import { useCourses } from "@/lib/spot/api";
 
 export function Courses() {
-  const { data: courses, isLoading, isError, error, refetch } = useCourses();
+  const { data: courses, isFetching, isError, error, refetch } = useCourses();
 
   const renderLoading = () =>
-    isLoading && <ScrapingLoadingCard text={"Scraping SPOT's courses..."} />;
+    isFetching && <ScrapingLoadingCard text={"Scraping SPOT's courses..."} />;
 
   const renderEmptyState = () => (
     <div className="flex min-h-32 items-center justify-center">

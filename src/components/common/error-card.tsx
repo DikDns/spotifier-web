@@ -1,9 +1,13 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { motion } from "motion/react";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { env } from "@/env";
+
+const SPOT_URL = env.NEXT_PUBLIC_SPOT_URL;
 
 interface ErrorCardProps {
   title?: string;
@@ -16,6 +20,19 @@ export function ErrorCard({
   description = "There was an error fetching the data. Please try again later.",
   retry,
 }: ErrorCardProps) {
+  const router = useRouter();
+  const isSpotSessionExpired = description?.includes("SPOT session expired");
+
+  const handleRetry = () => {
+    if (isSpotSessionExpired) {
+      router.push(SPOT_URL + "/mhs");
+    } else if (retry) {
+      retry();
+    } else {
+      router.refresh();
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -43,8 +60,12 @@ export function ErrorCard({
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
               >
-                <Button onClick={retry} variant="outline" className="w-fit">
-                  Try again
+                <Button
+                  onClick={handleRetry}
+                  variant="outline"
+                  className="w-fit"
+                >
+                  {isSpotSessionExpired ? "Login" : "Try again"}
                 </Button>
               </motion.div>
             )}

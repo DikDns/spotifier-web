@@ -24,7 +24,8 @@ export async function getDetailCourse(id: string) {
 
     return parseCourseDetails(rawHtml, currentCourse);
   } catch (error) {
-    console.error(error);
+    console.error("SPOT session expired, please login again:\n", error);
+    throw new Error("SPOT session expired, please login again");
   }
 }
 

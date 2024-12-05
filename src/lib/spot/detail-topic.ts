@@ -291,7 +291,8 @@ export async function getDetailTopic(courseId: string, topicId: string) {
       tasks,
     };
   } catch (error) {
-    console.error(error);
+    console.error("SPOT session expired, please login again:\n", error);
+    throw new Error("SPOT session expired, please login again");
   }
 }
 
