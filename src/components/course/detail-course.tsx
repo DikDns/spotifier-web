@@ -16,13 +16,15 @@ export function DetailCourse({ courseId }: { courseId: string }) {
 
   if (isError) {
     return (
-      <ErrorCard
-        title="Failed to load course details"
-        description={
-          error?.message || "There was an error loading the course details"
-        }
-        retry={() => refetch()}
-      />
+      <div className="flex flex-col gap-4 p-4">
+        <ErrorCard
+          title="Failed to load course details"
+          description={
+            error?.message || "There was an error loading the course details"
+          }
+          retry={() => refetch()}
+        />
+      </div>
     );
   }
 
@@ -117,7 +119,7 @@ function DetailTopics({
         <ScrapingLoadingCard text={"Scraping SPOT's topics..."} />
       )}
 
-      {topics?.length && (
+      {topics?.length !== 0 && (
         <AnimatedList storageKey={`topics-${courseId}`}>
           {topics?.map((topic, index) => (
             <DetailTopic
