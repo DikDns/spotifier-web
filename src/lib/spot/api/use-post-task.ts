@@ -3,21 +3,27 @@ import { toast } from "sonner";
 import { postTask } from "@/lib/spot/tasks";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-export const usePostTask = () => {
+interface PostTaskPayload {
+  id: string;
+  token: string;
+  description: string;
+  file: File;
+}
+
+export const usePostTask = (courseId: string, topicId: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: postTask,
+    mutationFn: (task: PostTaskPayload) =>
+      postTask({
+        courseId,
+        topicId,
+        task,
+      }),
     onSuccess: () => {
       toast.success("Task submitted successfully");
       void queryClient.invalidateQueries({
-        queryKey: ["detail-course"],
-      });
-      void queryClient.invalidateQueries({
-        queryKey: ["detail-topic"],
-      });
-      void queryClient.invalidateQueries({
-        queryKey: ["tasks"],
+        queryKey: ["detail-topic", courseId, topicId],
       });
     },
     onError: (error) => {

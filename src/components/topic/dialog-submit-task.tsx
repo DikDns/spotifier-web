@@ -26,7 +26,10 @@ interface DialogSubmitTaskProps {
 
 export function DialogSubmitTask({ task }: DialogSubmitTaskProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const { mutateAsync: postTask, isPending } = usePostTask();
+  const { mutateAsync: postTask, isPending } = usePostTask(
+    task.courseId,
+    task.topicId,
+  );
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -35,14 +38,10 @@ export function DialogSubmitTask({ task }: DialogSubmitTaskProps) {
     const file = formData.get("file") as File;
 
     void postTask({
-      courseId: task.courseId,
-      topicId: task.topicId,
-      task: {
-        id: task.id,
-        token: task.token,
-        description,
-        file,
-      },
+      id: task.id,
+      token: task.token,
+      description,
+      file,
     }).then(() => {
       setIsOpen(false);
     });

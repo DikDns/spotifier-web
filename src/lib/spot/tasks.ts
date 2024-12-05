@@ -109,8 +109,7 @@ export async function postTask(data: PostTaskData) {
       file: data.task.file,
     };
   } catch (error) {
-    console.error("SPOT session expired, please login again:\n", error);
-    throw new Error("SPOT session expired, please login again");
+    console.error(error);
   }
 }
 

@@ -26,16 +26,15 @@ interface DeleteTaskButtonProps {
 }
 
 export function DeleteTaskButton({ task }: DeleteTaskButtonProps) {
-  const { mutate: deleteTask, isPending: isDeleting } = useDeleteTask();
+  const { mutate: deleteTask, isPending: isDeleting } = useDeleteTask(
+    task.courseId,
+    task.topicId,
+  );
 
   const handleDelete = () => {
     if (!task.answer) return;
 
-    deleteTask({
-      courseId: task.courseId,
-      topicId: task.topicId,
-      answerId: task.answer.id,
-    });
+    deleteTask(task.answer.id);
   };
 
   return (

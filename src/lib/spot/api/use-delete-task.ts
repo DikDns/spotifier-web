@@ -3,17 +3,15 @@ import { toast } from "sonner";
 import { deleteTask } from "@/lib/spot/tasks";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-export const useDeleteTask = () => {
+export const useDeleteTask = (courseId: string, topicId: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: deleteTask,
+    mutationFn: (answerId: string) =>
+      deleteTask({ courseId, topicId, answerId }),
     onSuccess: () => {
       void queryClient.invalidateQueries({
-        queryKey: ["detail-course"],
-      });
-      void queryClient.invalidateQueries({
-        queryKey: ["detail-topic"],
+        queryKey: ["detail-topic", courseId, topicId],
       });
       toast.success("Task deleted");
     },
