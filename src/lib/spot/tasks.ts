@@ -3,7 +3,7 @@
 import { env } from "@/env";
 import { getCourses } from "@/lib/spot/courses";
 import { getDetailCourse } from "@/lib/spot/detail-course";
-import { getDetailTopic } from "@/lib/spot/detail-topic";
+import { getDetailTopic, type Topic } from "@/lib/spot/detail-topic";
 
 const BASE_URL = env.NEXT_PUBLIC_BASE_URL + "/api/proxy";
 
@@ -143,17 +143,16 @@ export async function getTasks(setLoadingText: (text: string) => void) {
     );
 
     setLoadingText("Recieving detail topics...");
-    const detailTopicPromises = [];
+    const detailTopics: Topic[] = [];
     for (const detailCourse of detailCourses) {
       if (!detailCourse) continue;
       for (const topic of detailCourse.topics) {
         if (!topic?.id) continue;
-        const detailTopicPromise = getDetailTopic(detailCourse.id, topic.id);
-        detailTopicPromises.push(detailTopicPromise);
+        const detailTopic = await getDetailTopic(detailCourse.id, topic.id);
+        detailTopics.push(detailTopic);
       }
     }
 
-    const detailTopics = await Promise.all(detailTopicPromises);
     const tasks: Task[] = [];
 
     setLoadingText("Recieving tasks...");
