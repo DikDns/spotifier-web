@@ -11,6 +11,33 @@ export function Profile() {
   const userQuery = useUser();
   const stats = useProfileStats();
 
+  const statsArray = [
+    stats.totalCourses && {
+      label: "Total Courses",
+      value: stats.totalCourses,
+      icon: FaBookOpen,
+      color: "text-violet-500",
+    },
+    stats.totalTasks && {
+      label: "Total Tasks",
+      value: stats.totalTasks,
+      icon: FaListCheck,
+      color: "text-violet-500",
+    },
+    stats.tasksDone && {
+      label: "Tasks Done",
+      value: stats.tasksDone,
+      icon: FaCheck,
+      color: "text-green-500",
+    },
+    stats.tasksMissed && {
+      label: "Tasks Missed",
+      value: stats.tasksMissed,
+      icon: FaXmark,
+      color: "text-red-500",
+    },
+  ];
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -48,52 +75,31 @@ export function Profile() {
 
         {/* Stats Grid */}
         <div className="grid grid-cols-4 gap-4">
-          {[
-            {
-              label: "Total Courses",
-              value: stats.totalCourses,
-              icon: FaBookOpen,
-              color: "text-violet-500",
-            },
-            {
-              label: "Total Tasks",
-              value: stats.totalTasks,
-              icon: FaListCheck,
-              color: "text-violet-500",
-            },
-            {
-              label: "Tasks Done",
-              value: stats.tasksDone,
-              icon: FaCheck,
-              color: "text-green-500",
-            },
-            {
-              label: "Tasks Missed",
-              value: stats.tasksMissed,
-              icon: FaXmark,
-              color: "text-red-500",
-            },
-          ].map((stat, index) => (
-            <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 * (index + 1) }}
-              className="relative overflow-hidden rounded-lg border border-accent/20 bg-accent/10 p-4 transition-colors hover:bg-accent/20"
-            >
-              <div className="space-y-2">
-                <div className="space-y-1">
-                  <p className="text-sm text-accent-foreground/75">
-                    {stat.label}
-                  </p>
+          {statsArray.map((stat, index) => {
+            if (!stat) return null;
+
+            return (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 * (index + 1) }}
+                className="relative overflow-hidden rounded-lg border border-accent/20 bg-accent/10 p-4 transition-colors hover:bg-accent/20"
+              >
+                <div className="space-y-2">
+                  <div className="space-y-1">
+                    <p className="text-xs text-accent-foreground/75">
+                      {stat.label}
+                    </p>
+                  </div>
+                  <div className="flex items-center justify-between gap-2">
+                    <p className="text-2xl font-semibold">{stat.value}</p>
+                    <stat.icon className={cn("h-6 w-6", stat.color)} />
+                  </div>
                 </div>
-                <div className="flex items-center justify-between gap-2">
-                  <p className="text-2xl font-semibold">{stat.value}</p>
-                  <stat.icon className={cn("h-5 w-5", stat.color)} />
-                </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </motion.div>
