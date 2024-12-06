@@ -1,9 +1,9 @@
 "use client";
 
+import { motion } from "motion/react";
 import uniqolor from "uniqolor";
 
 import { ErrorCard } from "@/components/common/error-card";
-import { MagicCard } from "@/components/common/magic-card";
 import { ScrapingLoadingCard } from "@/components/common/scraping-loading-card";
 import { CardTopic } from "@/components/topic/card-topic";
 import { AnimatedList } from "@/components/ui/animated-list";
@@ -12,6 +12,7 @@ import {
   useDetailTopic,
   useQueriesDetailCourse,
 } from "@/lib/spot/api";
+import { cn } from "@/lib/utils";
 import { formatAccessTime, textContentParser } from "@/lib/utils";
 
 export function RecentTopics() {
@@ -74,35 +75,74 @@ export function RecentTopics() {
 
   return (
     <div className="flex flex-col gap-4 p-4">
-      <MagicCard
-        className="items-start justify-start p-4"
-        childrenClassName="w-full"
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 20 }}
+        className="relative overflow-hidden rounded-xl border bg-background/95 p-4 shadow-xl backdrop-blur supports-[backdrop-filter]:bg-background/60"
       >
-        <div className="space-y-2">
-          <div className="flex gap-x-2 pb-2">
+        <motion.div
+          className={cn(
+            "absolute inset-0 bg-gradient-to-r from-zinc-500/10 via-zinc-500/30 to-zinc-500/10",
+          )}
+          animate={{
+            backgroundPosition: ["0% 0%", "100% 100%"],
+          }}
+          transition={{
+            duration: 10,
+            repeat: Infinity,
+            repeatType: "reverse",
+            ease: "easeInOut",
+          }}
+          style={{
+            backgroundSize: "200% 200%",
+          }}
+        />
+
+        <motion.div
+          className={cn(
+            "absolute inset-0 bg-gradient-to-br from-transparent via-zinc-500/10 to-transparent",
+          )}
+          animate={{
+            opacity: [0.3, 0.5, 0.3],
+            scale: [1, 1.05, 1],
+          }}
+          transition={{
+            duration: 4,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+
+        <div className="relative space-y-6">
+          <div className="flex items-center justify-between">
             <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">
               Recent Topics
             </h2>
           </div>
 
-          {renderLoading()}
+          <div className="relative space-y-4">
+            {renderLoading()}
 
-          {isError && (
-            <ErrorCard
-              title="Failed to load recent topics"
-              description={
-                error?.message ??
-                "There was an error loading your recent topics"
-              }
-              retry={() => refetch()}
-            />
-          )}
+            {isError && (
+              <ErrorCard
+                title="Failed to load recent topics"
+                description={
+                  error?.message ??
+                  "There was an error loading your recent topics"
+                }
+                retry={() => refetch()}
+              />
+            )}
 
-          {detailCourseQueries.length === 0 && !isError
-            ? renderEmptyState()
-            : renderRecentTopics()}
+            {!isFetching &&
+              !isError &&
+              (detailCourseQueries.length === 0
+                ? renderEmptyState()
+                : renderRecentTopics())}
+          </div>
         </div>
-      </MagicCard>
+      </motion.div>
     </div>
   );
 }
