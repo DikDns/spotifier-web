@@ -7,7 +7,12 @@ import { MagicCard } from "@/components/common/magic-card";
 import { ScrapingLoadingCard } from "@/components/common/scraping-loading-card";
 import { CardTopic } from "@/components/topic/card-topic";
 import { AnimatedList } from "@/components/ui/animated-list";
-import { useCourses, useQueriesDetailCourse } from "@/lib/spot/api";
+import {
+  useCourses,
+  useDetailTopic,
+  useQueriesDetailCourse,
+} from "@/lib/spot/api";
+import { formatAccessTime, textContentParser } from "@/lib/utils";
 
 export function RecentTopics() {
   const { data: courses, isFetching, isError, error, refetch } = useCourses();
@@ -50,14 +55,13 @@ export function RecentTopics() {
           if (!recentTopic || !recentTopicIndex) return null;
 
           return (
-            <CardTopic
+            <RecentTopic
               key={course?.id}
-              href={`/dashboard/courses/${course?.id}/topics/${recentTopic.id}?t=${recentTopicIndex + 1}`}
+              courseId={course?.id ?? ""}
+              topicId={recentTopic.id ?? ""}
+              courseAcronym={""}
               color={color.color}
-              name={course?.name ?? ""}
-              description={`Topic ${recentTopicIndex + 1} of ${course?.topics.length}`}
-              icon="📄"
-              time={course?.code ?? ""}
+              index={recentTopicIndex + 1}
             />
           );
         })}
@@ -91,11 +95,45 @@ export function RecentTopics() {
             />
           )}
 
-          {detailCourseQueries.length === 0
+          {detailCourseQueries.length === 0 && !isError
             ? renderEmptyState()
             : renderRecentTopics()}
         </div>
       </MagicCard>
     </div>
+  );
+}
+
+function RecentTopic({
+  courseId,
+  topicId,
+  color,
+  courseAcronym,
+  index,
+}: {
+  courseId: string;
+  topicId: string;
+  color: string;
+  courseAcronym: string;
+  index: number;
+}) {
+  const { data: topic } = useDetailTopic(courseId, topicId);
+
+  return (
+    <CardTopic
+      key={courseId}
+      href={`/dashboard/courses/${courseId}/topics/${topicId}?t=${index}`}
+      color={color}
+      name={`${courseAcronym} - Topic ${index}`}
+      description={textContentParser(
+        topic?.contents?.[0]?.rawHtml ?? "No description",
+      )}
+      icon="📄"
+      time={
+        topic?.accessTime
+          ? formatAccessTime(topic.accessTime, { relative: true, detail: true })
+          : "No access time"
+      }
+    />
   );
 }
