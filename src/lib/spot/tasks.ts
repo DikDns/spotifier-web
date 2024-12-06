@@ -169,7 +169,7 @@ export async function getTasks(setLoadingText: (text: string) => void) {
 
     return mappedTasks;
   } catch (error) {
-    console.error(error);
+    throw error;
   }
 }
 
