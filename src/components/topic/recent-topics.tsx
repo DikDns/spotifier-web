@@ -24,7 +24,9 @@ export function RecentTopics() {
   const renderLoading = () =>
     isFetching ||
     (detailCourseQueries.some((query) => query.isFetching) && (
-      <ScrapingLoadingCard text={"Hunting for recent topics..."} />
+      <div className="pb-2">
+        <ScrapingLoadingCard text={"Hunting for recent topics..."} />
+      </div>
     ));
 
   const renderEmptyState = () => (
@@ -37,7 +39,7 @@ export function RecentTopics() {
 
   const renderRecentTopics = () => (
     <div className="w-full">
-      <AnimatedList storageKey="courses">
+      <AnimatedList storageKey="recent-topics">
         {detailCourseQueries?.map((query) => {
           const course = query.data;
           const color = uniqolor(course?.name ?? "", {

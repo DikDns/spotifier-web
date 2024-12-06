@@ -13,7 +13,11 @@ export function Courses() {
   const { data: courses, isFetching, isError, error, refetch } = useCourses();
 
   const renderLoading = () =>
-    isFetching && <ScrapingLoadingCard text={"Scraping SPOT's courses..."} />;
+    isFetching && (
+      <div className="pb-2">
+        <ScrapingLoadingCard text={"Scraping SPOT's courses..."} />
+      </div>
+    );
 
   const renderEmptyState = () => (
     <div className="flex min-h-32 items-center justify-center">

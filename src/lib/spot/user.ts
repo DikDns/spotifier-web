@@ -1,33 +1,14 @@
-"use client";
-
-import { useEffect } from "react";
-
 import { env } from "@/env";
-import { useLocalStorage } from "@/lib/hooks/use-local-storage";
 import { domParser } from "@/lib/spot/dom-parser";
 
-type User = {
+export type User = {
   name: string;
   nim: string;
 };
 
 const BASE_URL = env.NEXT_PUBLIC_BASE_URL + "/api/proxy";
 
-export const useUser = () => {
-  const [user, setUser] = useLocalStorage<User | null>("user", null);
-
-  useEffect(() => {
-    void fetchUserInfoFromSPOT().then((user) => {
-      setUser(user);
-    });
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  return user;
-};
-
-async function fetchUserInfoFromSPOT() {
+export async function getUser(): Promise<User> {
   try {
     const spotResponse = await fetch(BASE_URL + "/mhs");
 
@@ -55,13 +36,7 @@ async function fetchUserInfoFromSPOT() {
 
     return { name, nim };
   } catch (error) {
-    if (
-      error instanceof Error &&
-      error.message === "SPOT takes too long to respond"
-    ) {
-      throw error;
-    }
-    // Re-throw other errors
-    throw new Error("Failed to fetch user info from SPOT");
+    console.error("SPOT session expired, please login again:\n", error);
+    throw new Error("SPOT session expired, please login again");
   }
 }

@@ -7,3 +7,4 @@ export * from "./use-queries-detail-course";
 export * from "./use-queries-topics";
 export * from "./use-tasks";
 export * from "./use-topics";
+export * from "./use-user";
