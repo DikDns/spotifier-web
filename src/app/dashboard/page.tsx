@@ -1,7 +1,7 @@
 import { Sidebar } from "@/components/common/sidebar";
-import { Courses } from "@/components/course/courses";
 import { Header } from "@/components/dashboard/header";
 import { ProfileTask } from "@/components/dashboard/profile-task";
+import { RecentTopics } from "@/components/topic/recent-topics";
 
 export default function DashboardPage() {
   return (
@@ -10,7 +10,7 @@ export default function DashboardPage() {
       <main className="min-h-screen basis-full">
         <Header title="Dashboard" />
         <ProfileTask />
-        <Courses />
+        <RecentTopics />
       </main>
     </div>
   );

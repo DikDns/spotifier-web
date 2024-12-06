@@ -9,7 +9,8 @@ import "@/styles/globals.css";
 
 export const metadata: Metadata = {
   title: "SPOTifier",
-  description: "SPOTifier takes SPOT to the modern era.",
+  description:
+    "SPOTifier takes SPOT to the modern era. SPOTifier or 'Sistem Pembelajaran Online Terpadu' Modifier is a web application that modifies SPOT-UPI User Interface to be more modern and user-friendly, adapting modern tech-stack.",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
