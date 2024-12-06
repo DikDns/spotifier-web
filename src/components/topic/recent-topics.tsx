@@ -58,8 +58,9 @@ export function RecentTopics() {
             <RecentTopic
               key={course?.id}
               courseId={course?.id ?? ""}
+              courseAcronym={course?.acronym ?? ""}
+              courseName={course?.name ?? ""}
               topicId={recentTopic.id ?? ""}
-              courseAcronym={""}
               color={color.color}
               index={recentTopicIndex + 1}
             />
@@ -109,12 +110,14 @@ function RecentTopic({
   topicId,
   color,
   courseAcronym,
+  courseName,
   index,
 }: {
   courseId: string;
   topicId: string;
   color: string;
   courseAcronym: string;
+  courseName: string;
   index: number;
 }) {
   const { data: topic } = useDetailTopic(courseId, topicId);
@@ -125,9 +128,9 @@ function RecentTopic({
       href={`/dashboard/courses/${courseId}/topics/${topicId}?t=${index}`}
       color={color}
       name={`${courseAcronym} - Topic ${index}`}
-      description={textContentParser(
+      description={`${courseName} - ${textContentParser(
         topic?.contents?.[0]?.rawHtml ?? "No description",
-      )}
+      )}`}
       icon="📄"
       time={
         topic?.accessTime

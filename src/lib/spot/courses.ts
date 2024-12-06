@@ -9,6 +9,7 @@ export type Course = {
   id: string;
   code: string;
   name: string;
+  acronym: string;
   credits: number;
   lecturer: string;
   academicYear: string;
@@ -66,9 +67,18 @@ function extractCourseData(td: NodeListOf<Element>) {
     id: id ?? "",
     code: td[0]?.textContent ?? "",
     name: td[1]?.textContent ?? "",
+    acronym: getAcronym(td[1]?.textContent ?? ""),
     credits: Number(td[2]?.textContent) || 0,
     lecturer: td[3]?.textContent ?? "",
     academicYear: td[4]?.textContent ?? "",
     href: path,
   };
+}
+
+function getAcronym(name: string) {
+  return name
+    .split(" ")
+    .filter((n) => n.length > 3)
+    .map((n) => n[0])
+    .join("");
 }
