@@ -1,13 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
-import {
-  FaBookOpen,
-  FaCheck,
-  FaIdCard,
-  FaListCheck,
-  FaXmark,
-} from "react-icons/fa6";
+import { FaBookOpen, FaCheck, FaListCheck, FaXmark } from "react-icons/fa6";
 
 import { useProfileStats } from "@/lib/hooks/use-profile-stats";
 import { useUser } from "@/lib/spot/api";
@@ -38,14 +32,15 @@ export function Profile() {
 
       <div className="relative space-y-6">
         {/* Profile Header */}
-        <div className="space-y-2">
-          <h2 className="text-3xl font-semibold tracking-tight">Profile</h2>
-          <div className="flex items-center gap-2 text-accent-foreground/75">
-            <FaIdCard className="h-5 w-5" />
-            <span className="text-lg font-medium">
-              {userQuery.data?.nim ?? "No NIM"}
-            </span>
-          </div>
+        <div>
+          <h2 className="pb-2 text-3xl font-semibold tracking-tight">
+            Profile
+          </h2>
+
+          <span className="text-lg font-medium text-accent-foreground/75">
+            {userQuery.data?.nim ?? "No NIM"}
+          </span>
+
           <p className="text-2xl font-semibold">
             {userQuery.data?.name ?? "Guest User"}
           </p>
