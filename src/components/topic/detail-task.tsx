@@ -6,6 +6,7 @@ import { DialogSubmitTask } from "@/components/topic/dialog-submit-task";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { env } from "@/env";
+import { ReactParser } from "@/lib/react-parser";
 import { type Task } from "@/lib/spot";
 import { cn } from "@/lib/utils";
 
@@ -86,6 +87,10 @@ export function DetailTask({ index, task }: DetailTaskProps) {
           <div className="text-sm text-accent-foreground/75">
             Submitted:{" "}
             {moment(task.answer.dateSubmitted).format("DD MMM YYYY HH:mm")}
+          </div>
+
+          <div className="prose prose-sm max-w-full text-wrap text-sm dark:prose-invert">
+            {ReactParser(task.answer.content)}
           </div>
 
           {task.answer.fileHref && (
