@@ -32,7 +32,7 @@ export function RecentTopics() {
 
   const renderEmptyState = () => (
     <div className="flex min-h-32 items-center justify-center">
-      <p className="font-medium text-accent-foreground/75 md:text-lg">
+      <p className="text-accent-zinc-300/75 font-medium md:text-lg">
         No recent topics found
       </p>
     </div>
@@ -83,7 +83,7 @@ export function RecentTopics() {
       >
         <motion.div
           className={cn(
-            "absolute inset-0 bg-gradient-to-r from-zinc-500/10 via-zinc-500/30 to-zinc-500/10",
+            "absolute inset-0 bg-gradient-to-r from-zinc-300/10 via-zinc-300/30 to-zinc-300/10 dark:from-zinc-700/10 dark:via-zinc-700/30 dark:to-zinc-700/10",
           )}
           animate={{
             backgroundPosition: ["0% 0%", "100% 100%"],
@@ -101,7 +101,7 @@ export function RecentTopics() {
 
         <motion.div
           className={cn(
-            "absolute inset-0 bg-gradient-to-br from-transparent via-zinc-500/10 to-transparent",
+            "absolute inset-0 bg-gradient-to-br from-transparent via-zinc-300/10 to-transparent dark:via-zinc-700/10",
           )}
           animate={{
             opacity: [0.3, 0.5, 0.3],
