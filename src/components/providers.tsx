@@ -3,6 +3,7 @@ import * as React from "react";
 import posthog from "posthog-js";
 import { PostHogProvider } from "posthog-js/react";
 
+import { SuspendedPostHogPageView } from "@/components/common/posthog-pageview";
 import { useUser } from "@/lib/spot/api";
 
 if (typeof window !== "undefined") {
@@ -10,13 +11,17 @@ if (typeof window !== "undefined") {
     api_host: "/ingest",
     ui_host: "https://us.posthog.com",
     capture_pageleave: true, // Enable pageleave capture
+    capture_pageview: false, // Disable automatic pageview capture, as we capture manually
   });
 }
 
 export function PHProvider({ children }: { children: React.ReactNode }) {
   return (
     <PostHogProvider client={posthog}>
-      <PHAuthWrapper>{children}</PHAuthWrapper>
+      <PHAuthWrapper>
+        <SuspendedPostHogPageView />
+        {children}
+      </PHAuthWrapper>
     </PostHogProvider>
   );
 }
