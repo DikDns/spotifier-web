@@ -2,8 +2,11 @@ import { type Metadata } from "next";
 import { ThemeProvider } from "next-themes";
 import { GeistSans } from "geist/font/sans";
 
+import { PHProvider } from "@/components/providers";
 import { Toaster } from "@/components/ui/sonner";
 import { TRPCReactProvider } from "@/trpc/react";
+
+import PostHogPageView from "./PostHogPageView";
 
 import "@/styles/globals.css";
 
@@ -23,19 +26,22 @@ export default function RootLayout({
       className={`${GeistSans.variable} antialiased`}
       suppressHydrationWarning
     >
-      <body>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <TRPCReactProvider>
-            {children}
-            <Toaster />
-          </TRPCReactProvider>
-        </ThemeProvider>
-      </body>
+      <TRPCReactProvider>
+        <PHProvider>
+          <body>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <PostHogPageView />
+              {children}
+              <Toaster />
+            </ThemeProvider>
+          </body>
+        </PHProvider>
+      </TRPCReactProvider>
     </html>
   );
 }
