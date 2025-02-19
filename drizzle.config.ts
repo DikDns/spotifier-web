@@ -4,7 +4,6 @@ import { env } from "@/env";
 
 export default {
   schema: "./src/server/db/schema.ts",
-  dialect: "sqlite",
   out: "./migrations",
   driver: "turso",
   dbCredentials: {
