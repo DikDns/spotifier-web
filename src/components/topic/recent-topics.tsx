@@ -46,6 +46,7 @@ export function RecentTopics() {
           const color = uniqolor(course?.name ?? "", {
             format: "hex",
           });
+
           const topics = course?.topics.filter((topic) => topic.isAccessable);
           const recentTopic = topics?.at(topics?.length - 1);
           const recentTopicIndex = topics?.findIndex(
@@ -63,7 +64,7 @@ export function RecentTopics() {
               courseName={course?.name ?? ""}
               topicId={recentTopic.id ?? ""}
               color={color.color}
-              index={recentTopicIndex + 1}
+              index={recentTopicIndex ? recentTopicIndex + 1 : 0}
             />
           );
         })}
