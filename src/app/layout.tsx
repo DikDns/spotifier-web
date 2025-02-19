@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   title: "SPOTifier",
   description:
     "SPOTifier takes SPOT to the modern era. SPOTifier or 'Sistem Pembelajaran Online Terpadu' Modifier is a web application that modifies SPOT-UPI User Interface to be more modern and user-friendly, adapting modern tech-stack.",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
+  icons: [{ rel: "icon", url: "/favicon.png" }],
 };
 
 export default function RootLayout({
