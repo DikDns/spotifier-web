@@ -64,7 +64,7 @@ export function RecentTopics() {
               courseName={course?.name ?? ""}
               topicId={recentTopic.id ?? ""}
               color={color.color}
-              index={recentTopicIndex ? recentTopicIndex + 1 : 0}
+              index={recentTopicIndex ? recentTopicIndex + 1 : 1}
             />
           );
         })}
