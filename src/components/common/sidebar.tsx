@@ -10,7 +10,6 @@ import {
   FaCircle,
   FaGraduationCap,
   FaHouse,
-  FaKeyboard,
   FaListCheck,
 } from "react-icons/fa6";
 
@@ -166,8 +165,6 @@ export function Sidebar() {
                   >
                     <p className="flex items-center gap-x-2">
                       <span>{"Expand"}</span>
-                      <FaKeyboard aria-label="Keyboard Shortcut" />
-                      <span>{"(Ctrl + Alt + S)"}</span>
                     </p>
                   </TooltipContent>
                 </TooltipPortal>
