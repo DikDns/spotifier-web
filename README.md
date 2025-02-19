@@ -30,7 +30,7 @@ SPOTifier or 'Sistem Pembelajaran Online Terpadu' Modifier is a web application 
 
 ## Screenshots
 
-<!-- <img src="cdn.jsdelivr.net/gh/DikDns/spotifier-web@main/.github/assets/screenshot-1.png" alt="SPOTifier Screenshot 1" width="512" height="288"> -->
+<img src="https://cdn.jsdelivr.net/gh/DikDns/spotifier-web@main/.github/assets/screenshot-1.png" alt="SPOTifier Screenshot 1" width="512" height="288">
 
 ## Features
 
