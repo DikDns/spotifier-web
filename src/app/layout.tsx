@@ -6,8 +6,6 @@ import { PHProvider } from "@/components/providers";
 import { Toaster } from "@/components/ui/sonner";
 import { TRPCReactProvider } from "@/trpc/react";
 
-import PostHogPageView from "./PostHogPageView";
-
 import "@/styles/globals.css";
 
 export const metadata: Metadata = {
@@ -35,7 +33,6 @@ export default function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
-              <PostHogPageView />
               {children}
               <Toaster />
             </ThemeProvider>
