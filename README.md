@@ -34,9 +34,15 @@ SPOTifier or 'Sistem Pembelajaran Online Terpadu' Modifier is a web application 
 
 ## Features
 
-- 🌓 Dark/Light mode support
-- 🔄 Seamless SSO integration
--
+- 🔐 Secure browser-based SPOT's data processing
+- 🌓 Elegant dark and light theme
+- 🔄 Effortless SSO authentication
+- 📱 Stunning responsive design with fluid animations
+- 📚 Intuitive course and topic organization
+- ⚡ Smart task management system
+- 📊 Rich course insights and resource handling
+- 🎥 Seamless YouTube content integration
+- 🔍 Intelligent content optimization
 
 ## Installation
 
