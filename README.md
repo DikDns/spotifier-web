@@ -1,29 +1,58 @@
-# Create T3 App
+<p align="center">
+  <br />
+  <a href="https://spotifier-upi.vercel.app">
+    <picture>
+      <img src="https://cdn.jsdelivr.net/gh/DikDns/spotifier-firefox-extension@main/src/icons/icon-256.png" alt="SPOTifier Logo" width="128" height="128">
+    </picture>
+  </a>
+</p>
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+<p align="center">
+  <a href="https://spotifier-upi.vercel.app">SPOTifier</a> takes SPOT to the modern era.
+</p>
 
-## What's next? How do I make an app with this?
+<p align="center">
+  <a title="MIT License" href="LICENSE">
+    <img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT License" />
+  </a>
+  <a title="Vercel" href="https://vercel.com">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://img.shields.io/badge/powered%20by-Vercel%20%E2%96%B2-white">
+      <img src="https://img.shields.io/badge/powered%20by-Vercel%20%E2%96%B2-black" alt="Powered by Vercel">
+    </picture>
+  </a>
+  <br />
+</p>
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+## Description
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+SPOTifier or 'Sistem Pembelajaran Online Terpadu' Modifier is a web application that modifies SPOT-UPI User Interface to be more modern and user-friendly, adapting modern tech-stack. This is the source code of the SPOTifier Web Application.
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+## Screenshots
 
-## Learn More
+<!-- <img src="cdn.jsdelivr.net/gh/DikDns/spotifier-web@main/.github/assets/screenshot-1.png" alt="SPOTifier Screenshot 1" width="512" height="288"> -->
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+## Features
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+- 🌓 Dark/Light mode support
+- 🔄 Seamless SSO integration
+-
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+## Installation
 
-## How do I deploy this?
+Follow the getting started guide from [Contributing Guide][] to set up the project locally.
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+```bash
+npm ci
+npm run dev
+```
+
+### Deployment
+
+The website is automatically deployed to [Vercel](https://vercel.com) through GitHub Action integration when there's a new push to the `main` branch.
+
+[Contributing Guide]: https://github.com/dikdns/spotifier-web/blob/main/CONTRIBUTING.md
+
+---
+
+Made with ❤️ by dikdns for UPI Students
