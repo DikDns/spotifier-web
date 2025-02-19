@@ -46,16 +46,14 @@ export function RecentTopics() {
           const color = uniqolor(course?.name ?? "", {
             format: "hex",
           });
-
-          const recentTopic = course?.topics
-            .filter((topic) => topic.isAccessable)
-            ?.at(-1);
-
-          const recentTopicIndex = course?.topics.findIndex(
+          const topics = course?.topics.filter((topic) => topic.isAccessable);
+          const recentTopic = topics?.at(topics?.length - 1);
+          const recentTopicIndex = topics?.findIndex(
             (topic) => topic.id === recentTopic?.id,
           );
 
-          if (!recentTopic || !recentTopicIndex) return null;
+          if (!recentTopic || (recentTopicIndex && recentTopicIndex < 0))
+            return null;
 
           return (
             <RecentTopic

@@ -61,7 +61,7 @@
     "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1",
     "@typescript-eslint/eslint-plugin": "^8.1.0",
     "@typescript-eslint/parser": "^8.1.0",
-    "drizzle-kit": "^0.24.0",
+    "drizzle-kit": "^0.19.1",
     "eslint": "^8.57.0",
     "eslint-config-next": "15.0.2",
     "eslint-plugin-drizzle": "^0.2.3",

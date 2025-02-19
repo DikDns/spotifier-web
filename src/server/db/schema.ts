@@ -30,19 +30,4 @@ export const users = createTable(
   }),
 );
 
-export const userSessions = createTable(
-  "user_session",
-  {
-    id: text("id", { length: 256 }).primaryKey(),
-    laravelSession: text("laravel_session", { length: 512 }),
-    xsrfToken: text("xsrf_token", { length: 512 }),
-    casAuth: text("cas_auth", { length: 512 }),
-    userId: text("user_id", { length: 256 }).notNull(),
-    createdAt: int("created_at", { mode: "timestamp" })
-      .default(sql`(unixepoch())`)
-      .notNull(),
-  },
-  (userSession) => ({
-    userIdIndex: index("user_id_idx").on(userSession.userId),
-  }),
-);
+export type User = typeof users.$inferSelect;
