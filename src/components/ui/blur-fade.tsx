@@ -4,6 +4,7 @@ import { useRef } from "react";
 import {
   AnimatePresence,
   motion,
+  type MotionProps,
   useInView,
   type UseInViewOptions,
   type Variants,
@@ -11,40 +12,54 @@ import {
 
 type MarginType = UseInViewOptions["margin"];
 
-interface BlurFadeProps {
+interface BlurFadeProps extends MotionProps {
   children: React.ReactNode;
   className?: string;
   variant?: {
     hidden: { y: number };
     visible: { y: number };
   };
+  once?: boolean;
   duration?: number;
   delay?: number;
-  yOffset?: number;
+  offset?: number;
+  direction?: "up" | "down" | "left" | "right";
   inView?: boolean;
   inViewMargin?: MarginType;
   blur?: string;
 }
 
-export default function BlurFade({
+export function BlurFade({
   children,
   className,
   variant,
   duration = 0.4,
   delay = 0,
-  yOffset = 6,
+  once = false,
+  offset = 6,
+  direction = "down",
   inView = false,
   inViewMargin = "-50px",
   blur = "6px",
+  ...props
 }: BlurFadeProps) {
   const ref = useRef(null);
-  const inViewResult = useInView(ref, { once: true, margin: inViewMargin });
+  const inViewResult = useInView(ref, { once, margin: inViewMargin });
   const isInView = !inView || inViewResult;
   const defaultVariants: Variants = {
-    hidden: { y: yOffset, opacity: 0, filter: `blur(${blur})` },
-    visible: { y: -yOffset, opacity: 1, filter: `blur(0px)` },
+    hidden: {
+      [direction === "left" || direction === "right" ? "x" : "y"]:
+        direction === "right" || direction === "down" ? -offset : offset,
+      opacity: 0,
+      filter: `blur(${blur})`,
+    },
+    visible: {
+      [direction === "left" || direction === "right" ? "x" : "y"]: 0,
+      opacity: 1,
+      filter: `blur(0px)`,
+    },
   };
-  const combinedVariants = variant ?? defaultVariants;
+  const combinedVariants = variant || defaultVariants;
   return (
     <AnimatePresence>
       <motion.div
@@ -59,6 +74,7 @@ export default function BlurFade({
           ease: "easeOut",
         }}
         className={className}
+        {...props}
       >
         {children}
       </motion.div>
