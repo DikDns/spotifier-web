@@ -1,5 +1,7 @@
 "use client";
 import * as React from "react";
+import { type LenisRef, ReactLenis } from "lenis/react";
+import { cancelFrame, frame } from "motion/react";
 import posthog from "posthog-js";
 import { PostHogProvider } from "posthog-js/react";
 
@@ -13,6 +15,38 @@ if (typeof window !== "undefined") {
     capture_pageleave: true, // Enable pageleave capture
     capture_pageview: false, // Disable automatic pageview capture, as we capture manually
   });
+}
+
+export function LenisProvider({ children }: { children: React.ReactNode }) {
+  const lenisRef = React.useRef<LenisRef>(null);
+
+  React.useEffect(() => {
+    function update(data: { timestamp: number }) {
+      lenisRef.current?.lenis?.raf(data.timestamp);
+    }
+    frame.update(update, true);
+
+    return () => cancelFrame(update);
+  }, []);
+
+  return (
+    <ReactLenis
+      ref={lenisRef}
+      root
+      options={{
+        duration: 1,
+        prevent: (node) => {
+          if (node.classList.contains("no-lenis")) {
+            return true;
+          } else {
+            return false;
+          }
+        },
+      }}
+    >
+      {children}
+    </ReactLenis>
+  );
 }
 
 export function PHProvider({ children }: { children: React.ReactNode }) {

@@ -2,7 +2,7 @@ import { type Metadata } from "next";
 import { ThemeProvider } from "next-themes";
 import { GeistSans } from "geist/font/sans";
 
-import { PHProvider } from "@/components/providers";
+import { LenisProvider, PHProvider } from "@/components/providers";
 import { Toaster } from "@/components/ui/sonner";
 import { TRPCReactProvider } from "@/trpc/react";
 
@@ -27,15 +27,17 @@ export default function RootLayout({
       <TRPCReactProvider>
         <PHProvider>
           <body>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
-            >
-              {children}
-              <Toaster />
-            </ThemeProvider>
+            <LenisProvider>
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="system"
+                enableSystem
+                disableTransitionOnChange
+              >
+                {children}
+                <Toaster />
+              </ThemeProvider>
+            </LenisProvider>
           </body>
         </PHProvider>
       </TRPCReactProvider>
