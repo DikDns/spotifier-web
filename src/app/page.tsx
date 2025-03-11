@@ -6,7 +6,8 @@ import Link from "next/link";
 import { motion } from "motion/react";
 
 import SpotifierLogo from "@/assets/spotifier-logo.png";
-import { TaglineSection } from "@/components/home/tagline-section";
+import { HeadlineText } from "@/components/home/headline-text";
+import { FlickeringGrid } from "@/components/magicui/flickering-grid";
 
 /**
  * Home Page
@@ -51,13 +52,24 @@ export default function HomePage() {
         </Link>
       </motion.nav>
 
-      <TaglineSection />
+      <div className="relative h-[800px] w-full overflow-hidden bg-background blur-sm">
+        <FlickeringGrid
+          className="absolute inset-0 z-0 size-full"
+          squareSize={8}
+          gridGap={16}
+          color="oklch(0.627 0.265 303.9)"
+          maxOpacity={0.35}
+          flickerChance={0.1}
+          height={800}
+          width={2000}
+        />
+      </div>
+
+      <HeadlineText />
 
       {/* Content sections that will be revealed */}
-      <div className="relative mt-[100vh]">
-        <section className="min-h-svh">
-          {/* Your About section content */}
-        </section>
+      <div className="relative z-[1] min-h-svh w-full bg-background">
+        <section className="">{/* Your About section content */}</section>
 
         <section className="min-h-svh">
           {/* Your Features section content */}

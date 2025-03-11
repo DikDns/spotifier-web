@@ -6,27 +6,29 @@ import { useMotionValueEvent, useScroll } from "motion/react";
 import { InteractiveHoverButton } from "@/components/magicui/interactive-hover-button";
 import { TextAnimate } from "@/components/magicui/text-animate";
 import { BlurFade } from "@/components/ui/blur-fade";
-import { mapRange } from "@/lib/map-range";
+import { backOut } from "@/lib/animation-utils";
 
-const MIN_VALUE_TRIGGER = 0.6;
+const MIN_VALUE_TRIGGER = 0;
+const MAX_HEIGHT_SCROLL = 600;
 
-export function TaglineSection() {
+export function HeadlineText() {
   const { scrollY } = useScroll();
 
   useMotionValueEvent(scrollY, "change", (latest) => {
-    const scrollPercent = latest / window.innerHeight;
-    const mappedValue = mapRange(scrollPercent, MIN_VALUE_TRIGGER, 1, 0, 1);
+    const scrollPercent = latest / MAX_HEIGHT_SCROLL;
+    // -1 for reverse
+    const x = backOut(scrollPercent) * -1;
 
     const taglineSection = document.getElementById("tagline-section");
     if (taglineSection && scrollPercent >= MIN_VALUE_TRIGGER) {
-      taglineSection.style.top = `-${mappedValue * 100}px`;
+      taglineSection.style.top = `${128 * x}px`;
     }
   });
 
   return (
     <section
       id="tagline-section"
-      className="fixed left-0 right-0 top-0 z-[1] flex min-h-svh flex-col items-center justify-center px-3"
+      className="fixed left-0 right-0 top-0 z-[0] flex min-h-svh flex-col items-center justify-center px-3"
     >
       <div className="mb-9">
         <TextAnimate
