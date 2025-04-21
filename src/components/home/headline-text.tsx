@@ -19,7 +19,18 @@ export function HeadlineText() {
     // -1 for reverse
     const x = backOut(scrollPercent) * -1;
 
+    if (x > 1) return;
+
     const taglineSection = document.getElementById("tagline-section");
+
+    console.log("latest", latest);
+    console.log("x", x);
+
+    if (taglineSection && latest > 1500) {
+      taglineSection.style.top = `${scrollPercent}px`;
+      return;
+    }
+
     if (taglineSection && scrollPercent >= MIN_VALUE_TRIGGER) {
       taglineSection.style.top = `${128 * x}px`;
     }

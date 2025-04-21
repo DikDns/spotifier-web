@@ -7,7 +7,7 @@ import { motion } from "motion/react";
 
 import SpotifierLogo from "@/assets/spotifier-logo.png";
 import { HeadlineText } from "@/components/home/headline-text";
-import { FlickeringGrid } from "@/components/magicui/flickering-grid";
+import { PreviewVideo } from "@/components/home/preview-video";
 
 /**
  * Home Page
@@ -34,7 +34,7 @@ import { FlickeringGrid } from "@/components/magicui/flickering-grid";
  */
 export default function HomePage() {
   return (
-    <main className="relative h-[2000px] min-h-screen overflow-hidden">
+    <main className="relative min-h-[4000px] overflow-hidden">
       {/* Hero Section */}
       <motion.nav
         className="fixed left-3 top-3 rounded-full bg-card-foreground p-1"
@@ -52,28 +52,13 @@ export default function HomePage() {
         </Link>
       </motion.nav>
 
-      <div className="relative h-[800px] w-full overflow-hidden bg-background blur-sm">
-        <FlickeringGrid
-          className="absolute inset-0 z-0 size-full"
-          squareSize={8}
-          gridGap={16}
-          color="oklch(0.627 0.265 303.9)"
-          maxOpacity={0.35}
-          flickerChance={0.1}
-          height={800}
-          width={2000}
-        />
-      </div>
+      <div className="relative h-[800px] w-full overflow-hidden"></div>
 
       <HeadlineText />
 
       {/* Content sections that will be revealed */}
-      <div className="relative z-[1] min-h-svh w-full bg-background">
-        <section className="">{/* Your About section content */}</section>
-
-        <section className="min-h-svh">
-          {/* Your Features section content */}
-        </section>
+      <div className="relative z-[1] min-h-svh w-full bg-background py-6">
+        <PreviewVideo />
       </div>
     </main>
   );

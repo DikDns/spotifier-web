@@ -60,6 +60,7 @@ export default {
         "background-position-spin":
           "background-position-spin 3000ms infinite alternate",
         "border-beam": "border-beam calc(var(--duration)*1s) infinite linear",
+        shine: "shine var(--duration) infinite linear",
       },
       keyframes: {
         "background-position-spin": {
@@ -73,6 +74,17 @@ export default {
         "border-beam": {
           "100%": {
             "offset-distance": "100%",
+          },
+        },
+        shine: {
+          "0%": {
+            "background-position": "0% 0%",
+          },
+          "50%": {
+            "background-position": "100% 100%",
+          },
+          to: {
+            "background-position": "0% 0%",
           },
         },
       },
