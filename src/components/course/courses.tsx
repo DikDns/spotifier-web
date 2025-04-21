@@ -15,14 +15,14 @@ export function Courses() {
   const renderLoading = () =>
     isFetching && (
       <div className="pb-2">
-        <ScrapingLoadingCard text={"Scraping SPOT's courses..."} />
+        <ScrapingLoadingCard text={"Mengambil data mata kuliah dari SPOT..."} />
       </div>
     );
 
   const renderEmptyState = () => (
     <div className="flex min-h-32 items-center justify-center">
       <p className="font-medium text-accent-foreground/75 md:text-lg">
-        No courses found
+        Tidak ada mata kuliah ditemukan
       </p>
     </div>
   );
@@ -60,7 +60,7 @@ export function Courses() {
         <div className="space-y-2">
           <div className="flex gap-x-2 pb-2">
             <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">
-              Courses
+              Mata Kuliah
             </h2>
           </div>
 
@@ -68,9 +68,9 @@ export function Courses() {
 
           {isError && (
             <ErrorCard
-              title="Failed to load courses"
+              title="Gagal memuat mata kuliah"
               description={
-                error?.message || "There was an error loading your courses"
+                error?.message || "Terjadi kesalahan saat memuat mata kuliah"
               }
               retry={() => refetch()}
             />

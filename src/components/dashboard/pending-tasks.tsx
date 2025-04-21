@@ -48,10 +48,10 @@ export function PendingTasks() {
   const renderEmptyState = () => (
     <div className="flex h-full flex-col items-center justify-center space-y-2">
       <p className="text-wrap text-center font-medium text-accent-foreground/75 md:text-lg">
-        All tasks are completed, good job! 🎉
+        Semua tugas selesai! 🎉
       </p>
       <p className="text-wrap text-center text-sm text-accent-foreground/75">
-        (Click the refresh button to load the latest tasks)
+        (Tekan tombol refresh untuk mengambil tugas terbaru)
       </p>
     </div>
   );
@@ -108,7 +108,7 @@ export function PendingTasks() {
       <div className="relative flex h-full flex-col justify-between">
         <div className="flex items-center justify-between">
           <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">
-            Pending Tasks
+            Tugas Tertunda
           </h2>
 
           <TooltipProvider delayDuration={0}>
@@ -124,7 +124,7 @@ export function PendingTasks() {
                 </Button>
               </TooltipTrigger>
               <TooltipContent side="right" variant="inverseAccent">
-                <p>Refetch Pending tasks</p>
+                <p>Refetch Tugas</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -135,9 +135,9 @@ export function PendingTasks() {
 
           {isError && (
             <ErrorCard
-              title="Failed to load tasks"
+              title="Gagal memuat tugas"
               description={
-                error?.message || "There was an error loading your tasks"
+                error?.message || "Terdapat kesalahan saat memuat tugas"
               }
               retry={() => refetch()}
             />

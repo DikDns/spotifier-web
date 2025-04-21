@@ -42,19 +42,19 @@ type SidebarLink = {
 const defaultSidebarLinks: SidebarLink[] = [
   {
     href: "/dashboard",
-    icon: <FaHouse aria-label="Home" className="h-5 w-5" />,
-    label: "Home",
+    icon: <FaHouse aria-label="Beranda" className="h-5 w-5" />,
+    label: "Beranda",
   },
   {
     href: "/dashboard/tasks",
     disabled: true,
-    icon: <FaListCheck aria-label="Tasks" className="h-5 w-5" />,
-    label: "Tasks",
+    icon: <FaListCheck aria-label="Tugas" className="h-5 w-5" />,
+    label: "Tugas",
   },
   {
     href: "/dashboard/courses",
-    icon: <FaGraduationCap aria-label="Courses" className="h-5 w-5" />,
-    label: "Courses",
+    icon: <FaGraduationCap aria-label="Mata Kuliah" className="h-5 w-5" />,
+    label: "Mata Kuliah",
   },
 ];
 
@@ -89,8 +89,8 @@ export function Sidebar() {
           (topic, index) =>
             ({
               href: `/dashboard/courses/${currentCourseId}/topics/${topic?.id}?t=${index + 1}`,
-              icon: <FaCircle aria-label="Topic" className="h-2.5 w-2.5" />,
-              label: `Topic ${index + 1}`,
+              icon: <FaCircle aria-label="Topik" className="h-2.5 w-2.5" />,
+              label: `Pertemuan ${index + 1}`,
               disabled: currentTopicId === topic?.id,
               type: "topic",
             }) as SidebarLinkSelectProps,
@@ -151,7 +151,7 @@ export function Sidebar() {
                       animate={{ opacity: 1, x: 0 }}
                       className="text-md ml-2"
                     >
-                      {"Collapse"}
+                      {"Tutup"}
                     </motion.span>
                   )}
                 </Button>
@@ -164,7 +164,7 @@ export function Sidebar() {
                     sideOffset={16}
                   >
                     <p className="flex items-center gap-x-2">
-                      <span>{"Expand"}</span>
+                      <span>{"Buka"}</span>
                     </p>
                   </TooltipContent>
                 </TooltipPortal>

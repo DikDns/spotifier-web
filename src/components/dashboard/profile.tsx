@@ -13,25 +13,25 @@ export function Profile() {
 
   const statsArray = [
     stats.totalCourses && {
-      label: "Total Courses",
+      label: "Total Mata Kuliah",
       value: stats.totalCourses,
       icon: FaBookOpen,
       color: "text-violet-500",
     },
     stats.totalTasks && {
-      label: "Total Tasks",
+      label: "Total Tugas",
       value: stats.totalTasks,
       icon: FaListCheck,
       color: "text-violet-500",
     },
     stats.tasksDone && {
-      label: "Tasks Done",
+      label: "Tugas Selesai",
       value: stats.tasksDone,
       icon: FaCheck,
       color: "text-green-500",
     },
     stats.tasksMissed && {
-      label: "Tasks Missed",
+      label: "Tugas Terlewat",
       value: stats.tasksMissed,
       icon: FaXmark,
       color: "text-red-500",
@@ -60,16 +60,14 @@ export function Profile() {
       <div className="relative space-y-6">
         {/* Profile Header */}
         <div>
-          <h2 className="pb-2 text-3xl font-semibold tracking-tight">
-            Profile
-          </h2>
+          <h2 className="pb-2 text-3xl font-semibold tracking-tight">Profil</h2>
 
           <span className="text-lg font-medium text-accent-foreground/75">
-            {userQuery.data?.nim ?? "No NIM"}
+            {userQuery.data?.nim ?? "Tidak ada NIM"}
           </span>
 
           <p className="text-2xl font-semibold">
-            {userQuery.data?.name ?? "Guest User"}
+            {userQuery.data?.name ?? "Tidak ada nama"}
           </p>
         </div>
 

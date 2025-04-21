@@ -12,7 +12,7 @@ export default async function TopicPage(props: {
     <div className="flex gap-x-3 p-6">
       <Sidebar />
       <main className="min-h-screen basis-full">
-        <Header title="Topic" />
+        <Header title="Pertemuan" />
 
         <Topic courseId={courseId} topicId={topicId} />
       </main>

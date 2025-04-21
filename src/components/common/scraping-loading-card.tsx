@@ -7,11 +7,7 @@ import { BorderBeam } from "@/components/ui/border-beam";
 import { GradualSpacing } from "@/components/ui/gradual-spacing";
 import { cn } from "@/lib/utils";
 
-export function ScrapingLoadingCard({
-  text = "Loading...",
-}: {
-  text?: string;
-}) {
+export function ScrapingLoadingCard({ text = "Memuat..." }: { text?: string }) {
   return (
     <div
       className={cn(
@@ -20,7 +16,7 @@ export function ScrapingLoadingCard({
     >
       <GradualSpacing
         className="text-center text-xl font-semibold -tracking-[0.25rem] text-black dark:text-white md:text-2xl"
-        text={"Crunching SPOT..."}
+        text={"Menyomot SPOT..."}
       />
       <div className="flex items-center justify-center gap-x-2">
         <motion.div

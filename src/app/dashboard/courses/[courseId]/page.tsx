@@ -12,7 +12,7 @@ export default async function CoursePage(props: {
     <div className="flex gap-x-3 p-6">
       <Sidebar />
       <main className="min-h-screen basis-full">
-        <Header title="Course" />
+        <Header title="Mata Kuliah" />
 
         <DetailCourse courseId={courseId} />
       </main>

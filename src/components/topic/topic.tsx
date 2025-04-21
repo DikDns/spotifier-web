@@ -38,9 +38,9 @@ export function Topic({
     return (
       <div className="flex flex-col gap-4 p-4">
         <ErrorCard
-          title="Failed to load course"
+          title="Gagal memuat mata kuliah"
           description={
-            courseError?.message ?? "There was an error loading the course"
+            courseError?.message ?? "Terjadi kesalahan saat memuat mata kuliah"
           }
           retry={() => refetchCourse()}
         />
@@ -52,9 +52,9 @@ export function Topic({
     return (
       <div className="flex flex-col gap-4 p-4">
         <ErrorCard
-          title="Failed to load topic"
+          title="Gagal memuat pertemuan"
           description={
-            topicError?.message ?? "There was an error loading the topic"
+            topicError?.message ?? "Terjadi kesalahan saat memuat pertemuan"
           }
           retry={() => refetchTopic()}
         />
@@ -68,7 +68,9 @@ export function Topic({
         <div className="w-full py-2">
           <ScrapingLoadingCard
             text={
-              isCourseLoading ? "Scraping course..." : "Extracting topic..."
+              isCourseLoading
+                ? "Memuat mata kuliah..."
+                : "Mengekstrak pertemuan..."
             }
           />
         </div>
@@ -85,7 +87,7 @@ export function Topic({
           <div className="flex items-center justify-between pb-2">
             <div className="flex items-center gap-x-2">
               <h2 className="scroll-m-20 text-wrap text-3xl font-semibold capitalize tracking-tight first:mt-0">
-                {course?.name} - Topic {topicNumber}
+                {course?.name} - Topik {topicNumber}
               </h2>
             </div>
           </div>
@@ -104,14 +106,14 @@ export function Topic({
         <div className="w-full space-y-2">
           <div className="flex justify-between gap-x-2 pb-2">
             <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">
-              Resources
+              Sumber Belajar
             </h2>
 
             <OpenInSpot href={`/mhs/materi/${courseId}/${topicId}`} />
           </div>
 
           {topic?.contents?.length === 0 ? (
-            <EmptyMessage message="Resources not found, check again later! 😞" />
+            <EmptyMessage message="Sumber belajar tidak ditemukan, coba periksa lagi nanti! 😞" />
           ) : (
             <DetailResources resources={topic?.contents ?? []} />
           )}
@@ -125,14 +127,14 @@ export function Topic({
         <div className="space-y-2">
           <div className="flex justify-between gap-x-2 pb-2">
             <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">
-              Tasks
+              Tugas
             </h2>
 
             <OpenInSpot href={`/mhs/tugas/${courseId}/${topicId}`} />
           </div>
 
           {topic?.tasks?.length === 0 ? (
-            <EmptyMessage message="No tasks for this topic, hooray! 😁" />
+            <EmptyMessage message="Tidak ada tugas untuk topik ini, horee! 😁" />
           ) : (
             <div className="w-full">
               {topic?.tasks?.length && (

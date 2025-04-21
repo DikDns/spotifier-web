@@ -25,15 +25,15 @@ export function DetailTopic({
       href={`/dashboard/courses/${courseId}/topics/${topic?.id}?t=${index + 1}`}
       disabled={!topic?.id}
       color={color.color}
-      name={`Topic ${index + 1}`}
+      name={`Pertemuan ${index + 1}`}
       description={textContentParser(
-        topic?.contents?.[0]?.rawHtml ?? "No description",
+        topic?.contents?.[0]?.rawHtml ?? "Tidak ada deskripsi",
       )}
       icon={`${index + 1}`}
       time={
         topic?.accessTime
           ? formatAccessTime(topic.accessTime)
-          : "No access time"
+          : "Tidak ada waktu akses"
       }
     />
   );

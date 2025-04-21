@@ -8,7 +8,7 @@ export default function DashboardPage() {
     <div className="flex gap-x-3 p-6">
       <Sidebar />
       <main className="min-h-screen basis-full">
-        <Header title="Dashboard" />
+        <Header title="Beranda" />
         <ProfileTask />
         <RecentTopics />
       </main>

@@ -7,7 +7,7 @@ export default function CoursesPage() {
     <div className="flex gap-x-3 p-6">
       <Sidebar />
       <main className="min-h-screen basis-full">
-        <Header title="Courses" />
+        <Header title="Mata Kuliah" />
 
         <Courses />
       </main>

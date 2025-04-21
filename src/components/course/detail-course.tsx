@@ -18,9 +18,9 @@ export function DetailCourse({ courseId }: { courseId: string }) {
     return (
       <div className="flex flex-col gap-4 p-4">
         <ErrorCard
-          title="Failed to load course details"
+          title="Gagal memuat detail mata kuliah"
           description={
-            error?.message || "There was an error loading the course details"
+            error?.message || "Terjadi kesalahan saat memuat detail mata kuliah"
           }
           retry={() => refetch()}
         />
@@ -70,7 +70,7 @@ export function DetailCourse({ courseId }: { courseId: string }) {
         <div className="space-y-2">
           <div className="flex gap-x-2 pb-2">
             <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">
-              Topics
+              Daftar Pertemuan
             </h2>
           </div>
           {course?.topics?.length === 0 ? (
@@ -95,7 +95,7 @@ function EmptyTopics() {
   return (
     <div className="flex min-h-32 items-center justify-center">
       <p className="font-medium text-accent-foreground/75 md:text-lg">
-        No topics found
+        Tidak ada pertemuan ditemukan
       </p>
     </div>
   );
@@ -116,7 +116,7 @@ function DetailTopics({
   return (
     <div className="w-full space-y-4">
       {isTopicsLoading && (
-        <ScrapingLoadingCard text={"Scraping SPOT's topics..."} />
+        <ScrapingLoadingCard text={"Mengambil pertemuan dari SPOT..."} />
       )}
 
       {topics?.length !== 0 && (

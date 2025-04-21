@@ -26,14 +26,14 @@ export function RecentTopics() {
     isFetching ||
     (detailCourseQueries.some((query) => query.isFetching) && (
       <div className="pb-2">
-        <ScrapingLoadingCard text={"Hunting for recent topics..."} />
+        <ScrapingLoadingCard text={"Menyomot pertemuan terbaru..."} />
       </div>
     ));
 
   const renderEmptyState = () => (
     <div className="flex min-h-32 items-center justify-center">
       <p className="text-accent-zinc-300/75 font-medium md:text-lg">
-        No recent topics found
+        Tidak ada pertemuan
       </p>
     </div>
   );
@@ -116,7 +116,7 @@ export function RecentTopics() {
         <div className="relative space-y-6">
           <div className="flex items-center justify-between">
             <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">
-              Recent Topics
+              Pertemuan Terbaru
             </h2>
           </div>
 
@@ -125,10 +125,10 @@ export function RecentTopics() {
 
             {isError && (
               <ErrorCard
-                title="Failed to load recent topics"
+                title="Gagal Memuat Pertemuan Terbaru"
                 description={
                   error?.message ??
-                  "There was an error loading your recent topics"
+                  "Terjadi kesalahan saat memuat pertemuan terbaru"
                 }
                 retry={() => refetch()}
               />
@@ -168,15 +168,15 @@ function RecentTopic({
       key={courseId}
       href={`/dashboard/courses/${courseId}/topics/${topicId}?t=${index}`}
       color={color}
-      name={`${courseAcronym} - Topic ${index}`}
+      name={`${courseAcronym} - Pertemuan ${index}`}
       description={`${courseName} - ${textContentParser(
-        topic?.contents?.[0]?.rawHtml ?? "No description",
+        topic?.contents?.[0]?.rawHtml ?? "Tidak ada deskripsi",
       )}`}
       icon="📄"
       time={
         topic?.accessTime
           ? formatAccessTime(topic.accessTime, { relative: true, detail: true })
-          : "No access time"
+          : "Tidak ada waktu akses"
       }
     />
   );
