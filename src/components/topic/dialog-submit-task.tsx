@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { useLocale } from "@/lib/locale-utils";
 import { type Task } from "@/lib/spot";
 import { usePostTask } from "@/lib/spot/api/use-post-task";
 
@@ -26,6 +27,7 @@ interface DialogSubmitTaskProps {
 
 export function DialogSubmitTask({ task }: DialogSubmitTaskProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const { translations } = useLocale();
   const { mutateAsync: postTask, isPending } = usePostTask(
     task.courseId,
     task.topicId,
@@ -50,39 +52,48 @@ export function DialogSubmitTask({ task }: DialogSubmitTaskProps) {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button>Submit Task</Button>
+        <Button>{translations.topic.submitTask.button}</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Submit Task</DialogTitle>
+          <DialogTitle>{translations.topic.submitTask.title}</DialogTitle>
           <DialogDescription>
-            Submit your task for this topic.
+            {translations.topic.submitTask.description}
           </DialogDescription>
         </DialogHeader>
 
         {task.status === "notSubmitted" && (
           <Alert variant="destructive">
-            <AlertTitle>Task Deadline Passed</AlertTitle>
+            <AlertTitle>
+              {translations.topic.submitTask.pastDue.title}
+            </AlertTitle>
             <AlertDescription>
-              This task has passed the deadline {moment(task.dueDate).fromNow()}
-              . If you submit it today, the date submitted will be the current
-              date.
+              {translations.topic.submitTask.pastDue.description.replace(
+                "{time}",
+                moment(task.dueDate).fromNow(),
+              )}
             </AlertDescription>
           </Alert>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description">
+              {translations.topic.submitTask.form.description.label}
+            </Label>
             <Textarea
               id="description"
               name="description"
-              placeholder="Enter your submission description"
+              placeholder={
+                translations.topic.submitTask.form.description.placeholder
+              }
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="file">Attachment</Label>
+            <Label htmlFor="file">
+              {translations.topic.submitTask.form.attachment.label}
+            </Label>
             <Input
               id="file"
               name="file"
@@ -97,10 +108,10 @@ export function DialogSubmitTask({ task }: DialogSubmitTaskProps) {
             {isPending ? (
               <>
                 <Loader2 className="mr-2 animate-spin" />
-                <span>Submitting...</span>
+                <span>{translations.topic.submitTask.form.submit.loading}</span>
               </>
             ) : (
-              "Submit"
+              translations.topic.submitTask.form.submit.default
             )}
           </Button>
         </form>

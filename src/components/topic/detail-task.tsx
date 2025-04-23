@@ -6,6 +6,7 @@ import { DialogSubmitTask } from "@/components/topic/dialog-submit-task";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { env } from "@/env";
+import { useLocale } from "@/lib/locale-utils";
 import { ReactParser } from "@/lib/react-parser";
 import { type Task } from "@/lib/spot";
 import { cn } from "@/lib/utils";
@@ -18,6 +19,8 @@ interface DetailTaskProps {
 }
 
 export function DetailTask({ index, task }: DetailTaskProps) {
+  const { translations } = useLocale();
+
   const getStatusColor = (status: Task["status"]) => {
     switch (status) {
       case "pending":
@@ -41,7 +44,11 @@ export function DetailTask({ index, task }: DetailTaskProps) {
         </h4>
 
         <Badge className={cn(getStatusColor(task.status))}>
-          {task.status.charAt(0).toUpperCase() + task.status.slice(1)}
+          {task.status === "pending" && translations.task.status.pending}
+          {task.status === "submitted" && translations.task.status.submitted}
+          {task.status === "graded" && translations.task.status.graded}
+          {task.status === "notSubmitted" &&
+            translations.task.status.notSubmitted}
         </Badge>
       </div>
 
@@ -52,12 +59,14 @@ export function DetailTask({ index, task }: DetailTaskProps) {
       <div className="flex flex-col gap-2 text-sm text-accent-foreground/75">
         {task.startDate && (
           <div>
-            Start Date: {moment(task.startDate).format("DD MMM YYYY, HH:mm")}
+            {translations.task.startDate}:{" "}
+            {moment(task.startDate).format(translations.task.detail.dateFormat)}
           </div>
         )}
         {task.dueDate && (
           <div>
-            Due Date: {moment(task.dueDate).format("DD MMM YYYY, HH:mm")} (
+            {translations.task.dueDate}:{" "}
+            {moment(task.dueDate).format(translations.task.detail.dateFormat)} (
             {moment(task.dueDate).fromNow()})
           </div>
         )}
@@ -65,13 +74,15 @@ export function DetailTask({ index, task }: DetailTaskProps) {
 
       {task.file && (
         <div className="flex items-center gap-x-2">
-          <span className="text-sm text-accent-foreground/75">Attachment:</span>
+          <span className="text-sm text-accent-foreground/75">
+            {translations.task.attachment}:
+          </span>
           <Link
             href={SPOT_URL + task.file}
             target="_blank"
             className={cn(buttonVariants({ variant: "outline" }))}
           >
-            Download File
+            {translations.task.downloadFile}
           </Link>
         </div>
       )}
@@ -82,11 +93,15 @@ export function DetailTask({ index, task }: DetailTaskProps) {
             "space-y-2 rounded-lg border bg-muted-foreground/10 p-4",
           )}
         >
-          <h5 className="font-semibold text-foreground">Your Submission</h5>
+          <h5 className="font-semibold text-foreground">
+            {translations.task.submission.title}
+          </h5>
 
           <div className="text-sm text-accent-foreground/75">
-            Submitted:{" "}
-            {moment(task.answer.dateSubmitted).format("DD MMM YYYY HH:mm")}
+            {translations.task.submission.submitted}:{" "}
+            {moment(task.answer.dateSubmitted).format(
+              translations.task.detail.dateFormat,
+            )}
           </div>
 
           <div className="prose prose-sm max-w-full text-wrap text-sm dark:prose-invert">
@@ -100,7 +115,7 @@ export function DetailTask({ index, task }: DetailTaskProps) {
                 target="_blank"
                 className={cn(buttonVariants({ variant: "outline" }))}
               >
-                View Submitted File
+                {translations.task.submission.viewFile}
               </Link>
 
               <DeleteTaskButton task={task} />
@@ -110,11 +125,11 @@ export function DetailTask({ index, task }: DetailTaskProps) {
           {task.answer.isGraded && (
             <div className="space-y-1">
               <div className="text-sm font-medium">
-                Score: {task.answer.score}
+                {translations.task.grading.score}: {task.answer.score}
               </div>
               {task.answer.lecturerNotes && (
                 <div className="text-sm text-accent-foreground/75">
-                  Notes: {task.answer.lecturerNotes}
+                  {translations.task.grading.notes}: {task.answer.lecturerNotes}
                 </div>
               )}
             </div>

@@ -11,6 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useLocale } from "@/lib/locale-utils";
 import { DotsHorizontalIcon, MoonIcon, SunIcon } from "@radix-ui/react-icons";
 
 export function Header({ title }: { title: string }) {
@@ -40,6 +41,7 @@ export function Header({ title }: { title: string }) {
 
 function ThemeToggle() {
   const { setTheme } = useTheme();
+  const { translations } = useLocale();
 
   return (
     <DropdownMenu>
@@ -50,18 +52,18 @@ function ThemeToggle() {
         >
           <SunIcon className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
           <MoonIcon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-          <span className="sr-only">Ganti tema</span>
+          <span className="sr-only">{translations.dashboard.theme.toggle}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => setTheme("light")}>
-          Terang
+          {translations.dashboard.theme.light}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("dark")}>
-          Gelap
+          {translations.dashboard.theme.dark}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("system")}>
-          Sistem
+          {translations.dashboard.theme.system}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -70,6 +72,7 @@ function ThemeToggle() {
 
 function MoreOptions() {
   const router = useRouter();
+  const { translations } = useLocale();
 
   return (
     <DropdownMenu>
@@ -83,12 +86,12 @@ function MoreOptions() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => router.push("/extension")}>
-          Periksa Ekstensi
+          {translations.dashboard.extension.check}
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => router.push("https://spot.upi.edu/mhs")}
         >
-          Kembali ke SPOT
+          {translations.dashboard.extension.backToSpot}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -4,34 +4,36 @@ import { motion } from "motion/react";
 import { FaBookOpen, FaCheck, FaListCheck, FaXmark } from "react-icons/fa6";
 
 import { useProfileStats } from "@/lib/hooks/use-profile-stats";
+import { useLocale } from "@/lib/locale-utils";
 import { useUser } from "@/lib/spot/api";
 import { cn } from "@/lib/utils";
 
 export function Profile() {
   const userQuery = useUser();
   const stats = useProfileStats();
+  const { translations } = useLocale();
 
   const statsArray = [
     stats.totalCourses && {
-      label: "Total Mata Kuliah",
+      label: translations.dashboard.profile.stats.totalCourses,
       value: stats.totalCourses,
       icon: FaBookOpen,
       color: "text-violet-500",
     },
     stats.totalTasks && {
-      label: "Total Tugas",
+      label: translations.dashboard.profile.stats.totalTasks,
       value: stats.totalTasks,
       icon: FaListCheck,
       color: "text-violet-500",
     },
     stats.tasksDone && {
-      label: "Tugas Selesai",
+      label: translations.dashboard.profile.stats.tasksDone,
       value: stats.tasksDone,
       icon: FaCheck,
       color: "text-green-500",
     },
     stats.tasksMissed && {
-      label: "Tugas Terlewat",
+      label: translations.dashboard.profile.stats.tasksMissed,
       value: stats.tasksMissed,
       icon: FaXmark,
       color: "text-red-500",
@@ -60,14 +62,16 @@ export function Profile() {
       <div className="relative space-y-6">
         {/* Profile Header */}
         <div>
-          <h2 className="pb-2 text-3xl font-semibold tracking-tight">Profil</h2>
+          <h2 className="pb-2 text-3xl font-semibold tracking-tight">
+            {translations.dashboard.profile.title}
+          </h2>
 
           <span className="text-lg font-medium text-accent-foreground/75">
-            {userQuery.data?.nim ?? "Tidak ada NIM"}
+            {userQuery.data?.nim ?? translations.dashboard.profile.noNim}
           </span>
 
           <p className="text-2xl font-semibold">
-            {userQuery.data?.name ?? "Tidak ada nama"}
+            {userQuery.data?.name ?? translations.dashboard.profile.noName}
           </p>
         </div>
 

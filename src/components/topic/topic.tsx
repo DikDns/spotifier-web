@@ -9,6 +9,7 @@ import { ScrapingLoadingCard } from "@/components/common/scraping-loading-card";
 import { DetailResources } from "@/components/topic/detail-resources";
 import { DetailTask } from "@/components/topic/detail-task";
 import { AnimatedList } from "@/components/ui/animated-list";
+import { useLocale } from "@/lib/locale-utils";
 import { useDetailCourse, useDetailTopic } from "@/lib/spot/api";
 
 export function Topic({
@@ -18,6 +19,7 @@ export function Topic({
   courseId: string;
   topicId: string;
 }) {
+  const { translations } = useLocale();
   const topicNumber = useSearchParams().get("t");
   const {
     data: course,
@@ -38,9 +40,10 @@ export function Topic({
     return (
       <div className="flex flex-col gap-4 p-4">
         <ErrorCard
-          title="Gagal memuat mata kuliah"
+          title={translations.topic.error.loadCourse.title}
           description={
-            courseError?.message ?? "Terjadi kesalahan saat memuat mata kuliah"
+            courseError?.message ??
+            translations.topic.error.loadCourse.description
           }
           retry={() => refetchCourse()}
         />
@@ -52,9 +55,10 @@ export function Topic({
     return (
       <div className="flex flex-col gap-4 p-4">
         <ErrorCard
-          title="Gagal memuat pertemuan"
+          title={translations.topic.error.loadMeeting.title}
           description={
-            topicError?.message ?? "Terjadi kesalahan saat memuat pertemuan"
+            topicError?.message ??
+            translations.topic.error.loadMeeting.description
           }
           retry={() => refetchTopic()}
         />
@@ -69,8 +73,8 @@ export function Topic({
           <ScrapingLoadingCard
             text={
               isCourseLoading
-                ? "Memuat mata kuliah..."
-                : "Mengekstrak pertemuan..."
+                ? translations.topic.loadingCourse
+                : translations.topic.extractingMeeting
             }
           />
         </div>
@@ -87,7 +91,7 @@ export function Topic({
           <div className="flex items-center justify-between pb-2">
             <div className="flex items-center gap-x-2">
               <h2 className="scroll-m-20 text-wrap text-3xl font-semibold capitalize tracking-tight first:mt-0">
-                {course?.name} - Topik {topicNumber}
+                {course?.name} - {translations.topic.meeting} {topicNumber}
               </h2>
             </div>
           </div>
@@ -106,14 +110,14 @@ export function Topic({
         <div className="w-full space-y-2">
           <div className="flex justify-between gap-x-2 pb-2">
             <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">
-              Sumber Belajar
+              {translations.topic.learningResources}
             </h2>
 
             <OpenInSpot href={`/mhs/materi/${courseId}/${topicId}`} />
           </div>
 
           {topic?.contents?.length === 0 ? (
-            <EmptyMessage message="Sumber belajar tidak ditemukan, coba periksa lagi nanti! 😞" />
+            <EmptyMessage message={translations.topic.noLearningResources} />
           ) : (
             <DetailResources resources={topic?.contents ?? []} />
           )}
@@ -127,14 +131,14 @@ export function Topic({
         <div className="space-y-2">
           <div className="flex justify-between gap-x-2 pb-2">
             <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">
-              Tugas
+              {translations.topic.tasks}
             </h2>
 
             <OpenInSpot href={`/mhs/tugas/${courseId}/${topicId}`} />
           </div>
 
           {topic?.tasks?.length === 0 ? (
-            <EmptyMessage message="Tidak ada tugas untuk topik ini, horee! 😁" />
+            <EmptyMessage message={translations.topic.noTasks} />
           ) : (
             <div className="w-full">
               {topic?.tasks?.length && (

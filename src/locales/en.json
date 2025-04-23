@@ -1,0 +1,166 @@
+{
+  "dashboard": {
+    "home": "Home",
+    "tasks": "Tasks",
+    "courses": "Courses",
+    "meeting": "Meeting",
+    "theme": {
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System",
+      "toggle": "Toggle theme"
+    },
+    "extension": {
+      "check": "Check Extension",
+      "backToSpot": "Back to SPOT"
+    },
+    "detailCoursePage": {
+      "error": {
+        "title": "Failed to load course details",
+        "description": "An error occurred while loading course details"
+      },
+      "meetingList": "Meeting List",
+      "emptyMeeting": "No meetings found",
+      "loadingMeeting": "Fetching meetings from SPOT..."
+    },
+    "coursesPage": {
+      "title": "Courses",
+      "loading": "Fetching courses data from SPOT...",
+      "empty": "No courses found",
+      "error": {
+        "title": "Failed to load courses",
+        "description": "An error occurred while loading courses"
+      }
+    },
+    "profile": {
+      "title": "Profile",
+      "noNim": "No Student ID",
+      "noName": "No Name",
+      "nim": "Student ID",
+      "name": "Name",
+      "stats": {
+        "totalCourses": "Total Courses",
+        "totalTasks": "Total Tasks",
+        "tasksDone": "Tasks Done",
+        "tasksMissed": "Tasks Missed"
+      }
+    },
+    "pendingTasks": {
+      "title": "Pending Tasks",
+      "loading": "Loading...",
+      "emptyState": {
+        "title": "All tasks completed! 🎉",
+        "description": "(Click refresh button to fetch new tasks)"
+      },
+      "refresh": "Refetch Tasks",
+      "error": {
+        "title": "Failed to load tasks",
+        "description": "An error occurred while loading tasks"
+      }
+    },
+    "sidebar": {
+      "collapse": "Close",
+      "expand": "Open"
+    }
+  },
+  "topic": {
+    "meeting": "Meeting",
+    "noDescription": "No description",
+    "noAccessTime": "No access time",
+    "recentMeetings": "Recent Meetings",
+    "loadingMeetings": "Fetching recent meetings...",
+    "noMeetings": "No meetings",
+    "loadingCourse": "Loading course...",
+    "extractingMeeting": "Extracting meeting...",
+    "error": {
+      "loadCourse": {
+        "title": "Failed to load course",
+        "description": "An error occurred while loading the course"
+      },
+      "loadMeeting": {
+        "title": "Failed to load meeting",
+        "description": "An error occurred while loading the meeting"
+      }
+    },
+    "learningResources": "Learning Resources",
+    "noLearningResources": "Learning resources not found, please check again later! 😞",
+    "tasks": "Tasks",
+    "noTasks": "No tasks for this topic, yay! 😁",
+    "submitTask": {
+      "button": "Submit Task",
+      "title": "Submit Task",
+      "description": "Submit your task for this topic.",
+      "pastDue": {
+        "title": "Task Due Date Passed",
+        "description": "This task has passed its due date {time}. If you submit it today, the submission date will use the current date."
+      },
+      "form": {
+        "description": {
+          "label": "Description",
+          "placeholder": "Enter your submission description"
+        },
+        "attachment": {
+          "label": "Attachment"
+        },
+        "submit": {
+          "default": "Submit",
+          "loading": "Submitting..."
+        }
+      }
+    },
+    "deleteTask": {
+      "button": "Delete submission",
+      "title": "Delete Submission",
+      "description": "Are you sure you want to delete this submission? This action cannot be undone.",
+      "cancel": "Cancel",
+      "confirm": "Delete"
+    }
+  },
+  "task": {
+    "status": {
+      "pending": "Pending",
+      "submitted": "Submitted",
+      "graded": "Graded",
+      "notSubmitted": "Not Submitted"
+    },
+    "startDate": "Start Date",
+    "dueDate": "Due Date",
+    "attachment": "Attachment",
+    "downloadFile": "Download File",
+    "submission": {
+      "title": "Your Submission",
+      "submitted": "Submitted",
+      "viewFile": "View Submitted File",
+      "delete": "Delete submission",
+      "deleteConfirm": {
+        "title": "Delete Submission",
+        "description": "Are you sure you want to delete this submission? This action cannot be undone.",
+        "cancel": "Cancel",
+        "confirm": "Delete"
+      }
+    },
+    "grading": {
+      "score": "Score",
+      "notes": "Notes"
+    },
+    "submit": {
+      "button": "Submit Task",
+      "title": "Submit Task",
+      "description": "Submit your task for this topic.",
+      "form": {
+        "description": "Description",
+        "descriptionPlaceholder": "Enter your submission description",
+        "attachment": "Attachment",
+        "submitting": "Submitting...",
+        "submit": "Submit"
+      },
+      "deadline": {
+        "passed": "Task Deadline Passed",
+        "description": "This task has passed its deadline {time}. If you submit it today, the submission date will use the current date."
+      }
+    },
+    "detail": {
+      "dateFormat": "DD MMM YYYY, HH:mm"
+    }
+  }
+}

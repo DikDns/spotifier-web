@@ -1,0 +1,166 @@
+{
+  "dashboard": {
+    "home": "Beranda",
+    "tasks": "Tugas",
+    "courses": "Mata Kuliah",
+    "meeting": "Pertemuan",
+    "theme": {
+      "light": "Terang",
+      "dark": "Gelap",
+      "system": "Sistem",
+      "toggle": "Ganti tema"
+    },
+    "extension": {
+      "check": "Periksa Ekstensi",
+      "backToSpot": "Kembali ke SPOT"
+    },
+    "detailCoursePage": {
+      "error": {
+        "title": "Gagal memuat detail mata kuliah",
+        "description": "Terjadi kesalahan saat memuat detail mata kuliah"
+      },
+      "meetingList": "Daftar Pertemuan",
+      "emptyMeeting": "Tidak ada pertemuan ditemukan",
+      "loadingMeeting": "Mengambil pertemuan dari SPOT..."
+    },
+    "coursesPage": {
+      "title": "Mata Kuliah",
+      "loading": "Mengambil data mata kuliah dari SPOT...",
+      "empty": "Tidak ada mata kuliah ditemukan",
+      "error": {
+        "title": "Gagal memuat mata kuliah",
+        "description": "Terjadi kesalahan saat memuat mata kuliah"
+      }
+    },
+    "profile": {
+      "title": "Profil",
+      "noNim": "Tidak ada NIM",
+      "noName": "Tidak ada nama",
+      "nim": "NIM",
+      "name": "Nama",
+      "stats": {
+        "totalCourses": "Total Mata Kuliah",
+        "totalTasks": "Total Tugas",
+        "tasksDone": "Tugas Selesai",
+        "tasksMissed": "Tugas Terlewat"
+      }
+    },
+    "pendingTasks": {
+      "title": "Tugas Tertunda",
+      "loading": "Memuat...",
+      "emptyState": {
+        "title": "Semua tugas selesai! 🎉",
+        "description": "(Tekan tombol refresh untuk mengambil tugas terbaru)"
+      },
+      "refresh": "Refetch Tugas",
+      "error": {
+        "title": "Gagal memuat tugas",
+        "description": "Terdapat kesalahan saat memuat tugas"
+      }
+    },
+    "sidebar": {
+      "collapse": "Tutup",
+      "expand": "Buka"
+    }
+  },
+  "topic": {
+    "meeting": "Pertemuan",
+    "noDescription": "Tidak ada deskripsi",
+    "noAccessTime": "Tidak ada waktu akses",
+    "recentMeetings": "Pertemuan Terbaru",
+    "loadingMeetings": "Menyomot pertemuan terbaru...",
+    "noMeetings": "Tidak ada pertemuan",
+    "loadingCourse": "Memuat mata kuliah...",
+    "extractingMeeting": "Mengekstrak pertemuan...",
+    "error": {
+      "loadCourse": {
+        "title": "Gagal memuat mata kuliah",
+        "description": "Terjadi kesalahan saat memuat mata kuliah"
+      },
+      "loadMeeting": {
+        "title": "Gagal memuat pertemuan",
+        "description": "Terjadi kesalahan saat memuat pertemuan"
+      }
+    },
+    "learningResources": "Sumber Belajar",
+    "noLearningResources": "Sumber belajar tidak ditemukan, coba periksa lagi nanti! 😞",
+    "tasks": "Tugas",
+    "noTasks": "Tidak ada tugas untuk topik ini, horee! 😁",
+    "submitTask": {
+      "button": "Kumpulkan Tugas",
+      "title": "Kumpulkan Tugas",
+      "description": "Kumpulkan tugas Anda untuk topik ini.",
+      "pastDue": {
+        "title": "Batas Waktu Tugas Terlewat",
+        "description": "Tugas ini telah melewati batas waktu {time}. Jika Anda mengumpulkannya hari ini, tanggal pengumpulan akan menggunakan tanggal saat ini."
+      },
+      "form": {
+        "description": {
+          "label": "Deskripsi",
+          "placeholder": "Masukkan deskripsi pengumpulan Anda"
+        },
+        "attachment": {
+          "label": "Lampiran"
+        },
+        "submit": {
+          "default": "Kirim",
+          "loading": "Mengirim..."
+        }
+      }
+    },
+    "deleteTask": {
+      "button": "Hapus pengumpulan",
+      "title": "Hapus Pengumpulan",
+      "description": "Apakah Anda yakin ingin menghapus pengumpulan ini? Tindakan ini tidak dapat dibatalkan.",
+      "cancel": "Batal",
+      "confirm": "Hapus"
+    }
+  },
+  "task": {
+    "status": {
+      "pending": "Menunggu",
+      "submitted": "Terkirim",
+      "graded": "Dinilai",
+      "notSubmitted": "Belum Terkirim"
+    },
+    "startDate": "Tanggal Mulai",
+    "dueDate": "Batas Waktu",
+    "attachment": "Lampiran",
+    "downloadFile": "Unduh Berkas",
+    "submission": {
+      "title": "Pengumpulan Anda",
+      "submitted": "Dikumpulkan",
+      "viewFile": "Lihat Berkas Terkirim",
+      "delete": "Hapus pengumpulan",
+      "deleteConfirm": {
+        "title": "Hapus Pengumpulan",
+        "description": "Apakah Anda yakin ingin menghapus pengumpulan ini? Tindakan ini tidak dapat dibatalkan.",
+        "cancel": "Batal",
+        "confirm": "Hapus"
+      }
+    },
+    "grading": {
+      "score": "Nilai",
+      "notes": "Catatan"
+    },
+    "submit": {
+      "button": "Kumpulkan Tugas",
+      "title": "Kumpulkan Tugas",
+      "description": "Kumpulkan tugas Anda untuk topik ini.",
+      "form": {
+        "description": "Deskripsi",
+        "descriptionPlaceholder": "Masukkan deskripsi pengumpulan Anda",
+        "attachment": "Lampiran",
+        "submitting": "Mengirim...",
+        "submit": "Kirim"
+      },
+      "deadline": {
+        "passed": "Batas Waktu Tugas Terlewat",
+        "description": "Tugas ini telah melewati batas waktu {time}. Jika Anda mengumpulkannya hari ini, tanggal pengumpulan akan menggunakan tanggal saat ini."
+      }
+    },
+    "detail": {
+      "dateFormat": "DD MMM YYYY, HH:mm"
+    }
+  }
+}

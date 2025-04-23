@@ -27,6 +27,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useLocalStorage } from "@/lib/hooks/use-local-storage";
+import { useLocale } from "@/lib/locale-utils";
 import { useDetailCourse, useTopics } from "@/lib/spot/api";
 import { cn } from "@/lib/utils";
 
@@ -39,26 +40,41 @@ type SidebarLink = {
   type?: "default" | "course" | "topic" | undefined;
 };
 
-const defaultSidebarLinks: SidebarLink[] = [
+const defaultSidebarLinks = (
+  translations: ReturnType<typeof useLocale>["translations"],
+): SidebarLink[] => [
   {
     href: "/dashboard",
-    icon: <FaHouse aria-label="Beranda" className="h-5 w-5" />,
-    label: "Beranda",
+    icon: (
+      <FaHouse aria-label={translations.dashboard.home} className="h-5 w-5" />
+    ),
+    label: translations.dashboard.home,
   },
   {
     href: "/dashboard/tasks",
     disabled: true,
-    icon: <FaListCheck aria-label="Tugas" className="h-5 w-5" />,
-    label: "Tugas",
+    icon: (
+      <FaListCheck
+        aria-label={translations.dashboard.tasks}
+        className="h-5 w-5"
+      />
+    ),
+    label: translations.dashboard.tasks,
   },
   {
     href: "/dashboard/courses",
-    icon: <FaGraduationCap aria-label="Mata Kuliah" className="h-5 w-5" />,
-    label: "Mata Kuliah",
+    icon: (
+      <FaGraduationCap
+        aria-label={translations.dashboard.courses}
+        className="h-5 w-5"
+      />
+    ),
+    label: translations.dashboard.courses,
   },
 ];
 
 export function Sidebar() {
+  const { translations } = useLocale();
   const pathname = usePathname();
   const currentCourseId = pathname.split("/courses/")[1]?.split("/")[0];
   const currentTopicId = pathname.split("/topics/")[1]?.split("/")[0];
@@ -151,7 +167,7 @@ export function Sidebar() {
                       animate={{ opacity: 1, x: 0 }}
                       className="text-md ml-2"
                     >
-                      {"Tutup"}
+                      {translations.dashboard.sidebar.collapse}
                     </motion.span>
                   )}
                 </Button>
@@ -164,7 +180,7 @@ export function Sidebar() {
                     sideOffset={16}
                   >
                     <p className="flex items-center gap-x-2">
-                      <span>{"Buka"}</span>
+                      <span>{translations.dashboard.sidebar.expand}</span>
                     </p>
                   </TooltipContent>
                 </TooltipPortal>
@@ -173,7 +189,7 @@ export function Sidebar() {
 
             <span className="border-b border-accent/25"></span>
 
-            {defaultSidebarLinks.map((link) => (
+            {defaultSidebarLinks(translations).map((link) => (
               <SidebarLink
                 key={link.href}
                 href={link.href}

@@ -18,6 +18,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useLocale } from "@/lib/locale-utils";
 import { type Task } from "@/lib/spot";
 import { useDeleteTask } from "@/lib/spot/api/use-delete-task";
 
@@ -26,6 +27,7 @@ interface DeleteTaskButtonProps {
 }
 
 export function DeleteTaskButton({ task }: DeleteTaskButtonProps) {
+  const { translations } = useLocale();
   const { mutate: deleteTask, isPending: isDeleting } = useDeleteTask(
     task.courseId,
     task.topicId,
@@ -53,23 +55,26 @@ export function DeleteTaskButton({ task }: DeleteTaskButtonProps) {
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>Delete Submission</AlertDialogTitle>
+                <AlertDialogTitle>
+                  {translations.topic.deleteTask.title}
+                </AlertDialogTitle>
                 <AlertDialogDescription>
-                  Are you sure you want to delete this submission? This action
-                  cannot be undone.
+                  {translations.topic.deleteTask.description}
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogCancel>
+                  {translations.topic.deleteTask.cancel}
+                </AlertDialogCancel>
                 <AlertDialogAction variant="destructive" onClick={handleDelete}>
-                  Delete
+                  {translations.topic.deleteTask.confirm}
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
         </TooltipTrigger>
         <TooltipContent side="right" variant="destructive">
-          <p>Delete submission</p>
+          <p>{translations.topic.deleteTask.button}</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

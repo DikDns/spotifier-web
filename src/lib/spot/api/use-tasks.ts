@@ -6,7 +6,7 @@ import { useLocalStorage } from "@/lib/hooks/use-local-storage";
 import { getTasks, type GetTasksResponse } from "@/lib/spot/tasks";
 import { useQuery } from "@tanstack/react-query";
 
-export const useTasks = (setLoadingText: (text: string) => void) => {
+export const useTasks = (setLoadingText?: (text: string) => void) => {
   const [tasks, setTasks] = useLocalStorage<GetTasksResponse>("tasks", []);
 
   const query = useQuery({

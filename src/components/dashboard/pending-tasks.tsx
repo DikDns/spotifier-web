@@ -17,18 +17,14 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useLocale } from "@/lib/locale-utils";
 import { useTasks } from "@/lib/spot/api";
 import { cn } from "@/lib/utils";
 
 export function PendingTasks() {
-  const [loadingText, setLoadingText] = useState("Loading...");
-  const {
-    data: tasks,
-    isFetching,
-    isError,
-    error,
-    refetch,
-  } = useTasks(setLoadingText);
+  const { translations } = useLocale();
+  const { data: tasks, isFetching, isError, error, refetch } = useTasks();
+
   const [pendingTasks, setPendingTasks] = useState<typeof tasks>([]);
 
   useEffect(() => {
@@ -43,15 +39,17 @@ export function PendingTasks() {
   }, [tasks]);
 
   const renderLoading = () =>
-    isFetching && <ScrapingLoadingCard text={loadingText} />;
+    isFetching && (
+      <ScrapingLoadingCard text={translations.dashboard.pendingTasks.loading} />
+    );
 
   const renderEmptyState = () => (
     <div className="flex h-full flex-col items-center justify-center space-y-2">
       <p className="text-wrap text-center font-medium text-accent-foreground/75 md:text-lg">
-        Semua tugas selesai! 🎉
+        {translations.dashboard.pendingTasks.emptyState.title}
       </p>
       <p className="text-wrap text-center text-sm text-accent-foreground/75">
-        (Tekan tombol refresh untuk mengambil tugas terbaru)
+        {translations.dashboard.pendingTasks.emptyState.description}
       </p>
     </div>
   );
@@ -108,7 +106,7 @@ export function PendingTasks() {
       <div className="relative flex h-full flex-col justify-between">
         <div className="flex items-center justify-between">
           <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">
-            Tugas Tertunda
+            {translations.dashboard.pendingTasks.title}
           </h2>
 
           <TooltipProvider delayDuration={0}>
@@ -124,7 +122,7 @@ export function PendingTasks() {
                 </Button>
               </TooltipTrigger>
               <TooltipContent side="right" variant="inverseAccent">
-                <p>Refetch Tugas</p>
+                <p>{translations.dashboard.pendingTasks.refresh}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -135,9 +133,10 @@ export function PendingTasks() {
 
           {isError && (
             <ErrorCard
-              title="Gagal memuat tugas"
+              title={translations.dashboard.pendingTasks.error.title}
               description={
-                error?.message || "Terdapat kesalahan saat memuat tugas"
+                error?.message ||
+                translations.dashboard.pendingTasks.error.description
               }
               retry={() => refetch()}
             />

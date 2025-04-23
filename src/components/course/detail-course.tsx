@@ -8,19 +8,22 @@ import { ScrapingLoadingCard } from "@/components/common/scraping-loading-card";
 import { DetailTopic } from "@/components/topic/detail-topic";
 import { AnimatedList } from "@/components/ui/animated-list";
 import { buttonVariants } from "@/components/ui/button";
+import { useLocale } from "@/lib/locale-utils";
 import { useDetailCourse } from "@/lib/spot/api";
 import { useTopics } from "@/lib/spot/api/use-topics";
 
 export function DetailCourse({ courseId }: { courseId: string }) {
   const { data: course, isError, error, refetch } = useDetailCourse(courseId);
+  const { translations } = useLocale();
 
   if (isError) {
     return (
       <div className="flex flex-col gap-4 p-4">
         <ErrorCard
-          title="Gagal memuat detail mata kuliah"
+          title={translations.dashboard.detailCoursePage.error.title}
           description={
-            error?.message || "Terjadi kesalahan saat memuat detail mata kuliah"
+            error?.message ||
+            translations.dashboard.detailCoursePage.error.description
           }
           retry={() => refetch()}
         />
@@ -70,7 +73,7 @@ export function DetailCourse({ courseId }: { courseId: string }) {
         <div className="space-y-2">
           <div className="flex gap-x-2 pb-2">
             <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">
-              Daftar Pertemuan
+              {translations.dashboard.detailCoursePage.meetingList}
             </h2>
           </div>
           {course?.topics?.length === 0 ? (
@@ -92,10 +95,11 @@ export function DetailCourse({ courseId }: { courseId: string }) {
 }
 
 function EmptyTopics() {
+  const { translations } = useLocale();
   return (
     <div className="flex min-h-32 items-center justify-center">
       <p className="font-medium text-accent-foreground/75 md:text-lg">
-        Tidak ada pertemuan ditemukan
+        {translations.dashboard.detailCoursePage.emptyMeeting}
       </p>
     </div>
   );
@@ -108,6 +112,7 @@ function DetailTopics({
   courseId: string;
   topicIds: string[];
 }) {
+  const { translations } = useLocale();
   const { data: topics, isFetching: isTopicsLoading } = useTopics(
     courseId,
     topicIds,
@@ -116,7 +121,9 @@ function DetailTopics({
   return (
     <div className="w-full space-y-4">
       {isTopicsLoading && (
-        <ScrapingLoadingCard text={"Mengambil pertemuan dari SPOT..."} />
+        <ScrapingLoadingCard
+          text={translations.dashboard.detailCoursePage.loadingMeeting}
+        />
       )}
 
       {topics?.length !== 0 && (
