@@ -44,6 +44,16 @@ SPOTifier or 'Sistem Pembelajaran Online Terpadu' Modifier is a web application 
 - 🎥 Seamless YouTube content integration
 - 🔍 Intelligent content optimization
 
+## Usage
+
+1. Download the SPOTifier Extension based on your browser:
+   - [Chrome Extension][Chrome Extension]
+   - [Firefox Extension][Firefox Extension]
+2. Install the SPOTifier Extension
+3. Open SPOT-UPI in your browser
+4. Click the `Go to SPOTifier` button
+5. Enjoy the modern SPOT-UPI experience!
+
 ## Installation
 
 Follow the getting started guide from [Contributing Guide][] to set up the project locally.
@@ -62,3 +72,6 @@ The website is automatically deployed to [Vercel](https://vercel.com) through Gi
 ---
 
 Made with ❤️ by dikdns for UPI Students
+
+[Chrome Extension]: https://github.com/DikDns/spotifier-chrome-extension/releases/latest
+[Firefox Extension]: https://github.com/DikDns/spotifier-firefox-extension/releases/latest
