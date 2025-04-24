@@ -128,7 +128,7 @@ export function PendingTasks() {
           </TooltipProvider>
         </div>
 
-        <div className="relative h-full space-y-4">
+        <div className="relative mt-4 h-full space-y-4">
           {renderLoading()}
 
           {isError && (
