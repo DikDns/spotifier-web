@@ -100,7 +100,7 @@ export function DialogSubmitTask({ task }: DialogSubmitTaskProps) {
               type="file"
               required
               // accept all document types, images, and compressed files
-              accept=".doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*,.zip,.rar,.tar,.gz,.bz2,.7z"
+              accept=".pdf,.doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*,.zip"
             />
           </div>
 
